@@ -1,14 +1,19 @@
 import React, {useState}  from "react";
-import {render} from "react-dom"
+import {render} from "react-dom";
+import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
+import HomePage from "./HomePage";
 
 export default function App(){
 
     //We can pass props to homepage component
     return(
-    <div className="center">
-        Hello World!
-        Centered Text!
-    </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomePage/>}/>
+            </Routes>
+        </Router>
+
+    
     );
     
 }
