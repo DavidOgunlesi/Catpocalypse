@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from .models import ExampleModel
 
 # Import Serializers here
-from .serializers import ExampleSerializer
+from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
 
 # -----------------------------
 # Create your api views here. 
@@ -31,9 +31,9 @@ class ExampleAPICreateView(generics.CreateAPIView):
         
 # Add your APIViews here     
 class ExampleAPIGETView(APIView):
-    serializer_class = ExampleSerializer
+    serializer_class = ExampleSerializer2
     def get(self, request, format=None):
-        # Add functionality here
+        code = request.GET.get("hat")
         pass
 
 class ExampleAPIPOSTView(APIView):
@@ -42,3 +42,15 @@ class ExampleAPIPOSTView(APIView):
         # Add functionality here
         pass
     
+'''class GetCatView(APIView):
+    def get(self, request, format=None):
+        lvlParameter = request.GET.get("level")
+        if lvlParameter != None:
+            returnedCats = Cat.objects.filter(level=lvlParameter)
+            if len(returnedCats) > 0:
+                #serialise room and get data
+                data = GetCatSerialiser(returnedCats[0]).data
+                return Response(data,status=status.HTTP_200_OK)
+            
+            return Response({'Error':'Bas request'},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'Error':'Bas request'},status=status.HTTP_400_BAD_REQUEST)'''
