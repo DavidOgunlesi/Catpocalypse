@@ -131,3 +131,6 @@ dmypy.json
 
 #ignore node_modules
 node_modules/
+
+#stinky mac stuff
+.DS_Store
