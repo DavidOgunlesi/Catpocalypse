@@ -1,14 +1,37 @@
 import React, {useState, useEffect} from "react";
+import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
-import {Button, Grid} from "@material-ui/core"
+import {Button, Grid} from "@material-ui/core";
+import FallingCat from "./dynamic/FallingCat";
+import {getRandomRange} from '/src/util/math.js'
 
 export default function MainMenu(){
+
+    const [value, setValue] = useState(0);
+    //create your forceUpdate hook
+    function useForceUpdate(){ // integer state
+        for (let index = 0; index < getRandomRange(1,3); index++) {
+            var x = Math.floor(Math.random() * window.innerWidth);
+            var y = -1000;
+            var cat = (<FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
+            var catDiv = document.createElement('div');
+            render(cat,catDiv);
+            document.getElementById("catHolder").append(catDiv);
+        }
+    }
+
+    useEffect(() => {
+        var timerID = setInterval(() => useForceUpdate(), 1000);
+        return () => clearInterval(timerID);
+    });
+
 
     if (isMobile) {
         return (
             <div>
-                 <img src={logo} className="logo" alt="Logo" />
+                <img src={logo} className="logo" alt="Logo" />
+                <div id="catHolder"></div>
                 <div className="center">
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
