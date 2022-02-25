@@ -3,6 +3,7 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
+import MainMenu from "./MainMenu";
 
 export default function App(){
 
@@ -10,7 +11,7 @@ export default function App(){
     return(
         <Router>
             <Routes>
-                <Route path="/" element={<HomePage/>}/>
+                <Route path="/" element={<MainMenu splash={true}/>}/>
                 <Route path="/login" element={<LoginPage/>}/>
             </Routes>
         </Router>
