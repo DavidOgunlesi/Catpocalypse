@@ -1,14 +1,28 @@
 import React, {useState, useEffect} from "react";
 import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
+import {Button, Grid} from "@material-ui/core"
 
 export default function MainMenu(){
 
     if (isMobile) {
         return (
-            <div className="center">
-                <img src={logo} alt="Logo" />
-                In Mobile Browser
+            <div>
+                 <img src={logo} className="logo" alt="Logo" />
+                <div className="center">
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <Button 
+                            color = 'primary' 
+                            variant="contained"
+                            size="large" 
+                            style={{ borderRadius: 50 }}
+                            >
+                                 Start The Catpocalpyse!
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </div>
             </div>
         );
     }else{
