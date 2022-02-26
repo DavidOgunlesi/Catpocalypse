@@ -23,4 +23,65 @@ html, body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    margin: 0px;
+}
+
+.centerHoriz{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    margin: 0px;
+}
+
+.logo {
+    width: 100%;
+    z-index: 100;
+ }
+
+/*
+-----------------------------------
+Falling Cat styling and animations
+------------------------------------
+*/
+ .fallingCat{
+    position: absolute;
+    z-index: -1;
+    /*Animation attributes injected by 
+    reactjs "Falling Cat" Component*/
+ }
+
+@keyframes drop {
+    0% {
+
+    }
+    to {
+        opacity: 1;
+        transform: 
+        translate3d(0, 2000px, 0);
+
+    }
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+@keyframes spinOpposite {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(-360deg);
+    }
+}
+
+.background{
+    height: 100%;
+    width: 100%;
+}
+.comp_skewedBackground_content{
+    height: 100%;
 }
