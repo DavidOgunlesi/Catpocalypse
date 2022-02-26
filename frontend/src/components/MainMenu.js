@@ -37,6 +37,10 @@ export default function MainMenu(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
+                <Button 
+                variant="outline" 
+                style={{ width:"100%", height: "100%", position:"absolute"}}
+                />
                 <img src={logo} className="logo" alt="Logo" />
                 <div id="catHolder"></div>
                 <div className="center">
@@ -47,8 +51,12 @@ export default function MainMenu(){
                             variant="contained"
                             size="large" 
                             style={{ borderRadius: 50 }}
+                            disableElevation={true}
+                            disableFocusRipple={true}
+                            disableRipple={true}
+                            fullWidth={true}
                             >
-                                Start The Catpocalpyse!
+                                Click Anywhere To Start The Catpocalpyse!
                             </Button>
                         </Grid>
                     </Grid>
