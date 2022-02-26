@@ -6,6 +6,10 @@ import Expire from "../util/Expire";
 export default function FallingCat(props){
 
     const randomSpeed = getRandomRange(props.minSpeed,props.maxSpeed);
+    const randomNum = Math.ceil(getRandomRange(0,2));
+    var anim;
+    randomNum-1 == 1 ? anim = "spin" : anim = "spinOpposite";
+
     
     return (
         <Expire delay={props.aliveTime * 1000}>
@@ -20,7 +24,7 @@ export default function FallingCat(props){
             className="fallingCat" 
             alt="Logo" 
             style = {{
-                animation: `spin ${randomSpeed/4}s linear infinite`
+                animation: `${anim} ${randomSpeed/4}s linear infinite`
             }}
             />
         </div>

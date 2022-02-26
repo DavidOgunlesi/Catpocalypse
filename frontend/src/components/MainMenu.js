@@ -9,6 +9,8 @@ import Background from "./static/Background";
 
 export default function MainMenu(){
 
+    const requireLogin = true;
+
     function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
@@ -27,6 +29,65 @@ export default function MainMenu(){
         }
     });
 
+
+    function renderStartButton(){
+        return (
+            <Grid container spacing={10}>
+                <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    disableFocusRipple={true}
+                    disableRipple={true}
+                    fullWidth={true}
+                    >
+                        Click Anywhere To Start The Catpocalpyse!
+                    </Button> 
+                </Grid>
+            </Grid>
+        );
+    }
+
+    function renderRegAndLoginButton(){
+        return (
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    fullWidth={true}
+                    >
+                        Login
+                    </Button> 
+                </Grid>
+                <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    fullWidth={true}
+                    >
+                        Sign up
+                    </Button> 
+                </Grid>
+            </Grid>
+        );
+    }
+
+    function chooseRender(){
+        if (requireLogin){
+            return renderRegAndLoginButton();
+        }else{
+            return renderStartButton();
+        }
+    }
+
     if (isMobile) {
         return (
             <Background 
@@ -44,22 +105,7 @@ export default function MainMenu(){
                 <img src={logo} className="logo" alt="Logo" />
                 <div id="catHolder"></div>
                 <div className="center">
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Button 
-                            color = 'primary' 
-                            variant="contained"
-                            size="large" 
-                            style={{ borderRadius: 50 }}
-                            disableElevation={true}
-                            disableFocusRipple={true}
-                            disableRipple={true}
-                            fullWidth={true}
-                            >
-                                Click Anywhere To Start The Catpocalpyse!
-                            </Button>
-                        </Grid>
-                    </Grid>
+                    {chooseRender()}
                 </div>
             </Background>
         );

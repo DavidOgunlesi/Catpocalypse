@@ -69,6 +69,14 @@ Falling Cat styling and animations
         transform:rotate(360deg);
     }
 }
+@keyframes spinOpposite {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(-360deg);
+    }
+}
 
 .background{
     height: 100%;
