@@ -4,13 +4,12 @@ import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
 import {Button, Grid} from "@material-ui/core";
 import FallingCat from "./dynamic/FallingCat";
-import {getRandomRange} from '/src/util/math.js'
+import {getRandomRange} from '/src/util/math.js';
+import Background from "./static/Background";
 
 export default function MainMenu(){
 
-    const [value, setValue] = useState(0);
-    //create your forceUpdate hook
-    function useForceUpdate(){ // integer state
+    function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
             var y = -1000;
@@ -22,14 +21,22 @@ export default function MainMenu(){
     }
 
     useEffect(() => {
-        var timerID = setInterval(() => useForceUpdate(), 1000);
-        return () => clearInterval(timerID);
+        if (isMobile){
+            var timerID = setInterval(() => spawnCats(), 1000);
+            return () => clearInterval(timerID);
+        }
     });
-
 
     if (isMobile) {
         return (
-            <div>
+            <Background 
+            gradient={false} 
+            primaryCol="#FEEAC2" 
+            outlineCol="#FFC992" 
+            outlineThickness={200} 
+            skew={-32}
+            backgroundCol="#FFF59D"
+            >
                 <img src={logo} className="logo" alt="Logo" />
                 <div id="catHolder"></div>
                 <div className="center">
@@ -41,12 +48,12 @@ export default function MainMenu(){
                             size="large" 
                             style={{ borderRadius: 50 }}
                             >
-                                 Start The Catpocalpyse!
+                                Start The Catpocalpyse!
                             </Button>
                         </Grid>
                     </Grid>
                 </div>
-            </div>
+            </Background>
         );
     }else{
         return (
