@@ -85,3 +85,9 @@ Falling Cat styling and animations
 .comp_skewedBackground_content{
     height: 100%;
 }
+.inputRounded{
+    border-radius: 100px;
+  }
+  .inputRounded .MuiOutlinedInput-root {
+    border-radius: 100px;
+  }
