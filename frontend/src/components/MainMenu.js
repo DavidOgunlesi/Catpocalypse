@@ -67,7 +67,7 @@ export default function MainMenu(){
                     component = {Link}
                     to="/login"
                     >
-                        Login
+                        Log in
                     </Button> 
                 </Grid>
                 <Grid item xs={12}>
