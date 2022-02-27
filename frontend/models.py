@@ -1,3 +1,3 @@
 from django.db import models
-
-# Create your models here.
+# This should NOT be written in at ANY point
+# DO NOT Create your models here UNDER ANY CIRCUMSTANCES
