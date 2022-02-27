@@ -7,6 +7,8 @@ import {Button, Grid, Typography} from "@material-ui/core";
 import FallingCat from "./dynamic/FallingCat";
 import {getRandomRange} from '/src/util/math.js';
 import Background from "./static/Background";
+import {Link} from "react-router-dom";
+import LoginPage from "./LoginPage";
 
 export default function MainMenu(){
 
@@ -58,10 +60,12 @@ export default function MainMenu(){
                 <Grid item xs={12}>
                     <Button 
                     color = 'primary' 
-                    variant="contained"
-                    size="large" 
-                    style={{ borderRadius: 50 }}
-                    fullWidth={true}
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    component = {Link}
+                    to="/login"
                     >
                         Login
                     </Button> 
