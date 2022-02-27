@@ -27,7 +27,8 @@ export default function RegisterPage(){
             setErrorMessage("Password doesn't meet criteria.");
             return;
         }
-
+        console.log(username);
+        console.log(password);
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -41,7 +42,9 @@ export default function RegisterPage(){
         .then((response) => {
             if (!response.ok){
                 setErrorMessage("Error signing up.");
+                return;
             }
+            console.log("ok!");
             return response.json;
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
