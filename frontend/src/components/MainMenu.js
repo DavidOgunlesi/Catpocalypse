@@ -3,7 +3,7 @@ import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
 import cat from '/static/images/cat.png';
-import {Button, Grid} from "@material-ui/core";
+import {Button, Grid, Typography} from "@material-ui/core";
 import FallingCat from "./dynamic/FallingCat";
 import {getRandomRange} from '/src/util/math.js';
 import Background from "./static/Background";
@@ -122,9 +122,9 @@ export default function MainMenu(){
                 style={{ width:"100%", height: "100%", position:"absolute"}}
                 />
                 <img src={logo} style={{ width:"100%", height: "70%", position:"center"}} alt="Logo" />
-                <div style={{backgroundColor:"black", color:"white", height:"10%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Typography style={{backgroundColor:"black", color:"white", height:"10%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                     Desktop Browser currently not supported<br/>Please open with a mobile device to play!
-                </div>
+                </Typography>
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                     <img src={cat} alt="Cat"/>
                 </div>
