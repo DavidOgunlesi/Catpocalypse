@@ -45,7 +45,7 @@ export default function RegisterPage(){
                 return;
             }
             console.log("ok!");
-            return response.json;
+            return response.json();
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
