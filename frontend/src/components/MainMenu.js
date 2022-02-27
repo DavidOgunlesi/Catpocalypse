@@ -122,7 +122,8 @@ export default function MainMenu(){
                 style={{ width:"100%", height: "100%", position:"absolute"}}
                 />
                 <img src={logo} style={{ width:"100%", height: "70%", position:"center"}} alt="Logo" />
-                <Typography style={{backgroundColor:"black", color:"white", height:"10%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Typography style={{backgroundColor:"black", color:"white", height:"10%", 
+                display: "flex", justifyContent: "center", alignItems: "center"}}>
                     Desktop Browser currently not supported<br/>Please open with a mobile device to play!
                 </Typography>
                 <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
