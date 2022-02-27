@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-rout
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
+import RegisterPage from "./RegisterPage";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 const theme = createTheme({
     palette: {
@@ -14,6 +15,7 @@ const theme = createTheme({
             main: '#AEAEAE'
         }
     }
+    
   });
 
 export default function App(){
@@ -25,6 +27,7 @@ export default function App(){
                 <Routes>
                     <Route path="/" element={<MainMenu splash={true}/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
                 </Routes>
             </Router>
         </MuiThemeProvider>
