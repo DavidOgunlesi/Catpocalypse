@@ -3,12 +3,21 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+from django.contrib.auth.models import User
+
+################FOR AUTHENTICATION add this to class viewset
+# permission_classes = [IsAuthenticated]
+# authentication_classes = (TokenAuthentication,)
 
 # Import Models here (if necessary)
 from .models import ExampleModel
 
 # Import Serializers here
 from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
+from .serializers import UserSerializer
 
 # -----------------------------
 # Create your api views here. 
@@ -19,6 +28,14 @@ from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialis
 # These are just example boilerplate, add and remove to 
 # your will
 # -----------------------------
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+
+
 
 # Premade Views (mostly for debug)
 class ExampleAPIListView(generics.ListAPIView):
@@ -40,8 +57,8 @@ class ExampleAPIPOSTView(APIView):
     serializer_class = ExampleSerializer
     def post(self, request, format=None):
         # Add functionality here
-        pass
-    
+        pass 
+
 '''class GetCatView(APIView):
     def get(self, request, format=None):
         lvlParameter = request.GET.get("level")
