@@ -77,6 +77,8 @@ export default function MainMenu(){
                     size="large" 
                     style={{ borderRadius: 50 }}
                     fullWidth={true}
+                    component = {Link}
+                    to="/register"
                     >
                         Sign up
                     </Button> 
