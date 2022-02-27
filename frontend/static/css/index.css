@@ -87,10 +87,13 @@ Falling Cat styling and animations
 }
 .inputRounded{
     border-radius: 100px;
-  }
-  .inputRounded .MuiOutlinedInput-root {
+}
+.inputRounded .MuiOutlinedInput-root {
+border-radius: 100px;
+}
+.inputRounded .MuiInputBase-root {
     border-radius: 100px;
-  }
+    }
 
 .gradient{
     position: absolute;
