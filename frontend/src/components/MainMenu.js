@@ -83,6 +83,9 @@ export default function MainMenu(){
                         Sign up
                     </Button> 
                 </Grid>
+                <Grid item xs={12}>
+                    <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
+                </Grid>
             </Grid>
         );
     }
