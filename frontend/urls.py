@@ -8,6 +8,6 @@ urlpatterns = [
     path('register', index),
     path('play', index),
     # path('create', index),
-    # path('room/<str:roomCode>', index),
+    # path('room/<str:roomCode>', index),d
     
 ]
