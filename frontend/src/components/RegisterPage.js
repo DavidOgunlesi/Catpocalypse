@@ -4,46 +4,25 @@ import {isMobile} from 'react-device-detect';
 import Background from "./static/Background";
 import logo from '/static/images/logo.png';
 import {Link} from "react-router-dom";
-import {Button, Grid, Typography, TextField, FormControl, InputAdornment,IconButton, FormHelperText, InputLabel, OutlinedInput} from "@material-ui/core";
+import {Button, Grid, Typography, TextField, FormControl, 
+    InputAdornment,IconButton, FormHelperText, Select, MenuItem} from "@material-ui/core";
 import {Link as UILink} from "@material-ui/core";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 
 export default function RegisterPage(){
+    const defaultEmail = "@exeter.ac.uk";
+
     const [username, setUsername] = useState("");
-    const [emailAddress, setEmailAddress] = useState("");
+    const [emailStart, setEmailStart] = useState("");
+    const [emailEnd, setEmailEnd] = useState(defaultEmail);
     const [password, setPassword] = useState("");
 	const [passwordAgain, setPasswordAgain] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
     const [showPassword, setShowPassword] = useState(false);
-
     var validPassword = false;
-    var validEmail = false;
-    function handleOnEmailChange(e){
-        let email = e.target.value;
-        //Magical regex string, god knows how it works
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        
-        if (email == ""){
-            setErrorMessage("");
-            return;
-        }
-
-        if ( re.test(email) ) {
-            // this is a valid email address
-            validEmail = true;
-            setErrorMessage("");
-        }
-        else {
-            // invalid email, maybe show an error to the user.
-            validEmail = false;
-            setErrorMessage("Invalid Email");
-        }
-    
-    }
 
     function onRegister() {
-        if (username=="" || emailAddress=="" || password=="" || passwordAgain == "") {
+        if (username=="" || emailStart=="" || password=="" || passwordAgain == "") {
             setErrorMessage("Not all fields have been filled.");
             return;
         }
@@ -55,21 +34,21 @@ export default function RegisterPage(){
         //    setErrorMessage(`${emailAddress} is an invalid academic email`);
         //    return;
         //}
-        if(!validEmail){
-            return;
-        }
         if (!validPassword) {
             setErrorMessage("Password doesn't meet criteria.");
             return;
         }
         console.log(username);
         console.log(password);
+        const fullEmail = `${emailStart}${emailEnd}`;
+        console.log(fullEmail);
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
                 username:username,
-                password:password
+                password:password,
+                //email: fullEmail
             }),
         };
         //send post request to our api!
@@ -95,15 +74,13 @@ export default function RegisterPage(){
             backgroundCol="#FFF59D"
             >
                 <div className="gradient">
-                <img src={logo} className="logo" alt="Logo" />
-                <div className="center">
-                    
-                    <Grid container spacing={1}>
-                        <Grid item xs={12} align="center">
-                            <Typography variant="h3" component="h3">Register</Typography>
-                        </Grid>
+                    <img src={logo} className="logo" alt="Logo" />
+                    <div className="center">
+                        <Grid container spacing={1}>
                             <Grid item xs={12} align="center">
-                                <FormControl component="fieldset">
+                                <Typography variant="h3" component="h3">Register</Typography>
+                            </Grid>
+                            <Grid item xs={12} align="center">
                                     <TextField
                                         required={true}
                                         type = "text"
@@ -114,87 +91,94 @@ export default function RegisterPage(){
                                         textalign="center"
                                         variant="outlined"
                                         size="small"
+                                        fullWidth={true}
                                         style={{
                                             background: "white"
                                         }}
                                     />
-                                </FormControl>
-                                </Grid>
-                                <Grid item xs={12} align="center">
-                                <FormControl component="fieldset">
+                            </Grid>
+                            <Grid item xs={4} align="center">
                                     <TextField
                                         required={true}
                                         type = "email"
-                                        onChange={handleOnEmailChange}
                                         className="inputRounded"
-                                        placeholder="Email Address"
+                                        placeholder="Email"
+                                        onChange={e=> setEmailStart(e.target.value)}
                                         variant="standard"
                                         textalign="center"
                                         variant="outlined"
                                         size="small"
+                                        fullWidth={true}
                                         style={{
                                             background: "white"
                                         }}
                                     />
-                                </FormControl>
-                                </Grid>
-                                <Grid item xs={12} align="center">
-                                <FormControl component="fieldset">
-                                <TextField
-                                    required={true}
-                                    type={showPassword  ? 'text' : 'password'}
-                                    value={password}
-                                    onChange={e => setPassword(e.target.value)}
-                                    className="inputRounded"
-                                    placeholder="Password"
-                                    variant="standard"
-                                    textalign="center"
-                                    variant="outlined"
-                                    size="small"
-                                    style={{
-                                        background: "white"
-                                    }}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                          <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={_=> setShowPassword(!showPassword)}
-                                            onMouseDown={e=> e.preventDefault()}
-                                            edge="end"
-                                          >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                          </IconButton>
-                                        </InputAdornment>
-                                      }
-                                />
-                                </FormControl>
+                            </Grid>
+                            <Grid item xs={8} align="center">
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    fullWidth={true}
+                                    value={defaultEmail}
+                                    onChange={e=> setEmailEnd(e.target.value)}
+                                >
+                                    <MenuItem value={defaultEmail}>{defaultEmail}</MenuItem>
+                                </Select>
+                            </Grid>
+                            <Grid item xs={12} align="center">
+                                    <TextField
+                                        required={true}
+                                        type={showPassword  ? 'text' : 'password'}
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        className="inputRounded"
+                                        placeholder="Password"
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={_=> setShowPassword(!showPassword)}
+                                                onMouseDown={e=> e.preventDefault()}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                            </InputAdornment>
+                                        }
+                                    />
                                 
-                                </Grid>
-                                
-                                <Grid item xs={12} align="center">
-                                <FormControl component="fieldset">
-                                <TextField
-                                    required={true}
-                                    type = "password" 
-                                    onChange={e => setPasswordAgain(e.target.value)}
-                                    className="inputRounded"
-                                    placeholder="Re-enter Password"
-                                    variant="standard"
-                                    textalign="center"
-                                    variant="outlined"
-                                    size="small"
-                                    style={{
-                                        background: "white"
-                                    }}
-                                />
-                                </FormControl>
-                                </Grid>
-                                <Grid item xs={12} align="center">
-                                    <FormHelperText variant="filled" error={true}>
-                                        {errorMessage}
-                                    </FormHelperText>
-                                </Grid>
-                                <Grid item xs={12} align="center">
+                            </Grid>
+                            <Grid item xs={12} align="center">
+                                    <TextField
+                                        required={true}
+                                        type = "password" 
+                                        onChange={e => setPasswordAgain(e.target.value)}
+                                        className="inputRounded"
+                                        placeholder="Re-enter Password"
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                    />
+                            </Grid>
+                            <Grid item xs={12} align="center">
+                                <FormHelperText variant="filled" error={true}>
+                                    {errorMessage}
+                                </FormHelperText>
+                            </Grid>
+                            <Grid item xs={12} align="center">
                                 <PasswordChecklist
                                     rules={["minLength","specialChar","number","capital","match"]}
                                     minLength={5}
@@ -203,41 +187,41 @@ export default function RegisterPage(){
                                     onChange={(isValid) => {validPassword = isValid}}
                                     style = {{color:"white"}}
                                 />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button 
-                                    color = 'primary' 
-                                    variant="contained"
-                                    size="large" 
-                                    style={{ borderRadius: 50 }}
-                                    disableElevation={true}
-                                    disableFocusRipple={true}
-                                    disableRipple={true}
-                                    fullWidth={true}
-                                    onClick={onRegister}
-                                    >
-                                        Sign Up!
-                                    </Button> 
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button 
-                                    color = 'primary' 
-                                    variant="contained"
-                                    size="large" 
-                                    style={{ borderRadius: 50 }}
-                                    disableElevation={true}
-                                    fullWidth={true}
-                                    component={Link}
-                                    to="/"
-                                    >
-                                        Back
-                                    </Button> 
-                                </Grid>
-                                <Grid item xs={12} align="center">
-                                    <UILink href="" underline="hover" color="white">PRIVACY POLICY</UILink>
-                                </Grid>
-                    </Grid> 
-                </div>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button 
+                                color = 'primary' 
+                                variant="contained"
+                                size="large" 
+                                style={{ borderRadius: 50 }}
+                                disableElevation={true}
+                                disableFocusRipple={true}
+                                disableRipple={true}
+                                fullWidth={true}
+                                onClick={onRegister}
+                                >
+                                    Sign Up!
+                                </Button> 
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button 
+                                color = 'primary' 
+                                variant="contained"
+                                size="large" 
+                                style={{ borderRadius: 50 }}
+                                disableElevation={true}
+                                fullWidth={true}
+                                component={Link}
+                                to="/"
+                                >
+                                    Back
+                                </Button> 
+                            </Grid>
+                            <Grid item xs={12} align="center">
+                                <UILink href="" underline="hover" color="white">PRIVACY POLICY</UILink>
+                            </Grid>
+                        </Grid> 
+                    </div>
                 </div>
             </Background>
         );

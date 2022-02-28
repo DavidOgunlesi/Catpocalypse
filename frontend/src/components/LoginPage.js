@@ -9,45 +9,26 @@ import Background from "./static/Background";
 
 export default function LoginPage(){
 
-    if(isMobile){
-        return (
-            <Background
-            gradient={false} 
-            primaryCol="#FEEAC2" 
-            outlineCol="#FFC992" 
-            outlineThickness={200} 
-            skew={-32}
-            backgroundCol="#FFF59D"
-            >
-            <div className="gradient">
-            <img src={logo} className="logo" alt="Logo" />
-            <div className="center">
-                <Grid container spacing={3}>
-                    <Grid item xs={12} align="center">
-                        <FormControl component="fieldset">
-                            <TextField
-                                required={true}
-                                type = "text"
-                                className="inputRounded"
-                                placeholder="Enter Username or Email"
-                                variant="standard"
-                                textalign="center"
-                                variant="outlined"
-                                size="small"
-                                style={{
-                                    background: "white"
-                                }}
-                            />
-                        </FormControl>
-                        </Grid>
-                        
-                        <Grid item xs={12} align="center">
-                        <FormControl component="fieldset">
+    return (
+        <Background
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+        <div className="gradient">
+        <img src={logo} className="logo" alt="Logo" />
+        <div className="center">
+            <Grid container spacing={3}>
+                <Grid item xs={12} align="center">
+                    <FormControl component="fieldset">
                         <TextField
                             required={true}
                             type = "text"
                             className="inputRounded"
-                            placeholder="Enter Password"
+                            placeholder="Enter Username or Email"
                             variant="standard"
                             textalign="center"
                             variant="outlined"
@@ -56,43 +37,55 @@ export default function LoginPage(){
                                 background: "white"
                             }}
                         />
-                        </FormControl>
-                        </Grid>
-                    <Grid item xs={12}>
-                        <Button 
-                        color = 'primary' 
-                        variant = "contained"
-                        size = "large" 
-                        style = {{ borderRadius: 50 }}
-                        fullWidth = {true}
-                        >
-                            Log in
-                        </Button> 
+                    </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Button 
-                        color = 'primary' 
-                        variant = "contained"
-                        size = "large" 
-                        style = {{ borderRadius: 50 }}
-                        fullWidth = {true}
-                        component = {Link}
-                        to="/"
-                        >
-                            Back
-                        </Button> 
+                    
+                    <Grid item xs={12} align="center">
+                    <FormControl component="fieldset">
+                    <TextField
+                        required={true}
+                        type = "text"
+                        className="inputRounded"
+                        placeholder="Enter Password"
+                        variant="standard"
+                        textalign="center"
+                        variant="outlined"
+                        size="small"
+                        style={{
+                            background: "white"
+                        }}
+                    />
+                    </FormControl>
                     </Grid>
+                <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    >
+                        Log in
+                    </Button> 
                 </Grid>
-            </div>
-            </div>
-            </Background>
-        );
-    }else {
-        return (
-            <h1>HI!</h1>
-        )
-
-    }
+                <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    component = {Link}
+                    to="/"
+                    >
+                        Back
+                    </Button> 
+                </Grid>
+            </Grid>
+        </div>
+        </div>
+        </Background>
+    );
     
     
 }
