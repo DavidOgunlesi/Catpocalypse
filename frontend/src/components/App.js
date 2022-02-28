@@ -32,6 +32,7 @@ export default function App(){
                         <Route path="/" element={<MainMenu splash={true}/>}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
+                        <Route path="/play" element={<HomePage/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
