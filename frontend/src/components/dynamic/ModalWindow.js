@@ -1,0 +1,72 @@
+import React from "react";
+import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    textAlign: 'center'
+  };
+
+export default function ModalWindow({
+    title = "Modal Title",
+    content = "Modal Content",
+    buttonText = "Close",
+    buttonInactive = false,
+    open = false,
+    handleClose = null,
+    imageSrc = null,
+    imageAlt ="",
+    extraContent = null
+}){
+    return (
+        <Modal
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        open={open}
+        onClose={handleClose}
+        >
+            <Box sx={style}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                    <img src={imageSrc} alt={imageAlt} style={{width:"100%"}}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        {title}
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {content}
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    fullWidth={true}
+                    onClick={_ => {buttonInactive ? setOpen(false) : null}}
+                    >
+                        {buttonText}
+                    </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {extraContent}
+                    </Grid>
+            </Grid> 
+            </Box>
+        </Modal>
+    );
+    
+}
+//onClick={_ => {buttonInactive ? setOpen(false) : setOpen(true)}}
