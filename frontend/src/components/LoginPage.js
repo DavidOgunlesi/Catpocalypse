@@ -64,6 +64,8 @@ export default function LoginPage(){
                     size = "large" 
                     style = {{ borderRadius: 50 }}
                     fullWidth = {true}
+                    component = {Link}
+                    to="/play"
                     >
                         Log in
                     </Button> 
