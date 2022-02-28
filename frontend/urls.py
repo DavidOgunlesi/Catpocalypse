@@ -5,7 +5,8 @@ from .views import index
 urlpatterns = [
     path('', index),
     path('login', index),
-    path('register', index)
+    path('register', index),
+    path('play', index),
     # path('create', index),
     # path('room/<str:roomCode>', index),
     
