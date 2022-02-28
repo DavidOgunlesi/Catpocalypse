@@ -98,49 +98,26 @@ export default function MainMenu(){
         }
     }
 
-    if (isMobile) {
-        return (
-            <Background 
-            gradient={false} 
-            primaryCol="#FEEAC2" 
-            outlineCol="#FFC992" 
-            outlineThickness={200} 
-            skew={-32}
-            backgroundCol="#FFF59D"
-            >
-                <Button 
-                variant="outline" 
-                style={{ width:"100%", height: "100%", position:"absolute"}}
-                />
-                <img src={logo} className="logo" alt="Logo" />
-                <div id="catHolder"></div>
-                <div className="center">
-                    {chooseRender()}
-                </div>
-            </Background>
-        );
-    }else{
-        return (
-            <Background 
-            gradient={false} 
-            primaryCol="#FEEAC2" 
-            backgroundCol="#FFF59D"
-            >
-                <Button 
-                variant="outline" 
-                style={{ width:"100%", height: "100%", position:"absolute"}}
-                />
-                <img src={logo} style={{ width:"100%", height: "70%", position:"center"}} alt="Logo" />
-                <Typography style={{backgroundColor:"black", color:"white", height:"10%", 
-                display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    Desktop Browser currently not supported<br/>Please open with a mobile device to play!
-                </Typography>
-                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <img src={cat} alt="Cat"/>
-                </div>
-            </Background>
-        );
-    }
+    return (
+        <Background 
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+            <Button 
+            variant="outline" 
+            style={{ width:"100%", height: "100%", position:"absolute"}}
+            />
+            <img src={logo} className="logo" alt="Logo" />
+            <div id="catHolder"></div>
+            <div className="center">
+                {chooseRender()}
+            </div>
+        </Background>
+    );
     
 }
 

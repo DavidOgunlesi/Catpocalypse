@@ -6,6 +6,9 @@ import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
 import RegisterPage from "./RegisterPage";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import {isMobile} from 'react-device-detect';
+import DesktopWarningPage from "./DesktopWarningPage";
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -21,17 +24,21 @@ const theme = createTheme({
 export default function App(){
 
     //We can pass props to homepage component
-    return(
-        <MuiThemeProvider theme={theme}>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<MainMenu splash={true}/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/register" element={<RegisterPage/>}/>
-                </Routes>
-            </Router>
-        </MuiThemeProvider>
-    );
+    if (isMobile) {
+        return(
+            <MuiThemeProvider theme={theme}>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<MainMenu splash={true}/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/register" element={<RegisterPage/>}/>
+                    </Routes>
+                </Router>
+            </MuiThemeProvider>
+        );
+    }else{
+        return(<DesktopWarningPage/>);
+    }
     
 }
 
