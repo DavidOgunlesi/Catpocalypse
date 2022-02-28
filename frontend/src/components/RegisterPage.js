@@ -97,7 +97,7 @@ export default function RegisterPage(){
                                         }}
                                     />
                             </Grid>
-                            <Grid item xs={4} align="center">
+                            <Grid item xs={12} align="center">
                                     <TextField
                                         required={true}
                                         type = "email"
@@ -112,18 +112,21 @@ export default function RegisterPage(){
                                         style={{
                                             background: "white"
                                         }}
+                                        InputProps={{
+                                            endAdornment: 
+                                                <InputAdornment position="start">
+                                                    <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                fullWidth={true}
+                                                value={defaultEmail}
+                                                onChange={e=> setEmailEnd(e.target.value)}
+                                            >
+                                                <MenuItem value={defaultEmail}>{defaultEmail}</MenuItem>
+                                            </Select>
+                                            </InputAdornment>,
+                                          }}
                                     />
-                            </Grid>
-                            <Grid item xs={8} align="center">
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    fullWidth={true}
-                                    value={defaultEmail}
-                                    onChange={e=> setEmailEnd(e.target.value)}
-                                >
-                                    <MenuItem value={defaultEmail}>{defaultEmail}</MenuItem>
-                                </Select>
                             </Grid>
                             <Grid item xs={12} align="center">
                                     <TextField
@@ -141,7 +144,8 @@ export default function RegisterPage(){
                                         style={{
                                             background: "white"
                                         }}
-                                        endAdornment={
+                                        InputProps={{
+                                            endAdornment: 
                                             <InputAdornment position="end">
                                             <IconButton
                                                 aria-label="toggle password visibility"
@@ -151,8 +155,8 @@ export default function RegisterPage(){
                                             >
                                                 {showPassword ? <VisibilityOff /> : <Visibility />}
                                             </IconButton>
-                                            </InputAdornment>
-                                        }
+                                            </InputAdornment>,
+                                          }}
                                     />
                                 
                             </Grid>
