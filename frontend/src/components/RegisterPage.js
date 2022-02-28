@@ -18,9 +18,44 @@ export default function RegisterPage(){
     const [showPassword, setShowPassword] = useState(false);
 
     var validPassword = false;
+    var validEmail = false;
+    function handleOnEmailChange(e){
+        let email = e.target.value;
+        //Magical regex string, god knows how it works
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        
+        if (email == ""){
+            setErrorMessage("");
+            return;
+        }
+
+        if ( re.test(email) ) {
+            // this is a valid email address
+            validEmail = true;
+            setErrorMessage("");
+        }
+        else {
+            // invalid email, maybe show an error to the user.
+            validEmail = false;
+            setErrorMessage("Invalid Email");
+        }
+    
+    }
+
     function onRegister() {
         if (username=="" || emailAddress=="" || password=="" || passwordAgain == "") {
             setErrorMessage("Not all fields have been filled.");
+            return;
+        }
+        // check if email address is a valid academic email address
+        //let isAcademic = Verifier.isAcademic('emailAddress');
+        // get full institution name
+        //let institutionName = Verifier.getInstitutionName('megidish@mit.edu');
+        //if (!isAcademic){
+        //    setErrorMessage(`${emailAddress} is an invalid academic email`);
+        //    return;
+        //}
+        if(!validEmail){
             return;
         }
         if (!validPassword) {
@@ -89,8 +124,8 @@ export default function RegisterPage(){
                                 <FormControl component="fieldset">
                                     <TextField
                                         required={true}
-                                        type = "text"
-                                        onChange={e => setEmailAddress(e.target.value)}
+                                        type = "email"
+                                        onChange={handleOnEmailChange}
                                         className="inputRounded"
                                         placeholder="Email Address"
                                         variant="standard"
