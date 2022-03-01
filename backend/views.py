@@ -1,64 +1,18 @@
 from django.shortcuts import render
-from rest_framework import generics, status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import JsonResponse
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
-from django.contrib.auth.models import User
-
-################FOR AUTHENTICATION add this to class viewset
-# permission_classes = [IsAuthenticated]
-# authentication_classes = (TokenAuthentication,)
+from rest_framework import generics
 
 # Import Models here (if necessary)
-from .models import ExampleModel
+from .models import CustomUser
 
 # Import Serializers here
-from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
-# from .serializers import UserSerializer
+from .serializers import CustomerUserSerializer
 
-# -----------------------------
+
 # Create your api views here. 
-# -----------------------------
-# (Ideally each API view should have a specific purpose
-# such as getting a specific request, or checking some-
-# thing specific)
-# These are just example boilerplate, add and remove to 
-# your will
-# -----------------------------
-
-'''
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-'''
-
-
-
-
-# Premade Views (mostly for debug)
-class ExampleAPIListView(generics.ListAPIView):
-    queryset = ExampleModel.objects.all() # What we want to return (All the objects)
-    serializer_class = ExampleSerializer # What is our serialiser (handles the actual json parsing)
-    
-class ExampleAPICreateView(generics.CreateAPIView):
-    queryset = ExampleModel.objects.all() # What we want to return (All the objects)
-    serializer_class = ExampleSerializer # What is our serialiser (handles the actual json parsing)
-        
-# Add your APIViews here     
-class ExampleAPIGETView(APIView):
-    serializer_class = ExampleSerializer2
-    def get(self, request, format=None):
-        code = request.GET.get("hat")
-        pass
-
-class ExampleAPIPOSTView(APIView):
-    serializer_class = ExampleSerializer
-    def post(self, request, format=None):
-        # Add functionality here
-        pass 
+class CustomUserView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomerUserSerializer
+     
 
 '''class GetCatView(APIView):
     def get(self, request, format=None):
@@ -72,3 +26,13 @@ class ExampleAPIPOSTView(APIView):
             
             return Response({'Error':'Bas request'},status=status.HTTP_400_BAD_REQUEST)
         return Response({'Error':'Bas request'},status=status.HTTP_400_BAD_REQUEST)'''
+
+'''
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+'''
+
+################FOR AUTHENTICATION add this to class viewset
+# permission_classes = [IsAuthenticated]
+# authentication_classes = (TokenAuthentication,)
