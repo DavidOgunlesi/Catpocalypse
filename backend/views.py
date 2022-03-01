@@ -46,7 +46,7 @@ class LoginAPIView(GenericAPIView):
             if not user.is_verified:
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                # log them in and send them a token
+                # log them in
                 serializer = self.serializer_class(user)
 
                 return response.Response(serializer.data, status=status.HTTP_200_OK)
@@ -54,6 +54,14 @@ class LoginAPIView(GenericAPIView):
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+'''
+class UserLoggedIn(APIView):
+    def get(self, request, format=None):
+        data = {
+            'username': self.request.
+        }
+
+'''
      
 
 '''class GetCatView(APIView):

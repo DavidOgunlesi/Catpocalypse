@@ -3,9 +3,6 @@ from django.db import models
 from django.conf import settings
 from random import randint
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.utils import timezone
-import jwt
-from datetime import datetime, timedelta
 
 from django.conf import settings
 
@@ -117,16 +114,6 @@ class CustomUser(AbstractBaseUser):
     
     def has_module_perms(self, app_label):
         return True
-    
-    # generate token for user
-    # property allows user.token without instantiating a class
-    @property
-    def token(self):
-        token = jwt.encode({'username':self.username,'email':self.email,
-                            'exp':datetime.utcnow() + timedelta(hours=24)},
-                            settings.SECRET_KEY,algorithm='HS256')
-        
-        return token
 
 
 class ExampleModel(models.Model):
