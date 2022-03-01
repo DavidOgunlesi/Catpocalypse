@@ -3,16 +3,21 @@ import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
 import cat from '/static/images/cat.png';
-import {Button, Grid, Typography} from "@material-ui/core";
+import {Button, Grid, Typography, InputAdornment} from "@material-ui/core";
 import FallingCat from "./dynamic/FallingCat";
 import {getRandomRange} from '/src/util/math.js';
 import Background from "./static/Background";
 import {Link} from "react-router-dom";
 import LoginPage from "./LoginPage";
+import {GoogleLogin} from 'react-google-login';
+import GoogleLogo from '/static/images/GoogleLogo.png'
 
 export default function MainMenu(){
 
     const requireLogin = true;
+    function responseGoogle(response) {
+        console.log(response);
+    }
 
     function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
@@ -86,6 +91,32 @@ export default function MainMenu(){
                 <Grid item xs={12}>
                     <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
                 </Grid>
+                <GoogleLogin
+                clientId="745185368334-qa0udogh8j1pge5c8tcc3699m42o0bv9.apps.googleusercontent.com"
+                render={renderProps => (
+                    <Grid item xs={12}>
+                        <Button 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 25, background: "white" }}
+                    fullWidth={true}
+                    onClick={renderProps.onClick} disabled={renderProps.disabled}
+                    startIcon={
+                            <InputAdornment position="start">
+                                <img src={GoogleLogo} width={20}/>
+                            </InputAdornment>}
+                    >
+                        <Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            GOOGLE
+                        </Typography>
+                        </Button>
+                </Grid>
+                  )}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+                />
             </Grid>
         );
     }
