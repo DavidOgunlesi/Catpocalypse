@@ -27,6 +27,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class LoginSerializer(serializers.ModelSerializer):
+    
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ('email','username','password','token')
+
+        read_only_fields=['token']
+
 
 
 
