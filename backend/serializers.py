@@ -11,6 +11,19 @@ class CustomerUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id','email','username','password')
+    
+    # Must override serializer's create() method to hash password before
+    # saving new user object
+    def create(self, validated_data):
+        user = CustomUser(
+            email=validated_data['email'],
+            username=validated_data['username']
+            )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+
 
 
 
