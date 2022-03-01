@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
 import { Link } from "react-router-dom";
 
@@ -28,11 +28,12 @@ export default function ModalWindow({
     extraContentAfter = null,
     buttonLink = ""
 }){
+    const [isOpen, setIsOpen] = useState(open);
     return (
         <Modal
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         >
             <Box sx={style}>
@@ -63,7 +64,7 @@ export default function ModalWindow({
                     style={{ borderRadius: 50 }}
                     disableElevation={true}
                     fullWidth={true}
-                    onClick={_ => {buttonInactive ? setOpen(false) : null}}
+                    onClick={_ => {!buttonInactive ? setIsOpen(false) : null}}
                     >
                         {buttonText}
                     </Button>

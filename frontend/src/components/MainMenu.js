@@ -17,7 +17,7 @@ export default function MainMenu(){
     function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
-            var y = -1000;
+            var y = -200;
             var cat = (<FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
             var catDiv = document.createElement('div');
             render(cat,catDiv);
