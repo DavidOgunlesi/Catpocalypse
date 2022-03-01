@@ -4,6 +4,7 @@ import warningCat from '/static/images/warningCat.png';
 import { geolocated } from "react-geolocated";
 import GoogleMapReact from 'google-map-react';
 import Background from "./static/Background";
+import HorizontalCompass from "./dynamic/HorizontalCompass";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -64,7 +65,7 @@ function Map(gps){
       }
 
       //mapObject.setCenter({lat: playerGPSData.lat, lng: playerGPSData.lng});
-      slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),10,500);
+      slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
     }
 
     //Run refresh every second
@@ -83,6 +84,7 @@ function Map(gps){
             open={true}
             imageSrc = {warningCat}
             /> 
+            <HorizontalCompass/>
           <GoogleMapReact
             bootstrapURLKeys={{ key: key }}
             defaultCenter={defaultLocation}
@@ -90,7 +92,7 @@ function Map(gps){
             options= {{ 
                 mapId: id, 
                 draggable: false,  
-                //disableDefaultUI: true,
+                disableDefaultUI: true,
                 rotateControl: true,
                 rotateControlOptions: true
             }}
