@@ -9,8 +9,8 @@ const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
+import MapMarker from "./static/MapMarker";
 
-const AnyReactComponent = () => <div><img class="bounce" src={Cat}/></div>;
 var map ,maps = null;
 
 function Map(gps){
@@ -35,6 +35,31 @@ function Map(gps){
         //map.setTilt(45);
       };
 
+
+    function getGPSData(){
+      // Try HTML5 geolocation.
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            setPlayerGPSData({
+              lat:pos.lat, 
+              lng:pos.lng,
+            })
+            slowPanTo(map ,new maps.LatLng(pos.lat,pos.lng),10,500);
+          },
+          () => {
+            //handleLocationError(true, infoWindow, map.getCenter());
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        //handleLocationError(false, infoWindow, map.getCenter());
+      }
+    }
     //Get GPS data from geolocated and update state
     function refeshGPSData(){
       if(gps.coords == null){
@@ -69,7 +94,7 @@ function Map(gps){
 
     //Run refresh every second
     useEffect(() => {
-        var timerID = setInterval(() => refeshGPSData(), 1000);
+        var timerID = setInterval(() =>  getGPSData(), 1000);
         return () => clearInterval(timerID);
     });
 
@@ -87,18 +112,23 @@ function Map(gps){
             defaultZoom={20}
             options= {{ 
                 mapId: id, 
-                draggable: false,  
-                disableDefaultUI: true,
+                //draggable: false,  
+                //disableDefaultUI: true,
                 //rotateControl: true,
                 //rotateControlOptions: true
             }}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
-            <AnyReactComponent
+            <MapMarker
+              lat={playerGPSData.lat+0.0003}
+              lng={playerGPSData.lng+0.0003}
+              markerType="cat"
+            />
+            <MapMarker
               lat={playerGPSData.lat}
               lng={playerGPSData.lng}
-              text="My Marker"
+              markerType="player"
             />
           </GoogleMapReact>
         </div>
