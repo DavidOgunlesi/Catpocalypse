@@ -3,6 +3,7 @@ import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
 import { geolocated } from "react-geolocated";
 import GoogleMapReact from 'google-map-react';
+import Background from "./static/Background";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -13,6 +14,7 @@ import MapMarker from "./static/MapMarker";
 var map ,maps = null;
 
 function Map(gps){
+    const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
     //Create state for Player GPS
     const [playerGPSData, setPlayerGPSData] = useState({
         lat: null, 
@@ -34,6 +36,7 @@ function Map(gps){
 
     //Get GPS data from geolocated and update state
     function refeshGPSData(){
+        setGpsEnabled(gps.isGeolocationEnabled)
       if(gps.coords == null){
         return;
       }
@@ -69,6 +72,8 @@ function Map(gps){
         var timerID = setInterval(() =>  refeshGPSData(), 1000);
         return () => clearInterval(timerID);
     });
+    console.log(gps)
+    if (gpsEnabled) {
 
     return (
         <div style={{ height: '100vh', width: '100%' }}>
@@ -105,6 +110,27 @@ function Map(gps){
           </GoogleMapReact>
         </div>
       );
+        }else{
+            return(
+                <Background 
+                gradient={false} 
+                primaryCol="#FEEAC2" 
+                outlineCol="#FFC992" 
+                outlineThickness={200}
+                skew={-32}
+                backgroundCol="#FFF59D"
+                >
+                    <ModalWindow 
+                    title="Location Not Enabled :(" 
+                    content="Ensure you have turned on location in your respective device browser settings." 
+                    open={true}
+                    imageSrc = {warningCat}
+                    onClick={_=>{ window.location.reload();}}
+                    buttonText="Refresh"
+                    />
+                </Background>
+            );
+        }
     
 }
 

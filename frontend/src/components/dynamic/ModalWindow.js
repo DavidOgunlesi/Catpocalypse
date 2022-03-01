@@ -26,9 +26,19 @@ export default function ModalWindow({
     imageAlt ="",
     extraContentBefore = null,
     extraContentAfter = null,
-    buttonLink = ""
+    buttonLink = "",
+    onClick = null
 }){
     const [isOpen, setIsOpen] = useState(open);
+    function handleButtonPress(){
+        if (onClick != null) {
+            onClick();
+        }
+        if (!buttonInactive) {
+            setIsOpen(false);
+        }
+    }
+    
     return (
         <Modal
         aria-labelledby="modal-modal-title"
@@ -64,7 +74,7 @@ export default function ModalWindow({
                     style={{ borderRadius: 50 }}
                     disableElevation={true}
                     fullWidth={true}
-                    onClick={_ => {!buttonInactive ? setIsOpen(false) : null}}
+                    onClick={handleButtonPress}
                     >
                         {buttonText}
                     </Button>
