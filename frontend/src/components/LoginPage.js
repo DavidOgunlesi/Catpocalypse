@@ -23,7 +23,9 @@ export default function LoginPage(){
         <div className="center">
             <Grid container spacing={3}>
                 <Grid item xs={12} align="center">
-                    <FormControl component="fieldset">
+                    <Typography variant="h3" component="h3">Log in</Typography>
+                </Grid>
+                <Grid item xs={12} align="center">
                         <TextField
                             required={true}
                             type = "text"
@@ -33,15 +35,14 @@ export default function LoginPage(){
                             textalign="center"
                             variant="outlined"
                             size="small"
+                            fullWidth={true}
                             style={{
                                 background: "white"
                             }}
                         />
-                    </FormControl>
                     </Grid>
                     
                     <Grid item xs={12} align="center">
-                    <FormControl component="fieldset">
                     <TextField
                         required={true}
                         type = "text"
@@ -51,11 +52,11 @@ export default function LoginPage(){
                         textalign="center"
                         variant="outlined"
                         size="small"
+                        fullWidth={true}
                         style={{
                             background: "white"
                         }}
                     />
-                    </FormControl>
                     </Grid>
                 <Grid item xs={12}>
                     <Button 

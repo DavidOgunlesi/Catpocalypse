@@ -44,7 +44,7 @@ export default function RegisterPage(){
             body: JSON.stringify({
                 username:username,
                 password:password,
-                //email: fullEmail
+                email: fullEmail
             }),
         };
         //send post request to our api!
@@ -81,7 +81,7 @@ export default function RegisterPage(){
                     <div className="center">
                         <Grid container spacing={1}>
                             <Grid item xs={12} align="center">
-                                <Typography variant="h3" component="h3">Register</Typography>
+                                <Typography variant="h3" component="h3">Sign up</Typography>
                             </Grid>
                             <Grid item xs={12} align="center">
                                     <TextField
