@@ -1,5 +1,6 @@
 import React from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const style = {
     position: 'absolute',
@@ -23,7 +24,9 @@ export default function ModalWindow({
     handleClose = null,
     imageSrc = null,
     imageAlt ="",
-    extraContent = null
+    extraContentBefore = null,
+    extraContentAfter = null,
+    buttonLink = ""
 }){
     return (
         <Modal
@@ -48,7 +51,12 @@ export default function ModalWindow({
                     </Typography>
                     </Grid>
                     <Grid item xs={12}>
+                        {extraContentBefore}
+                    </Grid>
+                    <Grid item xs={12}>
                     <Button 
+                    component = {Link}
+                    to = {buttonLink}
                     color = 'primary' 
                     variant="contained"
                     size="large" 
@@ -61,7 +69,7 @@ export default function ModalWindow({
                     </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        {extraContent}
+                        {extraContentAfter}
                     </Grid>
             </Grid> 
             </Box>

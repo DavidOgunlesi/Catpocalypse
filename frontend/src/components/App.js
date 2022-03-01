@@ -8,6 +8,7 @@ import RegisterPage from "./RegisterPage";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
+import VerifyPage from "./VerifyPage";
 
 const theme = createTheme({
     palette: {
@@ -33,6 +34,7 @@ export default function App(){
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
                         <Route path="/play" element={<HomePage/>}/>
+                        <Route path="/verify/:token" element={<VerifyPage/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
