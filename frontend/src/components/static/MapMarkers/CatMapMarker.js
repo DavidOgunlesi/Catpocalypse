@@ -3,8 +3,8 @@ import Cat from "/static/images/cat.png";
 
 export default function CatMapMarker(){
     return (
-        <div>
-            <img class="bounce" src={Cat}/>
+        <div class="markerImg">
+            <img class="bounce"  src={Cat}/>
         </div>
     );
     

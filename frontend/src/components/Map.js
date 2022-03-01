@@ -2,7 +2,6 @@ import React, {Component, useEffect, useState} from "react";
 import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
 import { geolocated } from "react-geolocated";
-import Cat from "/static/images/cat.png";
 import GoogleMapReact from 'google-map-react';
 
 const lib = ["places"];
@@ -15,7 +14,6 @@ var map ,maps = null;
 
 function Map(gps){
     //Create state for Player GPS
-    //const [mapLocation, setMapLocation] = useState(defaultLocation);
     const [playerGPSData, setPlayerGPSData] = useState({
         lat: null, 
         lng: null,
@@ -28,38 +26,12 @@ function Map(gps){
     function handleApiLoaded(_map, _maps){
         // use map and maps objects
         // Initialise map object and assign to global variable
-        //map.setTilt(map.getTilt() + 45); // doesnt work!
         map = _map;
         maps = _maps;
         //map.setMapTypeId('hybrid');
         //map.setTilt(45);
       };
 
-
-    function getGPSData(){
-      // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            };
-            setPlayerGPSData({
-              lat:pos.lat, 
-              lng:pos.lng,
-            })
-            slowPanTo(map ,new maps.LatLng(pos.lat,pos.lng),10,500);
-          },
-          () => {
-            //handleLocationError(true, infoWindow, map.getCenter());
-          }
-        );
-      } else {
-        // Browser doesn't support Geolocation
-        //handleLocationError(false, infoWindow, map.getCenter());
-      }
-    }
     //Get GPS data from geolocated and update state
     function refeshGPSData(){
       if(gps.coords == null){
@@ -94,7 +66,7 @@ function Map(gps){
 
     //Run refresh every second
     useEffect(() => {
-        var timerID = setInterval(() =>  getGPSData(), 1000);
+        var timerID = setInterval(() =>  refeshGPSData(), 1000);
         return () => clearInterval(timerID);
     });
 
@@ -112,10 +84,10 @@ function Map(gps){
             defaultZoom={20}
             options= {{ 
                 mapId: id, 
-                //draggable: false,  
+                draggable: false,  
                 //disableDefaultUI: true,
-                //rotateControl: true,
-                //rotateControlOptions: true
+                rotateControl: true,
+                rotateControlOptions: true
             }}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}

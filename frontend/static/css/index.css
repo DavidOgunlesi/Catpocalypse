@@ -156,9 +156,13 @@ Sliding up Component
 
 /*
 -----------------------------------
-Sliding up Component
+Map Markers
 ------------------------------------
 */
+.markerImg {
+    display: flex;
+    justify-content: center;
+}
 .bounce {
     animation: bounce 0.5s infinite alternate;
     -webkit-animation: bounce 0.5s infinite alternate;
