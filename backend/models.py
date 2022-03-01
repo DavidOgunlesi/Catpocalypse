@@ -2,6 +2,7 @@ import imp
 from django.db import models
 from django.conf import settings
 from random import randint
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 TYPE_CHOICES = (
     (0, 'Rock'),
@@ -34,6 +35,84 @@ def exampleFunction():
 
 
 # Create your models here.
+
+class CustomUserManager(BaseUserManager):
+    # must override two methods
+
+    # what happends when a new user is created
+    # must inlcude REQUIRED_FIELDS
+    def create_user(self, email, username, password=None):
+        if not email:
+            raise ValueError("Users must have an email address")
+        if not username:
+            raise ValueError("Users must have an username")
+        
+        user = self.model(
+            # normalize_email - convert characters in email to lowercase
+            # available inside of the BaseUserManager Class
+            email=self.normalize_email(email),
+            username=username,
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+    
+
+    # what happends when superuser is created
+    def create_superuser(self, email, username, password):
+
+        user = self.create_user(
+            email=self.normalize_email(email),
+            password=password,
+            username=username,
+        )
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+
+
+
+
+# Custom Django user model
+class CustomUser(AbstractBaseUser):
+    email = models.EmailField(verbose_name="email", max_length=60, unique=True)
+
+    # required fields 
+    username = models.CharField(max_length=30, unique=True)
+    date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    # additional fields
+    is_verified = models.BooleanField(default=False)
+
+    # set to what you want user to log in with
+    USERNAME_FIELD = 'email'
+
+    # required fields when registering
+    REQUIRED_FIELDS = ['username']
+
+    # where manager is
+    objects = CustomUserManager()
+
+    # to string
+    def __str__(self):
+        return self.username
+    
+    # required functions to build customer user
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+    
+    def has_module_perms(self, app_label):
+        return True
+
 class ExampleModel(models.Model):
     # define fields we want for each room
     code = models.CharField(max_length=8, default=exampleFunction, unique=True)

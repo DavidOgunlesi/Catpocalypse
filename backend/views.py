@@ -17,7 +17,7 @@ from .models import ExampleModel
 
 # Import Serializers here
 from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
-from .serializers import UserSerializer
+# from .serializers import UserSerializer
 
 # -----------------------------
 # Create your api views here. 
@@ -29,10 +29,11 @@ from .serializers import UserSerializer
 # your will
 # -----------------------------
 
+'''
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
+'''
 
 
 

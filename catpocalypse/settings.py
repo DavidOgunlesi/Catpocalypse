@@ -71,6 +71,13 @@ TEMPLATES = [
     },
 ]
 
+# NEW - Custom User Model
+# Overrides default behaviour thats built in for a default user object
+# Instead, authenticate users with custom user model
+AUTH_USER_MODEL = 'backend.CustomUser'
+
+
+
 WSGI_APPLICATION = 'catpocalypse.wsgi.application'
 
 
