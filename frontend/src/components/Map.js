@@ -2,20 +2,18 @@ import React, {Component, useEffect, useState} from "react";
 import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
 import { geolocated } from "react-geolocated";
-import Cat from "/static/images/cat.png";
 import GoogleMapReact from 'google-map-react';
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
+import MapMarker from "./static/MapMarker";
 
-const AnyReactComponent = () => <div><img class="bounce" src={Cat}/></div>;
 var map ,maps = null;
 
 function Map(gps){
     //Create state for Player GPS
-    //const [mapLocation, setMapLocation] = useState(defaultLocation);
     const [playerGPSData, setPlayerGPSData] = useState({
         lat: null, 
         lng: null,
@@ -28,7 +26,6 @@ function Map(gps){
     function handleApiLoaded(_map, _maps){
         // use map and maps objects
         // Initialise map object and assign to global variable
-        //map.setTilt(map.getTilt() + 45); // doesnt work!
         map = _map;
         maps = _maps;
         //map.setMapTypeId('hybrid');
@@ -69,7 +66,7 @@ function Map(gps){
 
     //Run refresh every second
     useEffect(() => {
-        var timerID = setInterval(() => refeshGPSData(), 1000);
+        var timerID = setInterval(() =>  refeshGPSData(), 1000);
         return () => clearInterval(timerID);
     });
 
@@ -88,17 +85,22 @@ function Map(gps){
             options= {{ 
                 mapId: id, 
                 draggable: false,  
-                disableDefaultUI: true,
-                //rotateControl: true,
-                //rotateControlOptions: true
+                //disableDefaultUI: true,
+                rotateControl: true,
+                rotateControlOptions: true
             }}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
-            <AnyReactComponent
+            <MapMarker
+              lat={playerGPSData.lat+0.0003}
+              lng={playerGPSData.lng+0.0003}
+              markerType="cat"
+            />
+            <MapMarker
               lat={playerGPSData.lat}
               lng={playerGPSData.lng}
-              text="My Marker"
+              markerType="player"
             />
           </GoogleMapReact>
         </div>
