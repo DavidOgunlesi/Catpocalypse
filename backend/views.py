@@ -14,11 +14,8 @@ from . import functions
 # permission_classes = [IsAuthenticated]
 # authentication_classes = (TokenAuthentication,)
 
-# Import Models here (if necessary)
-from .models import ExampleModel
-
 # Import Serializers here
-from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
+#from .serializers import ExampleSerializer, ExampleSerializer2# , GetCatSerialiser
 from .serializers import UserSerializer
 
 # -----------------------------
@@ -35,34 +32,10 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
 def test(request): #REMOVE THIS (FROM NISHIL)
     val = functions.capacity_check()
     html = "<html><body>It is now %s</body></html>" % val
     return HttpResponse(html)
-
-
-# Premade Views (mostly for debug)
-class ExampleAPIListView(generics.ListAPIView):
-    queryset = ExampleModel.objects.all() # What we want to return (All the objects)
-    serializer_class = ExampleSerializer # What is our serialiser (handles the actual json parsing)
-    
-class ExampleAPICreateView(generics.CreateAPIView):
-    queryset = ExampleModel.objects.all() # What we want to return (All the objects)
-    serializer_class = ExampleSerializer # What is our serialiser (handles the actual json parsing)
-        
-# Add your APIViews here     
-class ExampleAPIGETView(APIView):
-    serializer_class = ExampleSerializer2
-    def get(self, request, format=None):
-        code = request.GET.get("hat")
-        pass
-
-class ExampleAPIPOSTView(APIView):
-    serializer_class = ExampleSerializer
-    def post(self, request, format=None):
-        # Add functionality here
-        pass 
 
 '''class GetCatView(APIView):
     def get(self, request, format=None):
