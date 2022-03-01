@@ -2,11 +2,13 @@ from django.shortcuts import render
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from django.contrib.auth.models import User
+
+from . import functions
 
 ################FOR AUTHENTICATION add this to class viewset
 # permission_classes = [IsAuthenticated]
@@ -34,7 +36,10 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-
+def test(request): #REMOVE THIS (FROM NISHIL)
+    val = functions.capacity_check()
+    html = "<html><body>It is now %s</body></html>" % val
+    return HttpResponse(html)
 
 
 # Premade Views (mostly for debug)
