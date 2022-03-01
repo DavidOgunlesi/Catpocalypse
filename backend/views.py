@@ -1,17 +1,34 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.generics import GenericAPIView
+from rest_framework import response, status
 
 # Import Models here (if necessary)
 from .models import CustomUser
 
 # Import Serializers here
-from .serializers import CustomerUserSerializer
+from .serializers import RegisterSerializer
 
 
 # Create your api views here. 
-class CustomUserView(generics.CreateAPIView):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomerUserSerializer
+#class CustomUserView(generics.CreateAPIView):
+    #queryset = CustomUser.objects.all()
+    #serializer_class = CustomerUserSerializer
+
+class RegisterAPIView(GenericAPIView):
+
+    serializer_class = RegisterSerializer
+
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            # account was created
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
      
 
 '''class GetCatView(APIView):

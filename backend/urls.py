@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CustomUserView
+from .views import RegisterAPIView
 
 #from rest_framework.routers import DefaultRouter
 
@@ -11,7 +11,7 @@ from .views import CustomUserView
 # router.register('users',UserViewSet)
 
 urlpatterns = [
-    path('register', CustomUserView.as_view())
+    path('register', RegisterAPIView.as_view())
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),
     # path('get_url', GetCatView.as_view())

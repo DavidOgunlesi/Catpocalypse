@@ -7,10 +7,14 @@ from .models import CustomUser
 
 
 # Define Serializers here
-class CustomerUserSerializer(serializers.ModelSerializer):
+class RegisterSerializer(serializers.ModelSerializer):
+
+    # password should not be sent to front end at all
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = CustomUser
-        fields = ('id','email','username','password')
+        fields = ('email','username','password')
     
     # Must override serializer's create() method to hash password before
     # saving new user object
