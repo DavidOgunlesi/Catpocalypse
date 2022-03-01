@@ -10,12 +10,12 @@ const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
-const AnyReactComponent = () => <img src={Cat}/>;
+const AnyReactComponent = () => <div><img class="bounce" src={Cat}/></div>;
 var map ,maps = null;
 
 function Map(gps){
     //Create state for Player GPS
-    const [mapLocation, setMapLocation] = useState(defaultLocation);
+    //const [mapLocation, setMapLocation] = useState(defaultLocation);
     const [playerGPSData, setPlayerGPSData] = useState({
         lat: null, 
         lng: null,
@@ -54,7 +54,7 @@ function Map(gps){
         heading: heading,
         speed: speed
       })
-      setMapLocation({lat: playerGPSData.lat, lng: playerGPSData.lng})
+     // setMapLocation({lat: playerGPSData.lat, lng: playerGPSData.lng})
 
       if (playerGPSData.lat == null ||  playerGPSData.lng == null){
         return;
@@ -96,8 +96,8 @@ function Map(gps){
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
           >
             <AnyReactComponent
-              lat={defaultLocation.lat}
-              lng={defaultLocation.lng}
+              lat={playerGPSData.lat}
+              lng={playerGPSData.lng}
               text="My Marker"
             />
           </GoogleMapReact>

@@ -153,3 +153,33 @@ Sliding up Component
     overflow:auto;
     overflow-x: hidden;
 }
+
+/*
+-----------------------------------
+Sliding up Component
+------------------------------------
+*/
+.bounce {
+    animation: bounce 0.5s infinite alternate;
+    -webkit-animation: bounce 0.5s infinite alternate;
+  }
+  @keyframes bounce {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+  @-webkit-keyframes bounce {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
