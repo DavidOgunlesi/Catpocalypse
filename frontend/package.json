@@ -28,6 +28,7 @@
     "academic-tld": "^1.0.5",
     "file-loader": "^6.2.0",
     "fs": "^0.0.1-security",
+    "google-map-react": "^2.1.10",
     "path": "^0.12.7",
     "process": "^0.11.10",
     "react-animations": "^1.0.0",
