@@ -6,8 +6,9 @@ import logo from '/static/images/logo.png';
 import {Link} from "react-router-dom";
 import {Button, Grid, Typography, TextField, FormControl, 
     InputAdornment,IconButton, FormHelperText, Select, MenuItem} from "@material-ui/core";
-import {Link as UILink} from "@material-ui/core";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
+import SlideUpWindow from "./dynamic/SlideUpWindow";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 export default function RegisterPage(){
     const defaultEmail = "@exeter.ac.uk";
@@ -19,21 +20,16 @@ export default function RegisterPage(){
 	const [passwordAgain, setPasswordAgain] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
     var validPassword = false;
+
 
     function onRegister() {
         if (username=="" || emailStart=="" || password=="" || passwordAgain == "") {
             setErrorMessage("Not all fields have been filled.");
             return;
         }
-        // check if email address is a valid academic email address
-        //let isAcademic = Verifier.isAcademic('emailAddress');
-        // get full institution name
-        //let institutionName = Verifier.getInstitutionName('megidish@mit.edu');
-        //if (!isAcademic){
-        //    setErrorMessage(`${emailAddress} is an invalid academic email`);
-        //    return;
-        //}
+
         if (!validPassword) {
             setErrorMessage("Password doesn't meet criteria.");
             return;
@@ -63,6 +59,7 @@ export default function RegisterPage(){
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
+    
     if(isMobile){
         return (
             <Background 
@@ -73,6 +70,12 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
+                <SlideUpWindow
+                open={showPrivacyPolicy}
+                title="Privacy Policy" 
+                content={<PrivacyPolicy/>}
+                callback={setShowPrivacyPolicy}
+                />
                 <div className="gradient">
                     <img src={logo} className="logo" alt="Logo" />
                     <div className="center">
@@ -222,7 +225,14 @@ export default function RegisterPage(){
                                 </Button> 
                             </Grid>
                             <Grid item xs={12} align="center">
-                                <UILink href="" underline="hover" color="white">PRIVACY POLICY</UILink>
+                                <Button 
+                                variant="string" 
+                                underline="hover" 
+                                color = 'primary'  
+                                onClick={_ => setShowPrivacyPolicy(true)}
+                                >
+                                    PRIVACY POLICY
+                                </Button>
                             </Grid>
                         </Grid> 
                     </div>
