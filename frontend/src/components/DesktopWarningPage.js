@@ -15,12 +15,31 @@ export default function DesktopWarningPage(){
             variant="outline" 
             style={{ width:"100%", height: "100%", position:"absolute"}}
             />
-            <img src={logo} className="desktopLogo" alt="Logo" />
-            <Typography style={{backgroundColor:"black", color:"white", height:"10%", 
-            display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <img src={logo} className="logo" alt="Logo" />
+            <Typography 
+            variant="h4" 
+            component="h4" 
+            style=
+            {{
+                backgroundColor:"black", 
+                color:"white", 
+                height:"10%", 
+                display: "flex", 
+                justifyContent: "center", 
+                alignItems: "center",
+                height: "500px"
+            }}
+            >
                 Desktop Browser currently not supported<br/>Please open with a mobile device to play!
             </Typography>
-            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div 
+            style=
+            {{
+                display: "flex", 
+                justifyContent: "center", 
+                alignItems: "center"
+            }}
+            >
                 <img src={cat} alt="Cat"/>
             </div>
         </Background>

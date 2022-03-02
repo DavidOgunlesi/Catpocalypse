@@ -33,7 +33,8 @@ export default function LoginPage(){
             }
             //redirect to map page
             console.log("ok!");
-            navigate("/play");
+            navigate("/");
+            location.reload();
             return response.json();
         }).then((data) => {
             setErrorMessage(data.message);

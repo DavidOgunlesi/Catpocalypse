@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 
+from django.views.generic.base import RedirectView
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('backend.urls')),
     path('', include('frontend.urls')),
-    path('auth/', obtain_auth_token)
+    path('auth/', obtain_auth_token),
+    path('favicon.ico', favicon_view),
 ]

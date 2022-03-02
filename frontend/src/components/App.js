@@ -1,7 +1,7 @@
-import React, {useState}  from "react";
+import React, {useState, useEffect}  from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
-import PlayPage from "./PlayPage";
+import Map from "./Map";
 import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
 import RegisterPage from "./RegisterPage";
@@ -9,9 +9,8 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
-import { useNavigate } from "react-router-dom";
 
-import Song from '/static/media/price.mp3'
+import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 
 const theme = createTheme({
     palette: {
@@ -28,7 +27,28 @@ const theme = createTheme({
 export default function App(){
 
     //const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     console.log(!!document.createElement('audio').canPlayType);
+    console.log("loaded");
+    useEffect(() => {
+        checkIfUserLoggedIn();
+        //console.log(document.getElementById('soundtrack'));
+        //document.getElementById('soundtrack').play();
+    });
+    
+    function checkIfUserLoggedIn(){
+        console.log("Checking...");
+        fetch(`/api/isLoggedIn`)
+        .then((response) => {
+            if (response.ok){
+                setIsLoggedIn(true);
+                console.log("Is logged in!");
+            }
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+        });
+    }
     /*
     <ModalWindow 
         title="*Crickets*" 
@@ -40,33 +60,23 @@ export default function App(){
      */
     //We can pass props to homepage component
     if (isMobile) {
-
-        function redirectIfLoggedIn(){
-            var isLoggedIn = false;
-            fetch(`/api/isLoggedIn`)
-            .then((response) => {
-                if (response.ok){
-                    isLoggedIn = true;
-                }
-                return;
-            });
-            return (isLoggedIn ? <PlayPage/> : <MainMenu splash={true}/>);
+        
+        function redirectIfLoggedIn(component){
+            return (isLoggedIn ? <Map/> : component);
         }
         
         return(
             <MuiThemeProvider theme={theme}>
-                <audio autoplay preload>
-                    <source src={Song} type="audio/mp3"></source>
-                    
+                <audio id="soundtrack" loop>
+                    <source src={MainSoundtrack} type="audio/mp3"></source>
                 </audio>
                 <Router>
                     <Routes>
-                        <Route path="/" element={redirectIfLoggedIn()}/>
-                        <Route path="/login" element={<LoginPage/>}/>
-                        <Route path="/register" element={<RegisterPage/>}/>
-                        <Route path="/play" element={<PlayPage/>}/>
-                        <Route path="/verify" element={<VerifyPage/>}/>
-                        <Route path="/verify/:token" element={<VerifyPage/>}/>
+                        <Route path="/" element={redirectIfLoggedIn(<MainMenu splash={true}/>)}/>
+                        <Route path="/login" element={redirectIfLoggedIn(<LoginPage/>)}/>
+                        <Route path="/register" element={redirectIfLoggedIn(<RegisterPage/>)}/>
+                        <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
+                        <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>

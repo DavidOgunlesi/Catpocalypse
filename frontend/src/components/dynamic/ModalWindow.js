@@ -21,6 +21,7 @@ export default function ModalWindow({
     buttonText = "Close",
     buttonInactive = false,
     open = false,
+    openState = null,
     handleClose = null,
     imageSrc = null,
     imageAlt ="",
@@ -30,6 +31,7 @@ export default function ModalWindow({
     onClick = null
 }){
     const [isOpen, setIsOpen] = useState(open);
+
     function handleButtonPress(){
         if (onClick != null) {
             onClick();
@@ -38,12 +40,17 @@ export default function ModalWindow({
             setIsOpen(false);
         }
     }
-    
+    function setOpen(){
+        if (openState==false || isOpen == false){
+            return false;
+        }
+        return true;
+    }
     return (
         <Modal
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        open={isOpen}
+        open={setOpen()}
         onClose={handleClose}
         >
             <Box sx={style}>
