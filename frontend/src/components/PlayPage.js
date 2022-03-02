@@ -1,7 +1,7 @@
 import React from "react";
 import Map from "./Map";
 
-export default function HomePage(){
+export default function PlayPage(){
 
     return (
         <Map/>

@@ -41,8 +41,8 @@ class RegisterAPIView(GenericAPIView):
             token = RefreshToken.for_user(user).access_token
 
             current_site = get_current_site(request).domain
-            relativeLink = reverse('email-verify')
-            absurl = 'http://' + current_site + relativeLink + "?token=" + str(token)
+            # relativeLink = reverse('email-verify')
+            absurl = 'http://' + current_site + "/verify" + "/" + str(token)
             email_body = 'Hi ' + user.username + ' Use the link below to verify your email \n' + absurl
             data = {'email_body': email_body,'to_email': user.email, 'email_subject':'Verify your email'}
             Util.send_email(data)
@@ -60,13 +60,13 @@ class VerifyEmail(generics.GenericAPIView):
             if not user.is_verified:
                 user.is_verified = True
                 user.save()
-            return Response({'email':'Successfully Activated Email.'}, status=status.HTTP_200_OK)
+            return Response({'email':'Successfully Activated Email.','username':user.username}, status=status.HTTP_200_OK)
 
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error':'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
         
         except jwt.exceptions.DecodeError as identifier:
-            return Response({'error':'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error':'Invalid verification token. Your verification link may be incorrect.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LoginAPIView(GenericAPIView):

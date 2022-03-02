@@ -1,13 +1,44 @@
-import React, {useState, useEffect} from "react";
-import {render} from "react-dom";
-import {isMobile} from 'react-device-detect';
+import React, {useState} from "react";
+import { useNavigate } from 'react-router';
 import logo from '/static/images/logo.png';
-import cat from '/static/images/cat.png';
 import {Button, Grid, Typography, TextField, FormControl, FormControlLabel,FormHelperText, FilledInput, Input, Box} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Background from "./static/Background";
 
 export default function LoginPage(){
+    let navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    
+    function onLogin(){
+        if (email=="" || password=="") {
+            setErrorMessage("Not all fields have been filled.");
+            return;
+        }
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                password:password,
+                email: email
+            }),
+        };
+        //send post request to our api!
+        fetch('/api/login', requestOptions)
+        .then((response) => {
+            if (!response.ok){
+                setErrorMessage("Error logging in.");
+                return response.json();
+            }
+            //redirect to map page
+            console.log("ok!");
+            navigate("/play");
+            return response.json();
+        }).then((data) => {
+            setErrorMessage(data.message);
+        });
+    }
 
     return (
         <Background
@@ -27,10 +58,11 @@ export default function LoginPage(){
                 </Grid>
                 <Grid item xs={12} align="center">
                         <TextField
+                            onChange={e => setEmail(e.target.value)}
                             required={true}
                             type = "text"
                             className="inputRounded"
-                            placeholder="Enter Username or Email"
+                            placeholder="Enter Email"
                             variant="standard"
                             textalign="center"
                             variant="outlined"
@@ -45,7 +77,8 @@ export default function LoginPage(){
                     <Grid item xs={12} align="center">
                     <TextField
                         required={true}
-                        type = "text"
+                        onChange={e => setPassword(e.target.value)}
+                        type = "password"
                         className="inputRounded"
                         placeholder="Enter Password"
                         variant="standard"
@@ -58,15 +91,19 @@ export default function LoginPage(){
                         }}
                     />
                     </Grid>
+                <Grid item xs={12} align="center">
+                    <FormHelperText variant="filled" error={true}>
+                        <Typography variant="h6" component="h6">{errorMessage}</Typography>
+                    </FormHelperText>
+                </Grid>
                 <Grid item xs={12}>
                     <Button 
+                    onClick={onLogin}
                     color = 'primary' 
                     variant = "contained"
                     size = "large" 
                     style = {{ borderRadius: 50 }}
                     fullWidth = {true}
-                    component = {Link}
-                    to="/play"
                     >
                         Log in
                     </Button> 

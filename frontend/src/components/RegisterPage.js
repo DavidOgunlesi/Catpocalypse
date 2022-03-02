@@ -9,6 +9,7 @@ import {Button, Grid, Typography, TextField, FormControl,
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
 import PrivacyPolicy from "./PrivacyPolicy";
+import ModalWindow from "./dynamic/ModalWindow";
 
 export default function RegisterPage(){
     const defaultEmail = "@exeter.ac.uk";
@@ -21,6 +22,7 @@ export default function RegisterPage(){
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+    const [showRegisteredModal, setShowRegisteredModal] = useState(false);
     var validPassword = false;
 
 
@@ -54,7 +56,7 @@ export default function RegisterPage(){
                 setErrorMessage("Error signing up.");
                 return;
             }
-            console.log("ok!");
+            setShowRegisteredModal(true);
             return response.json();
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
@@ -70,6 +72,11 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
+                <ModalWindow
+                title="Check your Email!"
+                content="Check your email for a verification link."
+                open= {showRegisteredModal}
+                />
                 <SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 

@@ -1,7 +1,7 @@
 import React, {useState}  from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
-import HomePage from "./HomePage";
+import PlayPage from "./PlayPage";
 import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
 import RegisterPage from "./RegisterPage";
@@ -9,7 +9,7 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
-import ReactAudioPlayer from 'react-audio-player';
+import { useNavigate } from "react-router-dom";
 
 import Song from '/static/media/price.mp3'
 
@@ -27,6 +27,7 @@ const theme = createTheme({
 
 export default function App(){
 
+    //const navigate = useNavigate();
     console.log(!!document.createElement('audio').canPlayType);
     /*
     <ModalWindow 
@@ -39,6 +40,19 @@ export default function App(){
      */
     //We can pass props to homepage component
     if (isMobile) {
+
+        function redirectIfLoggedIn(){
+            var isLoggedIn = false;
+            fetch(`/api/isLoggedIn`)
+            .then((response) => {
+                if (response.ok){
+                    isLoggedIn = true;
+                }
+                return;
+            });
+            return (isLoggedIn ? <PlayPage/> : <MainMenu splash={true}/>);
+        }
+        
         return(
             <MuiThemeProvider theme={theme}>
                 <audio autoplay preload>
@@ -47,10 +61,11 @@ export default function App(){
                 </audio>
                 <Router>
                     <Routes>
-                        <Route path="/" element={<MainMenu splash={true}/>}/>
+                        <Route path="/" element={redirectIfLoggedIn()}/>
                         <Route path="/login" element={<LoginPage/>}/>
                         <Route path="/register" element={<RegisterPage/>}/>
-                        <Route path="/play" element={<HomePage/>}/>
+                        <Route path="/play" element={<PlayPage/>}/>
+                        <Route path="/verify" element={<VerifyPage/>}/>
                         <Route path="/verify/:token" element={<VerifyPage/>}/>
                     </Routes>
                 </Router>

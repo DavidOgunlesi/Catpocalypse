@@ -10,10 +10,27 @@ export default function VerifyPage(){
     var defaultEmail = "@exeter.ac.uk";
     const [emailStart, setEmailStart] = useState("");
     const [emailEnd, setEmailEnd] = useState(defaultEmail);
-    var ifVerify = false; 
+    const [verified, setVerified] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [playerName, setPlayerName] = useState("Player");
 
     function verify(){
-        // Fill API stuff from backend
+        const token = params.token;
+        console.log(token);
+        fetch(`/api/email-verify?token=${token}`)
+        .then((response) => {
+            if (!response.ok){
+                setVerified(false);
+                return response.json();
+            }
+            console.log("ok!");
+            setVerified(true);
+            return response.json();
+        }).then((data) =>{
+            console.log(data);
+            setErrorMsg(data.error);
+            setPlayerName(data.username);
+        });
     }
 
     function resendEmail() {
@@ -22,10 +39,10 @@ export default function VerifyPage(){
         // Send email to user from backend
     }
     function renderModalWindow() {
-        if (ifVerify) {
+        if (verified) {
             return (<ModalWindow 
                 title="Success!" 
-                content="Congratulations Player! You have successfully verified your account. Come join us in the Catpocalypse World!!" 
+                content={`Congratulations ${playerName}! You have successfully verified your account. Come join us in the Catpocalypse World!!`}
                 open={true}
     
                 />);
@@ -34,7 +51,7 @@ export default function VerifyPage(){
             <div>
                 <ModalWindow
                 title="Error in Verifying" 
-                content="Invalid verification token. Your verification link may be incorrect. We can resend the link to your email address." 
+                content={`${errorMsg} We can resend the link to your email address.`} 
                 open={true}
                 buttonLink="/"
                 extraContentBefore={

@@ -7,6 +7,7 @@ urlpatterns = [
     path('login', index),
     path('register', index),
     path('play', index),
+    path('verify',index),
     path('verify/<str:token>',index)
     # path('create', index),
     # path('room/<str:roomCode>', index),d
