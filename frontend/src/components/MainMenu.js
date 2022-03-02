@@ -10,10 +10,11 @@ import Background from "./static/Background";
 import {Link} from "react-router-dom";
 import LoginPage from "./LoginPage";
 import {GoogleLogin} from 'react-google-login';
-import GoogleLogo from '/static/images/GoogleLogo.png'
+import GoogleLogo from '/static/images/GoogleLogo.png';
+import ModalWindow from "./dynamic/ModalWindow";
 
 export default function MainMenu(){
-
+    const [audioModalOpen,setAudioModalOpen] = useState(true);
     const requireLogin = true;
     function responseGoogle(response) {
         console.log(response);
@@ -129,6 +130,11 @@ export default function MainMenu(){
         }
     }
 
+    function enableAudio(){
+        console.log("trying to play");
+        document.getElementById('soundtrack').play();
+    }
+
     return (
         <Background 
         gradient={false} 
@@ -138,6 +144,27 @@ export default function MainMenu(){
         skew={-32}
         backgroundCol="#FFF59D"
         >
+            <ModalWindow 
+                title="Enable Audio?" 
+                content="Would you like audio to play in the game?" 
+                open={true}
+                openState={audioModalOpen}
+                onClick={_=>{enableAudio()}}
+                buttonText="Yes"
+                extraContentAfter={
+                    <Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    fullWidth={true}
+                    onClick={_=>{setAudioModalOpen(false);}}
+                    >
+                        No
+                    </Button>
+                }
+                />
             <Button 
             variant="outline" 
             style={{ width:"100%", height: "100%", position:"absolute"}}

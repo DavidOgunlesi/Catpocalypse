@@ -10,7 +10,7 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 
-import Song from '/static/media/price.mp3'
+import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 
 const theme = createTheme({
     palette: {
@@ -32,6 +32,8 @@ export default function App(){
     console.log("loaded");
     useEffect(() => {
         checkIfUserLoggedIn();
+        //console.log(document.getElementById('soundtrack'));
+        //document.getElementById('soundtrack').play();
     });
     
     function checkIfUserLoggedIn(){
@@ -65,9 +67,8 @@ export default function App(){
         
         return(
             <MuiThemeProvider theme={theme}>
-                <audio autoplay preload>
-                    <source src={Song} type="audio/mp3"></source>
-                    
+                <audio id="soundtrack" loop>
+                    <source src={MainSoundtrack} type="audio/mp3"></source>
                 </audio>
                 <Router>
                     <Routes>
