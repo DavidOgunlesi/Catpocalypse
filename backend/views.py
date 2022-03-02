@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.generics import GenericAPIView
@@ -47,10 +48,19 @@ class LoginAPIView(GenericAPIView):
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 # log them in
-                serializer = self.serializer_class(user)
-
-                return response.Response(serializer.data, status=status.HTTP_200_OK)
-        
+                # check if current user has an active session
+                if not self.request.session.exists(self.request.session.session_key):
+                    self.request.session.create()
+                    self.request.session['username'] = user.username
+                    data = {
+                        'username':self.request.session.get('username')
+                    }
+                    return JsonResponse(data, status=status.HTTP_201_CREATED)
+                else:
+                    data = {
+                        'username':self.request.session.get('username')
+                    }
+                    return JsonResponse(data, status=status.HTTP_200_OK)
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
