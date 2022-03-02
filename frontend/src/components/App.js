@@ -9,6 +9,9 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
+import ReactAudioPlayer from 'react-audio-player';
+
+import Song from '/static/media/price.mp3'
 
 const theme = createTheme({
     palette: {
@@ -24,10 +27,24 @@ const theme = createTheme({
 
 export default function App(){
 
+    console.log(!!document.createElement('audio').canPlayType);
+    /*
+    <ModalWindow 
+        title="*Crickets*" 
+        content="Your browser appears to not support audio!" 
+        open={true}
+        imageSrc = {warningCat}
+        buttonText="Ok"
+        />
+     */
     //We can pass props to homepage component
     if (isMobile) {
         return(
             <MuiThemeProvider theme={theme}>
+                <audio autoplay preload>
+                    <source src={Song} type="audio/mp3"></source>
+                    
+                </audio>
                 <Router>
                     <Routes>
                         <Route path="/" element={<MainMenu splash={true}/>}/>
