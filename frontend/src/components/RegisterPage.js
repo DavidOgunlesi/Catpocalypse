@@ -48,7 +48,7 @@ export default function RegisterPage(){
             }),
         };
         //send post request to our api!
-        fetch('/api/users/', requestOptions)
+        fetch('/api/register', requestOptions)
         .then((response) => {
             if (!response.ok){
                 setErrorMessage("Error signing up.");
