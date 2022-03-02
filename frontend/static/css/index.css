@@ -32,11 +32,34 @@ html, body{
     transform: translate(-50%, 0);
     margin: 0px;
 }
-
+/*
+-----------------------------------
+Logo
+------------------------------------
+*/
 .logo {
     width: 100%;
     z-index: 100;
+    transition: 1s ease-out;
  }
+
+/* On screens that are 1000px or more*/
+@media screen and (min-width: 1000px) {
+    .logo {
+        width: 1000px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 5%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 95%);
+    }
+}
+
+/* On screens that are 1000px or less*/
+@media screen and (max-width: 1000px) {
+    .logo {
+        width: 100%;
+    }
+}
 
 /*
 -----------------------------------
@@ -113,15 +136,6 @@ border-radius: 100px;
     width: 100%;
     background: linear-gradient(transparent 40%,rgba(0, 0, 0, 1));
     z-index: 100;
-}
-
-/*
------------------------------------
-MISC
-------------------------------------
-*/
-.desktopLogo {
-    width:100%;
 }
 
 /*
