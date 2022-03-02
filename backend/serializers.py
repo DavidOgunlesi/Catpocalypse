@@ -46,12 +46,6 @@ class ExampleSerializer(serializers.ModelSerializer):
         fields = ('id', 'code', 'host', 'guest_can_pause', 
                   'votes_to_skip', 'created_at')
         
-class ExampleSerializer2(serializers.ModelSerializer):
-    class Meta:
-        model = ExampleModel
-        # 'id' is primary key, every model has an "invisible" id field
-        fields = ('code', 'created_at')
-        
 '''class GetCatSerialiser(serializers.ModelSerializer):
     class Meta:
         model = ExampleModel
