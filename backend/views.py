@@ -64,6 +64,17 @@ class LoginAPIView(GenericAPIView):
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+class IsLoggedInAPIView(GenericAPIView):
+
+    def get(self, request):
+        if not self.request.session.exists(self.request.session.session_key):
+            return response.Response({'message':"Not logged in"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            data = {
+                'username':self.request.session.get('username')
+            }
+            return JsonResponse(data, status=status.HTTP_200_OK) 
+
 '''
 class UserLoggedIn(APIView):
     def get(self, request, format=None):
