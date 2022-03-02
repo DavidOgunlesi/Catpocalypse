@@ -33,6 +33,7 @@ export default function App(){
     useEffect(() => {
         checkIfUserLoggedIn();
     });
+    
     function checkIfUserLoggedIn(){
         console.log("Checking...");
         fetch(`/api/isLoggedIn`)
