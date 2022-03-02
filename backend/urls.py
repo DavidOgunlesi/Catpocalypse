@@ -2,6 +2,7 @@ from django.urls import path, include
 from .views import RegisterAPIView
 from .views import LoginAPIView
 from .views import IsLoggedInAPIView
+from .views import VerifyEmail
 
 #from rest_framework.routers import DefaultRouter
 
@@ -15,7 +16,8 @@ from .views import IsLoggedInAPIView
 urlpatterns = [
     path('register', RegisterAPIView.as_view()),
     path('login', LoginAPIView.as_view()),
-    path('isLoggedIn', IsLoggedInAPIView.as_view())
+    path('isLoggedIn', IsLoggedInAPIView.as_view()),
+    path('email-verify/', VerifyEmail.as_view(), name="email-verify")
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),
     # path('get_url', GetCatView.as_view())
