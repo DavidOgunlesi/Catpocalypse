@@ -3,19 +3,26 @@ import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
 import logo from '/static/images/logo.png';
 import cat from '/static/images/cat.png';
-import {Button, Grid, Typography} from "@material-ui/core";
+import {Button, Grid, Typography, InputAdornment} from "@material-ui/core";
 import FallingCat from "./dynamic/FallingCat";
 import {getRandomRange} from '/src/util/math.js';
 import Background from "./static/Background";
+import {Link} from "react-router-dom";
+import LoginPage from "./LoginPage";
+import {GoogleLogin} from 'react-google-login';
+import GoogleLogo from '/static/images/GoogleLogo.png'
 
 export default function MainMenu(){
 
     const requireLogin = true;
+    function responseGoogle(response) {
+        console.log(response);
+    }
 
     function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
-            var y = -1000;
+            var y = -200;
             var cat = (<FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
             var catDiv = document.createElement('div');
             render(cat,catDiv);
@@ -58,12 +65,14 @@ export default function MainMenu(){
                 <Grid item xs={12}>
                     <Button 
                     color = 'primary' 
-                    variant="contained"
-                    size="large" 
-                    style={{ borderRadius: 50 }}
-                    fullWidth={true}
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    component = {Link}
+                    to="/login"
                     >
-                        Login
+                        Log in
                     </Button> 
                 </Grid>
                 <Grid item xs={12}>
@@ -73,10 +82,41 @@ export default function MainMenu(){
                     size="large" 
                     style={{ borderRadius: 50 }}
                     fullWidth={true}
+                    component = {Link}
+                    to="/register"
                     >
                         Sign up
                     </Button> 
                 </Grid>
+                <Grid item xs={12}>
+                    <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
+                </Grid>
+                <GoogleLogin
+                clientId="745185368334-qa0udogh8j1pge5c8tcc3699m42o0bv9.apps.googleusercontent.com"
+                render={renderProps => (
+                    <Grid item xs={12}>
+                        <Button 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 25, background: "white" }}
+                    fullWidth={true}
+                    onClick={renderProps.onClick} disabled={renderProps.disabled}
+                    startIcon={
+                            <InputAdornment position="start">
+                                <img src={GoogleLogo} width={20}/>
+                            </InputAdornment>}
+                    >
+                        <Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            GOOGLE
+                        </Typography>
+                        </Button>
+                </Grid>
+                  )}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+                />
             </Grid>
         );
     }
@@ -89,49 +129,26 @@ export default function MainMenu(){
         }
     }
 
-    if (isMobile) {
-        return (
-            <Background 
-            gradient={false} 
-            primaryCol="#FEEAC2" 
-            outlineCol="#FFC992" 
-            outlineThickness={200} 
-            skew={-32}
-            backgroundCol="#FFF59D"
-            >
-                <Button 
-                variant="outline" 
-                style={{ width:"100%", height: "100%", position:"absolute"}}
-                />
-                <img src={logo} className="logo" alt="Logo" />
-                <div id="catHolder"></div>
-                <div className="center">
-                    {chooseRender()}
-                </div>
-            </Background>
-        );
-    }else{
-        return (
-            <Background 
-            gradient={false} 
-            primaryCol="#FEEAC2" 
-            backgroundCol="#FFF59D"
-            >
-                <Button 
-                variant="outline" 
-                style={{ width:"100%", height: "100%", position:"absolute"}}
-                />
-                <img src={logo} style={{ width:"100%", height: "70%", position:"center"}} alt="Logo" />
-                <Typography style={{backgroundColor:"black", color:"white", height:"10%", 
-                display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    Desktop Browser currently not supported<br/>Please open with a mobile device to play!
-                </Typography>
-                <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                    <img src={cat} alt="Cat"/>
-                </div>
-            </Background>
-        );
-    }
+    return (
+        <Background 
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+            <Button 
+            variant="outline" 
+            style={{ width:"100%", height: "100%", position:"absolute"}}
+            />
+            <img src={logo} className="logo" alt="Logo" />
+            <div id="catHolder"></div>
+            <div className="center">
+                {chooseRender()}
+            </div>
+        </Background>
+    );
     
 }
 

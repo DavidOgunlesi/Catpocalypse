@@ -4,7 +4,15 @@ import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-rout
 import HomePage from "./HomePage";
 import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
+import RegisterPage from "./RegisterPage";
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import {isMobile} from 'react-device-detect';
+import DesktopWarningPage from "./DesktopWarningPage";
+import VerifyPage from "./VerifyPage";
+import ReactAudioPlayer from 'react-audio-player';
+
+import Song from '/static/media/price.mp3'
+
 const theme = createTheme({
     palette: {
         primary: {
@@ -14,21 +22,43 @@ const theme = createTheme({
             main: '#AEAEAE'
         }
     }
+    
   });
 
 export default function App(){
 
+    console.log(!!document.createElement('audio').canPlayType);
+    /*
+    <ModalWindow 
+        title="*Crickets*" 
+        content="Your browser appears to not support audio!" 
+        open={true}
+        imageSrc = {warningCat}
+        buttonText="Ok"
+        />
+     */
     //We can pass props to homepage component
-    return(
-        <MuiThemeProvider theme={theme}>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<MainMenu splash={true}/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                </Routes>
-            </Router>
-        </MuiThemeProvider>
-    );
+    if (isMobile) {
+        return(
+            <MuiThemeProvider theme={theme}>
+                <audio autoplay preload>
+                    <source src={Song} type="audio/mp3"></source>
+                    
+                </audio>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<MainMenu splash={true}/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/register" element={<RegisterPage/>}/>
+                        <Route path="/play" element={<HomePage/>}/>
+                        <Route path="/verify/:token" element={<VerifyPage/>}/>
+                    </Routes>
+                </Router>
+            </MuiThemeProvider>
+        );
+    }else{
+        return(<DesktopWarningPage/>);
+    }
     
 }
 

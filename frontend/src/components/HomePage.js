@@ -1,9 +1,10 @@
 import React from "react";
+import Map from "./Map";
 
 export default function HomePage(){
 
     return (
-        <div>Bruh</div>
+        <Map/>
     );
     
 }

@@ -78,6 +78,12 @@ Falling Cat styling and animations
     }
 }
 
+
+/*
+-----------------------------------
+Background
+------------------------------------
+*/
 .background{
     height: 100%;
     width: 100%;
@@ -85,3 +91,99 @@ Falling Cat styling and animations
 .comp_skewedBackground_content{
     height: 100%;
 }
+
+/*
+-----------------------------------
+UI Forms
+------------------------------------
+*/
+.inputRounded{
+    border-radius: 100px;
+}
+.inputRounded .MuiOutlinedInput-root {
+border-radius: 100px;
+}
+.inputRounded .MuiInputBase-root {
+    border-radius: 100px;
+    }
+
+.gradient{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(transparent 40%,rgba(0, 0, 0, 1));
+    z-index: 100;
+}
+
+/*
+-----------------------------------
+MISC
+------------------------------------
+*/
+.desktopLogo {
+    width:100%;
+}
+
+/*
+-----------------------------------
+Sliding up Component
+------------------------------------
+*/
+.slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    background-color: #000; color: #FFF;
+    transition: all 1s;
+    z-index: 1000;
+  }
+  
+.slider.close {
+    top: 100%;
+    height: 0;
+}
+
+.content
+{
+    padding: 50px;
+    width: 90%;
+    height: 80%;
+    overflow:auto;
+    overflow-x: hidden;
+}
+
+/*
+-----------------------------------
+Map Markers
+------------------------------------
+*/
+.markerImg {
+    display: flex;
+    justify-content: center;
+}
+.bounce {
+    animation: bounce 0.5s infinite alternate;
+    -webkit-animation: bounce 0.5s infinite alternate;
+  }
+  @keyframes bounce {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+  @-webkit-keyframes bounce {
+    from {
+      transform: translateY(0px);
+    }
+    to {
+      transform: translateY(-20px);
+    }
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
