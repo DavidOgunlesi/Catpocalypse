@@ -17,19 +17,6 @@ lon_RANGE = 0.000367
 # distance range is 0.0033700
 
 
-def make_test_cats():
-    # Try make these 6 test cats, if they already exist in the db (IntegrityError), dont do anything
-    try:
-        Cats.objects.create(name='cat0', type=0, rarity=1)
-        Cats.objects.create(name='cat1', type=0, rarity=1)
-        Cats.objects.create(name='cat2', type=0, rarity=1)
-        Cats.objects.create(name='cat3', type=0, rarity=1)
-        Cats.objects.create(name='cat4', type=0, rarity=1)
-        Cats.objects.create(name='cat5', type=0, rarity=1)
-    except IntegrityError:
-        pass
-
-
 def capacity_check():
     """
         This function will check the number of cats on the map and will trigger the gat_generation function if necessary
