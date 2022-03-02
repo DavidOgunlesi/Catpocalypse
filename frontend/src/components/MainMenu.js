@@ -15,6 +15,8 @@ import GoogleLogo from '/static/images/GoogleLogo.png'
 export default function MainMenu(){
 
     const requireLogin = true;
+    const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
+    
     function responseGoogle(response) {
         console.log(response);
     }
@@ -92,7 +94,7 @@ export default function MainMenu(){
                     <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
                 </Grid>
                 <GoogleLogin
-                clientId="745185368334-qa0udogh8j1pge5c8tcc3699m42o0bv9.apps.googleusercontent.com"
+                clientId={clientId}
                 render={renderProps => (
                     <Grid item xs={12}>
                         <Button 
