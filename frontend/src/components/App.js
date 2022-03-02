@@ -1,7 +1,7 @@
 import React, {useState, useEffect}  from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
-import PlayPage from "./PlayPage";
+import Map from "./Map";
 import LoginPage from "./LoginPage";
 import MainMenu from "./MainMenu";
 import RegisterPage from "./RegisterPage";
@@ -59,7 +59,7 @@ export default function App(){
     if (isMobile) {
         
         function redirectIfLoggedIn(component){
-            return (isLoggedIn ? <PlayPage/> : component);
+            return (isLoggedIn ? <Map/> : component);
         }
         
         return(

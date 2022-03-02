@@ -1,4 +1,4 @@
-import React, {Component, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
 import { geolocated } from "react-geolocated";
@@ -16,6 +16,8 @@ var map ,maps = null;
 
 function Map(gps){
     const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
+    const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+
     //Create state for Player GPS
     const [playerGPSData, setPlayerGPSData] = useState({
         lat: null, 
@@ -24,7 +26,6 @@ function Map(gps){
         heading: null,
         speed: null
     })
-
     
     function handleApiLoaded(_map, _maps){
         // use map and maps objects
@@ -37,7 +38,8 @@ function Map(gps){
 
     //Get GPS data from geolocated and update state
     function refeshGPSData(){
-        setGpsEnabled(gps.isGeolocationEnabled)
+      setIsOnline(window.navigator.onLine);
+      setGpsEnabled(gps.isGeolocationEnabled)
       if(gps.coords == null){
         return;
       }
@@ -55,7 +57,6 @@ function Map(gps){
         heading: heading,
         speed: speed
       })
-     // setMapLocation({lat: playerGPSData.lat, lng: playerGPSData.lng})
 
       if (playerGPSData.lat == null ||  playerGPSData.lng == null){
         return;
@@ -64,7 +65,6 @@ function Map(gps){
         return;
       }
 
-      //mapObject.setCenter({lat: playerGPSData.lat, lng: playerGPSData.lng});
       slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
     }
 
@@ -73,9 +73,54 @@ function Map(gps){
         var timerID = setInterval(() =>  refeshGPSData(), 1000);
         return () => clearInterval(timerID);
     });
-    console.log(gps)
-    if (gpsEnabled) {
-
+    /**
+     * WARNINGS
+     */
+    console.log("ONLINE" + isOnline);
+    if(!isOnline){
+      return(
+        <Background 
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200}
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+          <ModalWindow 
+          title="Cannot Connect To Server" 
+          content="You have lost connection to the server. Please check your internet connection." 
+          open={true}
+          onClick={_=>{ window.location.reload();}}
+          buttonText="Refresh"
+          />
+        </Background>
+      );
+    }
+    if(!gpsEnabled){
+      return(
+        <Background 
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200}
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+            <ModalWindow 
+            title="Location Not Enabled :(" 
+            content="Ensure you have turned on location in your respective device browser settings." 
+            open={true}
+            imageSrc = {warningCat}
+            onClick={_=>{ window.location.reload();}}
+            buttonText="Refresh"
+            />
+        </Background>
+      );
+    }
+    /**
+     * MAIN MAP HTML
+     */
     return (
         <div style={{ height: '100vh', width: '100%' }}>
         <ModalWindow 
@@ -112,27 +157,6 @@ function Map(gps){
           </GoogleMapReact>
         </div>
       );
-        }else{
-            return(
-                <Background 
-                gradient={false} 
-                primaryCol="#FEEAC2" 
-                outlineCol="#FFC992" 
-                outlineThickness={200}
-                skew={-32}
-                backgroundCol="#FFF59D"
-                >
-                    <ModalWindow 
-                    title="Location Not Enabled :(" 
-                    content="Ensure you have turned on location in your respective device browser settings." 
-                    open={true}
-                    imageSrc = {warningCat}
-                    onClick={_=>{ window.location.reload();}}
-                    buttonText="Refresh"
-                    />
-                </Background>
-            );
-        }
     
 }
 
@@ -141,7 +165,11 @@ export default geolocated({
     positionOptions: {
         enableHighAccuracy: true,
     },
-    userDecisionTimeout: 5000,
+    //determines how much time (in miliseconds) we give the 
+    //user to make the decision whether to allow to share 
+    //their location or not
+    userDecisionTimeout: 15000,
+    watchPosition: true,
 })(Map);
 
 /*
