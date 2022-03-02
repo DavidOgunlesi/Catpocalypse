@@ -9,7 +9,6 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
-import { useNavigate } from "react-router-dom";
 
 import Song from '/static/media/price.mp3'
 
@@ -30,18 +29,23 @@ export default function App(){
     //const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     console.log(!!document.createElement('audio').canPlayType);
-
+    console.log("loaded");
     useEffect(() => {
+        checkIfUserLoggedIn();
+    });
+    function checkIfUserLoggedIn(){
+        console.log("Checking...");
         fetch(`/api/isLoggedIn`)
         .then((response) => {
             if (response.ok){
                 setIsLoggedIn(true);
+                console.log("Is logged in!");
             }
             return response.json();
         }).then((data) => {
             console.log(data);
         });
-      });
+    }
     /*
     <ModalWindow 
         title="*Crickets*" 
