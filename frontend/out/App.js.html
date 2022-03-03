@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Renders the app and checks if the user is accessing the game with their laptop/desktop or their mobile device.
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
+import React, {useState, useEffect}  from "react";
+import {render} from "react-dom";
+import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
+import Map from "./Map";
+import LoginPage from "./LoginPage";
+import MainMenu from "./MainMenu";
+import RegisterPage from "./RegisterPage";
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
+import {isMobile} from 'react-device-detect';
+import DesktopWarningPage from "./DesktopWarningPage";
+import VerifyPage from "./VerifyPage";
+
+/**
+ * Imports the background music from the media folder
+ */
+import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
+
+/**
+ * Sets a fixed theme for the App
+ */
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#000000'
+        },
+        secondary: {
+            main: '#AEAEAE'
+        }
+    }
+    
+  });
+
+/**
+ * Main function of the App.js page which checks if the user is logged in or not.
+ * @returns Depending on the user being logged in or not, the function will redirect the user accordingly.
+ */
+export default function App(){
+
+    /**
+     * Sets a constant for the isLoggedIn variable
+     */
+    //const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // the state is set to false.
+    console.log(!!document.createElement('audio').canPlayType);
+    console.log("loaded"); // the console log will show that it is loaded.
+
+    /**
+     * Uses the music effect by checking whether the user is logged in or not by calling the checkIfUserLoggedIn() function.
+     */
+    useEffect(() => {
+        checkIfUserLoggedIn();
+        //console.log(document.getElementById('soundtrack'));
+        //document.getElementById('soundtrack').play();
+    });
+    
+    /**
+     * Ensures if the user is logged in to the system or not.
+     * @returns the console will be informed if the user is logged in or not and will be recorded by checking the response received from the backend.
+     */
+    function checkIfUserLoggedIn(){
+        console.log("Checking...");
+        fetch(`/api/isLoggedIn`)
+        .then((response) => {
+            if (response.ok){
+                setIsLoggedIn(true);
+                console.log("Is logged in!");
+            }
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+        });
+    }
+    /*
+    &lt;ModalWindow 
+        title="*Crickets*" 
+        content="Your browser appears to not support audio!" 
+        open={true}
+        imageSrc = {warningCat}
+        buttonText="Ok"
+        />
+     */
+    //We can pass props to homepage component
+    
+
+    /**
+     * checks if the user is logged in with their mobile devices
+     */
+    if (isMobile) {
+        
+        /**
+         * This function will redirect the user to the Map page if the user is logged in or not.
+         * @param {} component checks whether isLoggedIn is true or false.
+         * @returns if the user is logged in, the app will redirect the user directly to the Map view.
+         */
+        function redirectIfLoggedIn(component){
+            return (isLoggedIn ? &lt;Map/> : component);
+        }
+        
+        /**
+         * Plays the audio in the background and set paths to go to various routes of the entire Catpocalypse game 
+         * such as Main Menu, Login,Register, Verify (including and excluding the token)
+         */
+        return(
+            &lt;MuiThemeProvider theme={theme}>
+                &lt;audio id="soundtrack" loop>
+                    &lt;source src={MainSoundtrack} type="audio/mp3">&lt;/source>
+                &lt;/audio>
+                &lt;Router>
+                    &lt;Routes>
+                        &lt;Route path="/" element={redirectIfLoggedIn(&lt;MainMenu splash={true}/>)}/>
+                        &lt;Route path="/login" element={redirectIfLoggedIn(&lt;LoginPage/>)}/>
+                        &lt;Route path="/register" element={redirectIfLoggedIn(&lt;RegisterPage/>)}/>
+                        &lt;Route path="/verify" element={redirectIfLoggedIn(&lt;VerifyPage/>)}/>
+                        &lt;Route path="/verify/:token" element={redirectIfLoggedIn(&lt;VerifyPage/>)}/>
+                    &lt;/Routes>
+                &lt;/Router>
+            &lt;/MuiThemeProvider>
+        );
+
+    /**
+     * If there is an error, it will return a Desktop Warning Page
+     */
+    }else{
+        return(&lt;DesktopWarningPage/>);
+    }
+    
+}
+
+const appDiv = document.getElementById("app");
+//render app component in the app div with "name" prop
+render(&lt;App name="Example name!"/>,appDiv)</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

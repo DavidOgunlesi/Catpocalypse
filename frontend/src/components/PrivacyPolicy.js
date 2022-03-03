@@ -1,5 +1,13 @@
+/**
+ * A privacy policy to inform the users of what happens to their data and how it is being used by us at Catpocalyse.
+ * Imports React from the React Package
+ */
 import React from "react";
 
+/**
+ * Main Function of PrivacyPolicy.js
+ * @returns The entire documentation of the Privacy Policy
+ */
 export default function PrivacyPolicy(){
 
     return (

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: LoginPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: LoginPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The Login Page is the page which allows the user to log into their account in Catpocalypse.
+ * The following page will explain the documentation of what occurs in LoginPage.js.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
+
+import React, {useState} from "react";
+import { useNavigate } from 'react-router';
+import logo from '/static/images/logo.png';
+import {Button, Grid, Typography, TextField, FormControl, FormControlLabel,FormHelperText, FilledInput, Input, Box} from "@material-ui/core";
+import {Link} from "react-router-dom";
+import Background from "./static/Background";
+
+/**
+ * Main function of LoginPage.js
+ * @returns The login page asking the user to fill up their emaill address and their password, followed by two buttons "Log In" to proceed logging in, 
+ * @returns or "Back" which redirects the user to another page.
+ */
+export default function LoginPage(){
+    
+    /**
+     * Assign the useNavigate function to a variable.
+     */
+    let navigate = useNavigate();
+
+    /**
+     * Sets the states of email, password and error message.
+     */
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    
+    /**
+     * 
+     * @returns ehecks if the fields have been filled or not. If they are not filled, it will return an error message allowing the user to re-enter again.
+     */
+    function onLogin(){
+        if (email=="" || password=="") {
+            setErrorMessage("Not all fields have been filled.");
+            return;
+        }
+        /**
+         * Sends the requestOption to a variable with the POST method and sends it to the API at the backend.
+         */
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                password:password,
+                email: email
+            }),
+        };
+        //send post request to our api!
+        fetch('/api/login', requestOptions)
+        .then((response) => {
+            if (!response.ok){
+                setErrorMessage("Error logging in.");
+                return response.json();
+            }
+            //Redirect to map page
+            console.log("ok!");
+            navigate("/");
+            location.reload();
+            return response.json();
+        }).then((data) => {
+            setErrorMessage(data.message); // if there is an error, it will return the error message
+        });
+    }
+
+    /**
+     * The Login Page will be returned in a set background with Catpocalypse's colour palette
+     * Returns two input fields "Email Address" and "Password"
+     * Returns 2 centered buttons of "Log in" - which allows the user to login or go "Back"
+     */
+    return (
+        &lt;Background
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+        &lt;div className="gradient">
+        &lt;img src={logo} className="logo" alt="Logo" />
+        &lt;div className="center">
+            &lt;Grid container spacing={3}>
+                &lt;Grid item xs={12} align="center">
+                    &lt;Typography variant="h3" component="h3">Log in&lt;/Typography>
+                &lt;/Grid>
+                &lt;Grid item xs={12} align="center">
+                        &lt;TextField
+                            onChange={e => setEmail(e.target.value)}
+                            required={true}
+                            type = "text"
+                            className="inputRounded"
+                            placeholder="Enter Email"
+                            variant="standard"
+                            textalign="center"
+                            variant="outlined"
+                            size="small"
+                            fullWidth={true}
+                            style={{
+                                background: "white"
+                            }}
+                        />
+                    &lt;/Grid>
+                    
+                    &lt;Grid item xs={12} align="center">
+                    &lt;TextField
+                        required={true}
+                        onChange={e => setPassword(e.target.value)}
+                        type = "password"
+                        className="inputRounded"
+                        placeholder="Enter Password"
+                        variant="standard"
+                        textalign="center"
+                        variant="outlined"
+                        size="small"
+                        fullWidth={true}
+                        style={{
+                            background: "white"
+                        }}
+                    />
+                    &lt;/Grid>
+                &lt;Grid item xs={12} align="center">
+                    &lt;FormHelperText variant="filled" error={true}>
+                        &lt;Typography variant="h6" component="h6">{errorMessage}&lt;/Typography>
+                    &lt;/FormHelperText>
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
+                    onClick={onLogin}
+                    color = 'primary' 
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    >
+                        Log in
+                    &lt;/Button> 
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
+                    color = 'primary' 
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    component = {Link}
+                    to="/"
+                    >
+                        Back
+                    &lt;/Button> 
+                &lt;/Grid>
+            &lt;/Grid>
+        &lt;/div>
+        &lt;/div>
+        &lt;/Background>
+    );
+    
+    
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

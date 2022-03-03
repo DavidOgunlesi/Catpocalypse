@@ -1,3 +1,9 @@
+/**
+ * The Main Menu page is the first page which shows up when you run the server and open http://localhost:8000
+ * The following page will explain the documentation of what occurs in MainMenu.js
+ */
+
+// The imports which are required for this page to run which includes packages from React Js and other files which exist.
 import React, {useState, useEffect} from "react";
 import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
@@ -13,15 +19,39 @@ import {GoogleLogin} from 'react-google-login';
 import GoogleLogo from '/static/images/GoogleLogo.png';
 import ModalWindow from "./dynamic/ModalWindow";
 
+/**
+ * The main function of the MainMenu.js page
+ * @type {Array<number>}
+ * @returns the Main Menu of Catpocalypse when the game gets initialised.
+ */
 export default function MainMenu(){
+    /**
+     * Fixed Variables which cannot be changed or modified
+     */
     const [audioModalOpen,setAudioModalOpen] = useState(true);
+
+    /**
+     * @returns {boolean} Returns true when login is required.
+     */
     const requireLogin = true;
+
+    /**
+     * @returns {clientId} The ClientID which is required for the Google Login for the user to use their Google account instead of registering on Catpocalypse.
+     */
     const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
     
+    /**
+     * 
+     * @param {string} response is the response it requires and returns from the server via the console.
+     * @returns {string} console reponse in the log
+     */
     function responseGoogle(response) {
         console.log(response);
     }
 
+    /**
+     * This function lets cats get spawned and creates an animation effect of falling cats in the background.
+     */
     function spawnCats(){ // integer state
         for (let index = 0; index < getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
@@ -33,6 +63,10 @@ export default function MainMenu(){
         }
     }
 
+    /**
+     * This checks if the user is using their mobile to allow the effect to take place. If the user is using their Desktop, there will be no effects taking place.
+     * However, if the user is accessing with their mobile, this effect will be used with the cats being spawned every second.
+     */
     useEffect(() => {
         if (isMobile){
             var timerID = setInterval(() => spawnCats(), 1000);
@@ -41,6 +75,10 @@ export default function MainMenu(){
     });
 
 
+    /**
+     * renderStartButton() is a function which is contained in a grid and has a button with the following properties as mentioned below.
+     * @returns A modal window on the page which pops up and shows the user "Click Anywhere to Start the Catpocalypse".
+     */
     function renderStartButton(){
         return (
             <Grid container spacing={10}>
@@ -62,6 +100,13 @@ export default function MainMenu(){
         );
     }
 
+    /**
+     * There are 3 centered buttons shown on the Main Menu page from which the user can choose from. If this function is called, it will return all the 3 buttons.
+     * The function is surrounded by a grid which further has another grid inside followed by the respective buttons as explained below.
+     * @returns A few buttons which show up on the Main Menu page. This includes the Login button, which redirects you to the Login page,
+     * the Sign Up button which is linked and redirects the user to the registeration page,
+     * the button labelled "Google" with the Google logo which allows the user to login with their Google account instead of registering with Catpocalypse.
+     */
     function renderRegAndLoginButton(){
         return (
             <Grid container spacing={3}>
@@ -73,7 +118,7 @@ export default function MainMenu(){
                     style = {{ borderRadius: 50 }}
                     fullWidth = {true}
                     component = {Link}
-                    to="/login"
+                    to="/login" // redirects the user to the login page
                     >
                         Log in
                     </Button> 
@@ -86,7 +131,7 @@ export default function MainMenu(){
                     style={{ borderRadius: 50 }}
                     fullWidth={true}
                     component = {Link}
-                    to="/register"
+                    to="/register" // redirects the user to the register page.
                     >
                         Sign up
                     </Button> 
@@ -94,6 +139,7 @@ export default function MainMenu(){
                 <Grid item xs={12}>
                     <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
                 </Grid>
+                
                 <GoogleLogin
                 clientId={clientId}
                 render={renderProps => (
@@ -124,6 +170,11 @@ export default function MainMenu(){
         );
     }
 
+    /**
+     * The chooseRender() function decides which page should the user be redirected to.
+     * @returns If the login is required, it will return the renderRegAndLoginButton() function, 
+     * else if the login is not required, it will return the renderStartButton() function
+     */
     function chooseRender(){
         if (requireLogin){
             return renderRegAndLoginButton();
@@ -132,6 +183,11 @@ export default function MainMenu(){
         }
     }
 
+    /**
+     * This function allows the user to select if they want the music to play in the background while Catpocalypse is running.
+     * This option will be asked in a pop up window with Catpocalypse's colour palette in the background.
+     * If the user selects yes, the music will start playing, however if the user selects no, then no music will be played throughout.
+     */
     function enableAudio(){
         console.log("trying to play");
         document.getElementById('soundtrack').play();

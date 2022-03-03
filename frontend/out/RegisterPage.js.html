@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: RegisterPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: RegisterPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The Register Page is the page which allows the user to register an account in Catpocalypse.
+ * The following page will explain the documentation of what occurs in RegisterPage.js.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
+import React, {useState} from "react";
+import PasswordChecklist from "react-password-checklist";
+import {isMobile} from 'react-device-detect';
+import Background from "./static/Background";
+import logo from '/static/images/logo.png';
+import {Link} from "react-router-dom";
+import {Button, Grid, Typography, TextField, FormControl, 
+    InputAdornment,IconButton, FormHelperText, Select, MenuItem} from "@material-ui/core";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
+import SlideUpWindow from "./dynamic/SlideUpWindow";
+import PrivacyPolicy from "./PrivacyPolicy";
+import ModalWindow from "./dynamic/ModalWindow";
+
+
+/**
+ * 
+ * @returns the Registeration page of Catpocalypse when the user clicks on the "Sign Up" button from the Main Menu.
+ */
+export default function RegisterPage(){
+    
+    // constant variables used as states for registration, including username, email address, password, privacy policy amd the error message.
+    const defaultEmail = "@exeter.ac.uk";
+    const [username, setUsername] = useState("");
+    const [emailStart, setEmailStart] = useState("");
+    const [emailEnd, setEmailEnd] = useState(defaultEmail);
+    const [password, setPassword] = useState("");
+	const [passwordAgain, setPasswordAgain] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+    const [showRegisteredModal, setShowRegisteredModal] = useState(false);
+    var validPassword = false; // valid password default value is always set as false.
+
+
+    /**
+     * The function checks if username, email, password, passwordAgain have been entered while using password validation as well.
+     * If there is any error, the function will return a specific error message for each error which took place.
+     * When successful, it will send a POST request to our API which helps in the creation of the account.
+     * At the same time, it will inform the user to check for the verification link in their email inbox.
+     * Again, if there is any error, the error will be known to the user.
+     * While signing up, the user has the option to access the privacy policy of Catpocalypse to check and see what data of theirs is going to taken and how it would be used by the company.
+     * @returns Ensures that all fields have been inputted while signing up. 
+     */
+    function onRegister() {
+        if (username=="" || emailStart=="" || password=="" || passwordAgain == "") {
+            setErrorMessage("Not all fields have been filled.");
+            return;
+        }
+
+        if (!validPassword) {
+            setErrorMessage("Password doesn't meet criteria.");
+            return;
+        }
+        console.log(username); // Logs the username of the user
+        console.log(password); // Logs the password of the user
+        const fullEmail = `${emailStart}${emailEnd}`;
+        console.log(fullEmail); // Logs the full email address of the user including the domain "exeter.ac.uk"
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                username:username,
+                password:password,
+                email: fullEmail
+            }),
+        };
+        //send post request to our api!
+        fetch('/api/register', requestOptions)
+        .then((response) => {
+            if (!response.ok){
+                setErrorMessage("Error signing up.");
+                return;
+            }
+            setShowRegisteredModal(true);
+            return response.json();
+        }) //Turn response to json
+        .then((data) => console.log(data)); //do stuff with json response data
+    }
+    // Only allows registeration to take place if the user is playing in their mobile and not their desktop.
+    /**
+     * Returns a pop - up window asking the user to check their email for the verification link.
+     */
+    if(isMobile){
+        return (
+            &lt;Background 
+            gradient={false} 
+            primaryCol="#FEEAC2" 
+            outlineCol="#FFC992" 
+            outlineThickness={200}
+            skew={-32}
+            backgroundCol="#FFF59D"
+            >
+                &lt;ModalWindow
+                title="Check your Email!"
+                content="Check your email for a verification link."
+                open= {showRegisteredModal}
+                />
+                &lt;SlideUpWindow
+                open={showPrivacyPolicy}
+                title="Privacy Policy" 
+                content={&lt;PrivacyPolicy/>}
+                callback={setShowPrivacyPolicy}
+                />
+                &lt;div className="gradient">
+                    &lt;img src={logo} className="logo" alt="Logo" />
+                    &lt;div className="center">
+                        &lt;Grid container spacing={1}>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;Typography variant="h3" component="h3">Sign up&lt;/Typography>
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
+                                        required={true}
+                                        type = "text"
+                                        onChange={e => setUsername(e.target.value)}
+                                        className="inputRounded"
+                                        placeholder="Username"
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                    />
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
+                                        required={true}
+                                        type = "email"
+                                        className="inputRounded"
+                                        placeholder="Email"
+                                        onChange={e=> setEmailStart(e.target.value)}
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                        InputProps={{
+                                            endAdornment: 
+                                                &lt;InputAdornment position="start">
+                                                    &lt;Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                fullWidth={true}
+                                                value={defaultEmail}
+                                                onChange={e=> setEmailEnd(e.target.value)}
+                                            >
+                                                &lt;MenuItem value={defaultEmail}>{defaultEmail}&lt;/MenuItem>
+                                            &lt;/Select>
+                                            &lt;/InputAdornment>,
+                                          }}
+                                    />
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
+                                        required={true}
+                                        type={showPassword  ? 'text' : 'password'}
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
+                                        className="inputRounded"
+                                        placeholder="Password"
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                        InputProps={{
+                                            endAdornment: 
+                                            &lt;InputAdornment position="end">
+                                            &lt;IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={_=> setShowPassword(!showPassword)}
+                                                onMouseDown={e=> e.preventDefault()}
+                                                edge="end"
+                                            >
+                                                {showPassword ? &lt;VisibilityOff /> : &lt;Visibility />}
+                                            &lt;/IconButton>
+                                            &lt;/InputAdornment>,
+                                          }}
+                                    />
+                                
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
+                                        required={true}
+                                        type = "password" 
+                                        onChange={e => setPasswordAgain(e.target.value)}
+                                        className="inputRounded"
+                                        placeholder="Re-enter Password"
+                                        variant="standard"
+                                        textalign="center"
+                                        variant="outlined"
+                                        size="small"
+                                        fullWidth={true}
+                                        style={{
+                                            background: "white"
+                                        }}
+                                    />
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;FormHelperText variant="filled" error={true}>
+                                    {errorMessage}
+                                &lt;/FormHelperText>
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;PasswordChecklist
+                                    rules={["minLength","specialChar","number","capital","match"]}
+                                    minLength={5}
+                                    value={password}
+                                    valueAgain={passwordAgain}
+                                    onChange={(isValid) => {validPassword = isValid}}
+                                    style = {{color:"white"}}
+                                />
+                            &lt;/Grid>
+                            &lt;Grid item xs={12}>
+                                &lt;Button 
+                                color = 'primary' 
+                                variant="contained"
+                                size="large" 
+                                style={{ borderRadius: 50 }}
+                                disableElevation={true}
+                                disableFocusRipple={true}
+                                disableRipple={true}
+                                fullWidth={true}
+                                onClick={onRegister}
+                                >
+                                    Sign Up!
+                                &lt;/Button> 
+                            &lt;/Grid>
+                            &lt;Grid item xs={12}>
+                                &lt;Button 
+                                color = 'primary' 
+                                variant="contained"
+                                size="large" 
+                                style={{ borderRadius: 50 }}
+                                disableElevation={true}
+                                fullWidth={true}
+                                component={Link}
+                                to="/"
+                                >
+                                    Back
+                                &lt;/Button> 
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;Button 
+                                variant="string" 
+                                underline="hover" 
+                                color = 'primary'  
+                                onClick={_ => setShowPrivacyPolicy(true)}
+                                >
+                                    PRIVACY POLICY
+                                &lt;/Button>
+                            &lt;/Grid>
+                        &lt;/Grid> 
+                    &lt;/div>
+                &lt;/div>
+            &lt;/Background>
+        );
+    }else {
+
+    }
+    
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

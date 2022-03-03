@@ -1,7 +1,17 @@
+/**
+ * The standard component of the Modal windows which show up throughout the app
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React, {useState} from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+/**
+ * Sets a constant style for all the modal windows will show up.
+ */
 const style = {
     position: 'absolute',
     top: '50%',
@@ -15,6 +25,11 @@ const style = {
     textAlign: 'center'
   };
 
+/**
+ * Main function for ModalWindow.js
+ * @param {*} param0 
+ * @returns A modal window
+ */
 export default function ModalWindow({
     title = "Modal Title",
     content = "Modal Content",

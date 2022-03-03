@@ -1,3 +1,7 @@
+/**
+ * Renders the app and checks if the user is accessing the game with their laptop/desktop or their mobile device.
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React, {useState, useEffect}  from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route, Link, Redirect, Routes} from "react-router-dom";
@@ -10,8 +14,14 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 
+/**
+ * Imports the background music from the media folder
+ */
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 
+/**
+ * Sets a fixed theme for the App
+ */
 const theme = createTheme({
     palette: {
         primary: {
@@ -24,18 +34,33 @@ const theme = createTheme({
     
   });
 
+/**
+ * Main function of the App.js page which checks if the user is logged in or not.
+ * @returns Depending on the user being logged in or not, the function will redirect the user accordingly.
+ */
 export default function App(){
 
+    /**
+     * Sets a constant for the isLoggedIn variable
+     */
     //const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // the state is set to false.
     console.log(!!document.createElement('audio').canPlayType);
-    console.log("loaded");
+    console.log("loaded"); // the console log will show that it is loaded.
+
+    /**
+     * Uses the music effect by checking whether the user is logged in or not by calling the checkIfUserLoggedIn() function.
+     */
     useEffect(() => {
         checkIfUserLoggedIn();
         //console.log(document.getElementById('soundtrack'));
         //document.getElementById('soundtrack').play();
     });
     
+    /**
+     * Ensures if the user is logged in to the system or not.
+     * @returns the console will be informed if the user is logged in or not and will be recorded by checking the response received from the backend.
+     */
     function checkIfUserLoggedIn(){
         console.log("Checking...");
         fetch(`/api/isLoggedIn`)
@@ -59,12 +84,26 @@ export default function App(){
         />
      */
     //We can pass props to homepage component
+    
+
+    /**
+     * checks if the user is logged in with their mobile devices
+     */
     if (isMobile) {
         
+        /**
+         * This function will redirect the user to the Map page if the user is logged in or not.
+         * @param {} component checks whether isLoggedIn is true or false.
+         * @returns if the user is logged in, the app will redirect the user directly to the Map view.
+         */
         function redirectIfLoggedIn(component){
             return (isLoggedIn ? <Map/> : component);
         }
         
+        /**
+         * Plays the audio in the background and set paths to go to various routes of the entire Catpocalypse game 
+         * such as Main Menu, Login,Register, Verify (including and excluding the token)
+         */
         return(
             <MuiThemeProvider theme={theme}>
                 <audio id="soundtrack" loop>
@@ -81,6 +120,10 @@ export default function App(){
                 </Router>
             </MuiThemeProvider>
         );
+
+    /**
+     * If there is an error, it will return a Desktop Warning Page
+     */
     }else{
         return(<DesktopWarningPage/>);
     }

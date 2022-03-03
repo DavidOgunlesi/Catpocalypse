@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: MainMenu.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: MainMenu.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The Main Menu page is the first page which shows up when you run the server and open http://localhost:8000
+ * The following page will explain the documentation of what occurs in MainMenu.js
+ */
+
+// The imports which are required for this page to run which includes packages from React Js and other files which exist.
+import React, {useState, useEffect} from "react";
+import {render} from "react-dom";
+import {isMobile} from 'react-device-detect';
+import logo from '/static/images/logo.png';
+import cat from '/static/images/cat.png';
+import {Button, Grid, Typography, InputAdornment} from "@material-ui/core";
+import FallingCat from "./dynamic/FallingCat";
+import {getRandomRange} from '/src/util/math.js';
+import Background from "./static/Background";
+import {Link} from "react-router-dom";
+import LoginPage from "./LoginPage";
+import {GoogleLogin} from 'react-google-login';
+import GoogleLogo from '/static/images/GoogleLogo.png';
+import ModalWindow from "./dynamic/ModalWindow";
+
+/**
+ * The main function of the MainMenu.js page
+ * @type {Array&lt;number>}
+ * @returns the Main Menu of Catpocalypse when the game gets initialised.
+ */
+export default function MainMenu(){
+    /**
+     * Fixed Variables which cannot be changed or modified
+     */
+    const [audioModalOpen,setAudioModalOpen] = useState(true);
+
+    /**
+     * @returns {boolean} Returns true when login is required.
+     */
+    const requireLogin = true;
+
+    /**
+     * @returns {clientId} The ClientID which is required for the Google Login for the user to use their Google account instead of registering on Catpocalypse.
+     */
+    const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
+    
+    /**
+     * 
+     * @param {string} response is the response it requires and returns from the server via the console.
+     * @returns {string} console reponse in the log
+     */
+    function responseGoogle(response) {
+        console.log(response);
+    }
+
+    /**
+     * This function lets cats get spawned and creates an animation effect of falling cats in the background.
+     */
+    function spawnCats(){ // integer state
+        for (let index = 0; index &lt; getRandomRange(1,3); index++) {
+            var x = Math.floor(Math.random() * window.innerWidth);
+            var y = -200;
+            var cat = (&lt;FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
+            var catDiv = document.createElement('div');
+            render(cat,catDiv);
+            document.getElementById("catHolder").append(catDiv);
+        }
+    }
+
+    /**
+     * This checks if the user is using their mobile to allow the effect to take place. If the user is using their Desktop, there will be no effects taking place.
+     * However, if the user is accessing with their mobile, this effect will be used with the cats being spawned every second.
+     */
+    useEffect(() => {
+        if (isMobile){
+            var timerID = setInterval(() => spawnCats(), 1000);
+            return () => clearInterval(timerID);
+        }
+    });
+
+
+    /**
+     * renderStartButton() is a function which is contained in a grid and has a button with the following properties as mentioned below.
+     * @returns A modal window on the page which pops up and shows the user "Click Anywhere to Start the Catpocalypse".
+     */
+    function renderStartButton(){
+        return (
+            &lt;Grid container spacing={10}>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    disableFocusRipple={true}
+                    disableRipple={true}
+                    fullWidth={true}
+                    >
+                        Click Anywhere To Start The Catpocalpyse!
+                    &lt;/Button> 
+                &lt;/Grid>
+            &lt;/Grid>
+        );
+    }
+
+    /**
+     * There are 3 centered buttons shown on the Main Menu page from which the user can choose from. If this function is called, it will return all the 3 buttons.
+     * The function is surrounded by a grid which further has another grid inside followed by the respective buttons as explained below.
+     * @returns A few buttons which show up on the Main Menu page. This includes the Login button, which redirects you to the Login page,
+     * the Sign Up button which is linked and redirects the user to the registeration page,
+     * the button labelled "Google" with the Google logo which allows the user to login with their Google account instead of registering with Catpocalypse.
+     */
+    function renderRegAndLoginButton(){
+        return (
+            &lt;Grid container spacing={3}>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
+                    color = 'primary' 
+                    variant = "contained"
+                    size = "large" 
+                    style = {{ borderRadius: 50 }}
+                    fullWidth = {true}
+                    component = {Link}
+                    to="/login" // redirects the user to the login page
+                    >
+                        Log in
+                    &lt;/Button> 
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    fullWidth={true}
+                    component = {Link}
+                    to="/register" // redirects the user to the register page.
+                    >
+                        Sign up
+                    &lt;/Button> 
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:&lt;/Typography>
+                &lt;/Grid>
+                
+                &lt;GoogleLogin
+                clientId={clientId}
+                render={renderProps => (
+                    &lt;Grid item xs={12}>
+                        &lt;Button 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 25, background: "white" }}
+                    fullWidth={true}
+                    onClick={renderProps.onClick} disabled={renderProps.disabled}
+                    startIcon={
+                            &lt;InputAdornment position="start">
+                                &lt;img src={GoogleLogo} width={20}/>
+                            &lt;/InputAdornment>}
+                    >
+                        &lt;Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                            GOOGLE
+                        &lt;/Typography>
+                        &lt;/Button>
+                &lt;/Grid>
+                  )}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+                />
+            &lt;/Grid>
+        );
+    }
+
+    /**
+     * The chooseRender() function decides which page should the user be redirected to.
+     * @returns If the login is required, it will return the renderRegAndLoginButton() function, 
+     * else if the login is not required, it will return the renderStartButton() function
+     */
+    function chooseRender(){
+        if (requireLogin){
+            return renderRegAndLoginButton();
+        }else{
+            return renderStartButton();
+        }
+    }
+
+    /**
+     * This function allows the user to select if they want the music to play in the background while Catpocalypse is running.
+     * This option will be asked in a pop up window with Catpocalypse's colour palette in the background.
+     * If the user selects yes, the music will start playing, however if the user selects no, then no music will be played throughout.
+     */
+    function enableAudio(){
+        console.log("trying to play");
+        document.getElementById('soundtrack').play();
+    }
+
+    return (
+        &lt;Background 
+        gradient={false} 
+        primaryCol="#FEEAC2" 
+        outlineCol="#FFC992" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#FFF59D"
+        >
+            &lt;ModalWindow 
+                title="Enable Audio?" 
+                content="Would you like audio to play in the game?" 
+                open={true}
+                openState={audioModalOpen}
+                onClick={_=>{enableAudio()}}
+                buttonText="Yes"
+                extraContentAfter={
+                    &lt;Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    fullWidth={true}
+                    onClick={_=>{setAudioModalOpen(false);}}
+                    >
+                        No
+                    &lt;/Button>
+                }
+                />
+            &lt;Button 
+            variant="outline" 
+            style={{ width:"100%", height: "100%", position:"absolute"}}
+            />
+            &lt;img src={logo} className="logo" alt="Logo" />
+            &lt;div id="catHolder">&lt;/div>
+            &lt;div className="center">
+                {chooseRender()}
+            &lt;/div>
+        &lt;/Background>
+    );
+    
+}
+
+/*
+------------
+Use of Browser and Mobile view
+------------
+import {BrowserView, MobileView} from 'react-device-detect';
+
+const MyComponent = () => {
+    return (
+        &lt;>
+            &lt;BrowserView>
+                &lt;h1>This is rendered only in browser&lt;/h1>
+            &lt;/BrowserView>
+            &lt;MobileView>
+                &lt;h1>This is rendered only on mobile&lt;/h1>
+            &lt;/MobileView>
+        &lt;/>
+    );
+};
+
+-------------
+Use of isMobile Boolean
+-------------
+import {isMobile} from 'react-device-detect';
+
+const MyComponent = () => {
+    if(isMobile) {
+        return (
+            &lt;div> This content is available only on mobile&lt;/div>
+        )
+    }
+    return (
+        &lt;div> content... &lt;/div>
+    );
+};
+----------------
+Simple Method
+----------------
+// Create states
+const [width, setWidth] = useState(window.innerWidth);
+
+// Check if the window has been resized, if so update state
+useEffect(() => {
+    window.addEventListener('resize', handleWindowSizeChange);
+    return () => {
+        window.removeEventListener('resize', handleWindowSizeChange);
+    }
+}, []);
+
+function handleWindowSizeChange() {
+    setWidth(window.innerWidth);
+}
+
+// If we are in a moble browser or not
+const isDebugMobile = width &lt;= 768;
+*/</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

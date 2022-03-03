@@ -1,6 +1,18 @@
+/**
+ * The standard component of the Slide up windows which show up throughout the app
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
 
+/**
+ * Main function for SlideUpWindow.js
+ * @param {string} content The content will be input when the Sliding Up Window shows up 
+ * @returns The entire Slide Up Window with a pre-defined style, font and background.
+ */
 export default function SlideUpWindow({
     title = "Modal Title",
     content = "Modal Content",

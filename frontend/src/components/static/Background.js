@@ -1,4 +1,10 @@
+/**
+ * Sets the background of Catpocalypse using the colour palette which has been decided by the team.
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
+
 import React from "react";
+
 
 export default function Background({ 
     gradient = false,

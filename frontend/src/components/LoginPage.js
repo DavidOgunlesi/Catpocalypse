@@ -1,3 +1,12 @@
+/**
+ * The Login Page is the page which allows the user to log into their account in Catpocalypse.
+ * The following page will explain the documentation of what occurs in LoginPage.js.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
+
 import React, {useState} from "react";
 import { useNavigate } from 'react-router';
 import logo from '/static/images/logo.png';
@@ -5,17 +14,37 @@ import {Button, Grid, Typography, TextField, FormControl, FormControlLabel,FormH
 import {Link} from "react-router-dom";
 import Background from "./static/Background";
 
+/**
+ * Main function of LoginPage.js
+ * @returns The login page asking the user to fill up their emaill address and their password, followed by two buttons "Log In" to proceed logging in, 
+ * @returns or "Back" which redirects the user to another page.
+ */
 export default function LoginPage(){
+    
+    /**
+     * Assign the useNavigate function to a variable.
+     */
     let navigate = useNavigate();
+
+    /**
+     * Sets the states of email, password and error message.
+     */
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     
+    /**
+     * 
+     * @returns ehecks if the fields have been filled or not. If they are not filled, it will return an error message allowing the user to re-enter again.
+     */
     function onLogin(){
         if (email=="" || password=="") {
             setErrorMessage("Not all fields have been filled.");
             return;
         }
+        /**
+         * Sends the requestOption to a variable with the POST method and sends it to the API at the backend.
+         */
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -31,16 +60,21 @@ export default function LoginPage(){
                 setErrorMessage("Error logging in.");
                 return response.json();
             }
-            //redirect to map page
+            //Redirect to map page
             console.log("ok!");
             navigate("/");
             location.reload();
             return response.json();
         }).then((data) => {
-            setErrorMessage(data.message);
+            setErrorMessage(data.message); // if there is an error, it will return the error message
         });
     }
 
+    /**
+     * The Login Page will be returned in a set background with Catpocalypse's colour palette
+     * Returns two input fields "Email Address" and "Password"
+     * Returns 2 centered buttons of "Log in" - which allows the user to login or go "Back"
+     */
     return (
         <Background
         gradient={false} 

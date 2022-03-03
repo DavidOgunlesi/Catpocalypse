@@ -1,3 +1,11 @@
+/**
+ * The Register Page is the page which allows the user to register an account in Catpocalypse.
+ * The following page will explain the documentation of what occurs in RegisterPage.js.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React, {useState} from "react";
 import PasswordChecklist from "react-password-checklist";
 import {isMobile} from 'react-device-detect';
@@ -11,9 +19,15 @@ import SlideUpWindow from "./dynamic/SlideUpWindow";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ModalWindow from "./dynamic/ModalWindow";
 
-export default function RegisterPage(){
-    const defaultEmail = "@exeter.ac.uk";
 
+/**
+ * 
+ * @returns the Registeration page of Catpocalypse when the user clicks on the "Sign Up" button from the Main Menu.
+ */
+export default function RegisterPage(){
+    
+    // constant variables used as states for registration, including username, email address, password, privacy policy amd the error message.
+    const defaultEmail = "@exeter.ac.uk";
     const [username, setUsername] = useState("");
     const [emailStart, setEmailStart] = useState("");
     const [emailEnd, setEmailEnd] = useState(defaultEmail);
@@ -23,9 +37,18 @@ export default function RegisterPage(){
     const [showPassword, setShowPassword] = useState(false);
     const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
     const [showRegisteredModal, setShowRegisteredModal] = useState(false);
-    var validPassword = false;
+    var validPassword = false; // valid password default value is always set as false.
 
 
+    /**
+     * The function checks if username, email, password, passwordAgain have been entered while using password validation as well.
+     * If there is any error, the function will return a specific error message for each error which took place.
+     * When successful, it will send a POST request to our API which helps in the creation of the account.
+     * At the same time, it will inform the user to check for the verification link in their email inbox.
+     * Again, if there is any error, the error will be known to the user.
+     * While signing up, the user has the option to access the privacy policy of Catpocalypse to check and see what data of theirs is going to taken and how it would be used by the company.
+     * @returns Ensures that all fields have been inputted while signing up. 
+     */
     function onRegister() {
         if (username=="" || emailStart=="" || password=="" || passwordAgain == "") {
             setErrorMessage("Not all fields have been filled.");
@@ -36,10 +59,10 @@ export default function RegisterPage(){
             setErrorMessage("Password doesn't meet criteria.");
             return;
         }
-        console.log(username);
-        console.log(password);
+        console.log(username); // Logs the username of the user
+        console.log(password); // Logs the password of the user
         const fullEmail = `${emailStart}${emailEnd}`;
-        console.log(fullEmail);
+        console.log(fullEmail); // Logs the full email address of the user including the domain "exeter.ac.uk"
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -61,7 +84,10 @@ export default function RegisterPage(){
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
-    
+    // Only allows registeration to take place if the user is playing in their mobile and not their desktop.
+    /**
+     * Returns a pop - up window asking the user to check their email for the verification link.
+     */
     if(isMobile){
         return (
             <Background 
