@@ -1,6 +1,19 @@
+/**
+ * The Horizontal Compass sets the compass on top of the Map view while playing Capolcalypse.
+ * It informs the user of the current direction they are in.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React.
+ */
 import { Box, Grid, Typography } from "@material-ui/core";
 import React,{useState} from "react";
 
+/**
+ * 
+ * @param {*} param0 
+ * @returns The Compass Letter
+ */
 function CompassLetter({coordinate, children}) {
     console.log(window.innerWidth/50)
     var absPixelPos = (90 + coordinate)*(window.innerWidth/50);
@@ -13,7 +26,7 @@ function CompassLetter({coordinate, children}) {
             <div style={style}><Typography variant="h2" component="h2">{children}</Typography></div>
     );
 }
-  
+  /** */
   const North = ({coordinate}) => {
     return (
         <div>
@@ -45,6 +58,9 @@ function CompassLetter({coordinate, children}) {
         </div>
     );
   };
+  /**
+   * Sets the style of the compass which is a transparent horizontal box and is centered as well.
+   */
   const style = {
     position: 'absolute',
     width: '100%',
@@ -54,6 +70,10 @@ function CompassLetter({coordinate, children}) {
     zIndex: 100000
   };
 
+/**
+ * 
+ * @returns The box showing the direction the user is currently in.
+ */
 export default function HorizontalCompass(){
     const [coordinate, setCoordinate] = useState(0);
 

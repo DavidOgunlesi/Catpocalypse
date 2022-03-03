@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: RegisterPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: RegisterPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Register Page is the page which allows the user to register an account in Catpocalypse.
  * The following page will explain the documentation of what occurs in RegisterPage.js.
  */
@@ -90,7 +118,7 @@ export default function RegisterPage(){
      */
     if(isMobile){
         return (
-            <Background 
+            &lt;Background 
             gradient={false} 
             primaryCol="#FEEAC2" 
             outlineCol="#FFC992" 
@@ -98,26 +126,26 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
-                <ModalWindow
+                &lt;ModalWindow
                 title="Check your Email!"
                 content="Check your email for a verification link."
                 open= {showRegisteredModal}
                 />
-                <SlideUpWindow
+                &lt;SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 
-                content={<PrivacyPolicy/>}
+                content={&lt;PrivacyPolicy/>}
                 callback={setShowPrivacyPolicy}
                 />
-                <div className="gradient">
-                    <img src={logo} className="logo" alt="Logo" />
-                    <div className="center">
-                        <Grid container spacing={1}>
-                            <Grid item xs={12} align="center">
-                                <Typography variant="h3" component="h3">Sign up</Typography>
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                    <TextField
+                &lt;div className="gradient">
+                    &lt;img src={logo} className="logo" alt="Logo" />
+                    &lt;div className="center">
+                        &lt;Grid container spacing={1}>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;Typography variant="h3" component="h3">Sign up&lt;/Typography>
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
                                         required={true}
                                         type = "text"
                                         onChange={e => setUsername(e.target.value)}
@@ -132,9 +160,9 @@ export default function RegisterPage(){
                                             background: "white"
                                         }}
                                     />
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                    <TextField
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
                                         required={true}
                                         type = "email"
                                         className="inputRounded"
@@ -150,22 +178,22 @@ export default function RegisterPage(){
                                         }}
                                         InputProps={{
                                             endAdornment: 
-                                                <InputAdornment position="start">
-                                                    <Select
+                                                &lt;InputAdornment position="start">
+                                                    &lt;Select
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 fullWidth={true}
                                                 value={defaultEmail}
                                                 onChange={e=> setEmailEnd(e.target.value)}
                                             >
-                                                <MenuItem value={defaultEmail}>{defaultEmail}</MenuItem>
-                                            </Select>
-                                            </InputAdornment>,
+                                                &lt;MenuItem value={defaultEmail}>{defaultEmail}&lt;/MenuItem>
+                                            &lt;/Select>
+                                            &lt;/InputAdornment>,
                                           }}
                                     />
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                    <TextField
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
                                         required={true}
                                         type={showPassword  ? 'text' : 'password'}
                                         value={password}
@@ -182,22 +210,22 @@ export default function RegisterPage(){
                                         }}
                                         InputProps={{
                                             endAdornment: 
-                                            <InputAdornment position="end">
-                                            <IconButton
+                                            &lt;InputAdornment position="end">
+                                            &lt;IconButton
                                                 aria-label="toggle password visibility"
                                                 onClick={_=> setShowPassword(!showPassword)}
                                                 onMouseDown={e=> e.preventDefault()}
                                                 edge="end"
                                             >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                            </InputAdornment>,
+                                                {showPassword ? &lt;VisibilityOff /> : &lt;Visibility />}
+                                            &lt;/IconButton>
+                                            &lt;/InputAdornment>,
                                           }}
                                     />
                                 
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                    <TextField
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                    &lt;TextField
                                         required={true}
                                         type = "password" 
                                         onChange={e => setPasswordAgain(e.target.value)}
@@ -212,14 +240,14 @@ export default function RegisterPage(){
                                             background: "white"
                                         }}
                                     />
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                <FormHelperText variant="filled" error={true}>
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;FormHelperText variant="filled" error={true}>
                                     {errorMessage}
-                                </FormHelperText>
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                <PasswordChecklist
+                                &lt;/FormHelperText>
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;PasswordChecklist
                                     rules={["minLength","specialChar","number","capital","match"]}
                                     minLength={5}
                                     value={password}
@@ -227,9 +255,9 @@ export default function RegisterPage(){
                                     onChange={(isValid) => {validPassword = isValid}}
                                     style = {{color:"white"}}
                                 />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button 
+                            &lt;/Grid>
+                            &lt;Grid item xs={12}>
+                                &lt;Button 
                                 color = 'primary' 
                                 variant="contained"
                                 size="large" 
@@ -241,10 +269,10 @@ export default function RegisterPage(){
                                 onClick={onRegister}
                                 >
                                     Sign Up!
-                                </Button> 
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button 
+                                &lt;/Button> 
+                            &lt;/Grid>
+                            &lt;Grid item xs={12}>
+                                &lt;Button 
                                 color = 'primary' 
                                 variant="contained"
                                 size="large" 
@@ -255,25 +283,47 @@ export default function RegisterPage(){
                                 to="/"
                                 >
                                     Back
-                                </Button> 
-                            </Grid>
-                            <Grid item xs={12} align="center">
-                                <Button 
+                                &lt;/Button> 
+                            &lt;/Grid>
+                            &lt;Grid item xs={12} align="center">
+                                &lt;Button 
                                 variant="string" 
                                 underline="hover" 
                                 color = 'primary'  
                                 onClick={_ => setShowPrivacyPolicy(true)}
                                 >
                                     PRIVACY POLICY
-                                </Button>
-                            </Grid>
-                        </Grid> 
-                    </div>
-                </div>
-            </Background>
+                                &lt;/Button>
+                            &lt;/Grid>
+                        &lt;/Grid> 
+                    &lt;/div>
+                &lt;/div>
+            &lt;/Background>
         );
     }else {
 
     }
     
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

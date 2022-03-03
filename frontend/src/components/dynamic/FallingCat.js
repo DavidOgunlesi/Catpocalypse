@@ -1,8 +1,20 @@
+/**
+ * Animation of the falling cats is done in this file
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React from "react";
 import cat from '/static/images/normal_cat.png';
 import {getRandomRange} from '/src/util/math.js'
 import Expire from "../util/Expire";
 
+/**
+ * Main Function of FallingCat.js
+ * @param {*} props 
+ * @returns falling cats which are spinning in both clockwise and anti-clockwise directions
+ */
 export default function FallingCat(props){
 
     const randomSpeed = getRandomRange(props.minSpeed,props.maxSpeed);

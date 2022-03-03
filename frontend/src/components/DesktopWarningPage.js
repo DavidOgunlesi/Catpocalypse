@@ -1,10 +1,26 @@
+/**
+ * The Desktop Warning Page checks if the user is using their mobile or their desktop
+ * It will return an error, if the user is using their desktop as they should not be able to access the game from their web browser on a computer.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React from "react";
 import logo from '/static/images/logo.png';
 import cat from '/static/images/cat.png';
 import {Button, Typography} from "@material-ui/core";
 import Background from "./static/Background";
+
+/**
+ * The main function for DesktopWarningPage.js
+ * @returns An error message will show up if the player is using their desktop to play Catpocalypse
+ */
 export default function DesktopWarningPage(){
 
+    /**
+     * Returns the error message with a set background with our Catpocalypse's logo with the error message 
+     */
     return (
         <Background 
         gradient={false} 

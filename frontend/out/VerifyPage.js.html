@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: VerifyPage.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: VerifyPage.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Verify Page shows up when the user clicks on the verification link they received in their email inbox 
  * and would verify the link as a final step for the user to complete their registeration.
  */
@@ -71,7 +99,7 @@ export default function VerifyPage(){
      */
     function renderModalWindow() {
         if (verified) {
-            return (<ModalWindow 
+            return (&lt;ModalWindow 
                 title="Success!" 
                 content={`Congratulations ${playerName}! You have successfully verified your account. Come join us in the Catpocalypse World!!`}
                 open={true}
@@ -82,17 +110,17 @@ export default function VerifyPage(){
              * Error message in the modal window in form of a grid.
              */
             return (
-            <div>
-                <ModalWindow
+            &lt;div>
+                &lt;ModalWindow
                 title="Error in Verifying" 
                 content={`${errorMsg} We can resend the link to your email address.`} 
                 open={true}
                 buttonLink="/"
                 extraContentBefore={
                     
-                    <Grid container spacing={2}>
-                    <Grid item xs={12} align="center">
-                        <TextField
+                    &lt;Grid container spacing={2}>
+                    &lt;Grid item xs={12} align="center">
+                        &lt;TextField
                             required={true}
                             type = "email"
                             className="inputRounded"
@@ -108,21 +136,21 @@ export default function VerifyPage(){
                             }}
                             InputProps={{
                                 endAdornment: 
-                                    <InputAdornment position="start">
-                                        <Select
+                                    &lt;InputAdornment position="start">
+                                        &lt;Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
                                     fullWidth={true}
                                     value={defaultEmail}
                                     onChange={e=> setEmailEnd(e.target.value)}
                                 >
-                                    <MenuItem value={defaultEmail}>{defaultEmail}</MenuItem>
-                                </Select>
-                                </InputAdornment>,
+                                    &lt;MenuItem value={defaultEmail}>{defaultEmail}&lt;/MenuItem>
+                                &lt;/Select>
+                                &lt;/InputAdornment>,
                                 }}
                         />
-                    </Grid>
-                    <Grid item xs ={12}> <Button 
+                    &lt;/Grid>
+                    &lt;Grid item xs ={12}> &lt;Button 
                     color = 'primary' 
                     variant="contained"
                     size="large" 
@@ -132,11 +160,11 @@ export default function VerifyPage(){
                     onClick={_ => {resendEmail()}}
                     >
                         Resend
-                    </Button></Grid>
-                    </Grid>
+                    &lt;/Button>&lt;/Grid>
+                    &lt;/Grid>
                 }
                 /> 
-            </div>);
+            &lt;/div>);
         }
     }
     /**
@@ -144,7 +172,7 @@ export default function VerifyPage(){
      */
     verify(); 
     return (
-        <Background
+        &lt;Background
         gradient={false} 
         primaryCol="#FEEAC2" 
         outlineCol="#FFC992" 
@@ -153,6 +181,28 @@ export default function VerifyPage(){
         backgroundCol="#FFF59D"
         >
         {renderModalWindow()}   
-        </Background>
+        &lt;/Background>
     );
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

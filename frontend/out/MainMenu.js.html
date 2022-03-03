@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: MainMenu.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: MainMenu.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Main Menu page is the first page which shows up when you run the server and open http://localhost:8000
  * The following page will explain the documentation of what occurs in MainMenu.js
  */
@@ -18,15 +46,13 @@ import LoginPage from "./LoginPage";
 import {GoogleLogin} from 'react-google-login';
 import GoogleLogo from '/static/images/GoogleLogo.png';
 import ModalWindow from "./dynamic/ModalWindow";
-import ChoiceModalWindow from "./dynamic/ChoiceModalWindow";
 
 /**
  * The main function of the MainMenu.js page
- * @type {Array<number>}
+ * @type {Array&lt;number>}
  * @returns the Main Menu of Catpocalypse when the game gets initialised.
  */
 export default function MainMenu(){
-    const [musicEnabled,setMusicEnabled] = useState(false);
     /**
      * Fixed Variables which cannot be changed or modified
      */
@@ -37,17 +63,17 @@ export default function MainMenu(){
      */
     const requireLogin = true;
 
-    useEffect(()=>{
-        setMusicEnabled(manageModalState(isMusicPlaying()));
-    })
-
-    function responseGoogleSuccess(response) {
-        console.log("SUCCESS");
-        console.log(response);
-        console.log(response.profileObj);
-    }
-    function responseGoogleFailure(response) {
-        console.log("FAIL");
+    /**
+     * @returns {clientId} The ClientID which is required for the Google Login for the user to use their Google account instead of registering on Catpocalypse.
+     */
+    const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
+    
+    /**
+     * 
+     * @param {string} response is the response it requires and returns from the server via the console.
+     * @returns {string} console reponse in the log
+     */
+    function responseGoogle(response) {
         console.log(response);
     }
 
@@ -55,10 +81,10 @@ export default function MainMenu(){
      * This function lets cats get spawned and creates an animation effect of falling cats in the background.
      */
     function spawnCats(){ // integer state
-        for (let index = 0; index < getRandomRange(1,3); index++) {
+        for (let index = 0; index &lt; getRandomRange(1,3); index++) {
             var x = Math.floor(Math.random() * window.innerWidth);
             var y = -200;
-            var cat = (<FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
+            var cat = (&lt;FallingCat x={x} y={y} minSpeed={3} maxSpeed={6} aliveTime={10}/>);
             var catDiv = document.createElement('div');
             render(cat,catDiv);
             document.getElementById("catHolder").append(catDiv);
@@ -83,9 +109,9 @@ export default function MainMenu(){
      */
     function renderStartButton(){
         return (
-            <Grid container spacing={10}>
-                <Grid item xs={12}>
-                    <Button 
+            &lt;Grid container spacing={10}>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
                     color = 'primary' 
                     variant="contained"
                     size="large" 
@@ -96,9 +122,9 @@ export default function MainMenu(){
                     fullWidth={true}
                     >
                         Click Anywhere To Start The Catpocalpyse!
-                    </Button> 
-                </Grid>
-            </Grid>
+                    &lt;/Button> 
+                &lt;/Grid>
+            &lt;/Grid>
         );
     }
 
@@ -111,9 +137,9 @@ export default function MainMenu(){
      */
     function renderRegAndLoginButton(){
         return (
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Button 
+            &lt;Grid container spacing={3}>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
                     color = 'primary' 
                     variant = "contained"
                     size = "large" 
@@ -123,10 +149,10 @@ export default function MainMenu(){
                     to="/login" // redirects the user to the login page
                     >
                         Log in
-                    </Button> 
-                </Grid>
-                <Grid item xs={12}>
-                    <Button 
+                    &lt;/Button> 
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Button 
                     color = 'primary' 
                     variant="contained"
                     size="large" 
@@ -136,39 +162,39 @@ export default function MainMenu(){
                     to="/register" // redirects the user to the register page.
                     >
                         Sign up
-                    </Button> 
-                </Grid>
-                <Grid item xs={12}>
-                    <Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:</Typography>
-                </Grid>
+                    &lt;/Button> 
+                &lt;/Grid>
+                &lt;Grid item xs={12}>
+                    &lt;Typography style={{display: "flex", justifyContent: "center", alignItems: "center"}}>Or log in with:&lt;/Typography>
+                &lt;/Grid>
                 
-                <GoogleLogin
+                &lt;GoogleLogin
                 clientId={clientId}
                 render={renderProps => (
-                    <Grid item xs={12}>
-                        <Button 
-                        variant="contained"
-                        size="large" 
-                        style={{ borderRadius: 25, background: "white" }}
-                        fullWidth={true}
-                        onClick={renderProps.onClick} disabled={renderProps.disabled}
-                        startIcon={
-                                <InputAdornment position="start">
-                                    <img src={GoogleLogo} width={20}/>
-                                </InputAdornment>}
-                        >
-                        <Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                    &lt;Grid item xs={12}>
+                        &lt;Button 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 25, background: "white" }}
+                    fullWidth={true}
+                    onClick={renderProps.onClick} disabled={renderProps.disabled}
+                    startIcon={
+                            &lt;InputAdornment position="start">
+                                &lt;img src={GoogleLogo} width={20}/>
+                            &lt;/InputAdornment>}
+                    >
+                        &lt;Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                             GOOGLE
-                        </Typography>
-                        </Button>
-                </Grid>
+                        &lt;/Typography>
+                        &lt;/Button>
+                &lt;/Grid>
                   )}
                 buttonText="Login"
-                onSuccess={responseGoogleSuccess}
-                onFailure={responseGoogleFailure}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
                 />
-            </Grid>
+            &lt;/Grid>
         );
     }
 
@@ -195,36 +221,8 @@ export default function MainMenu(){
         document.getElementById('soundtrack').play();
     }
 
-    function isMusicPlaying(){
-        console.log("g");
-        var audio = document.getElementById('soundtrack');
-        console.log(audio);
-        console.log(!(audio == null ? false : audio.paused));
-        return (audio == null ? false : audio.paused);
-    }
-
-    function manageModalState(isMusicPlaying){
-        if (!isMusicPlaying == false || audioModalOpen == false) {
-            return false;
-        }
-        return true;
-    }
-
-    function renderModal(){
-        if (!musicEnabled) {
-            return (
-                <ChoiceModalWindow
-                title="Enable Audio?" 
-                content="Would you like audio to play in the game?"
-                onClick={_=>{enableAudio()}}
-                />
-            );
-        }
-        return null;
-    }
-
     return (
-        <Background 
+        &lt;Background 
         gradient={false} 
         primaryCol="#FEEAC2" 
         outlineCol="#FFC992" 
@@ -232,17 +230,37 @@ export default function MainMenu(){
         skew={-32}
         backgroundCol="#FFF59D"
         >
-            {renderModal()}
-            <Button 
+            &lt;ModalWindow 
+                title="Enable Audio?" 
+                content="Would you like audio to play in the game?" 
+                open={true}
+                openState={audioModalOpen}
+                onClick={_=>{enableAudio()}}
+                buttonText="Yes"
+                extraContentAfter={
+                    &lt;Button 
+                    color = 'primary' 
+                    variant="contained"
+                    size="large" 
+                    style={{ borderRadius: 50 }}
+                    disableElevation={true}
+                    fullWidth={true}
+                    onClick={_=>{setAudioModalOpen(false);}}
+                    >
+                        No
+                    &lt;/Button>
+                }
+                />
+            &lt;Button 
             variant="outline" 
             style={{ width:"100%", height: "100%", position:"absolute"}}
             />
-            <img src={logo} className="logo" alt="Logo" />
-            <div id="catHolder"></div>
-            <div className="center">
+            &lt;img src={logo} className="logo" alt="Logo" />
+            &lt;div id="catHolder">&lt;/div>
+            &lt;div className="center">
                 {chooseRender()}
-            </div>
-        </Background>
+            &lt;/div>
+        &lt;/Background>
     );
     
 }
@@ -255,14 +273,14 @@ import {BrowserView, MobileView} from 'react-device-detect';
 
 const MyComponent = () => {
     return (
-        <>
-            <BrowserView>
-                <h1>This is rendered only in browser</h1>
-            </BrowserView>
-            <MobileView>
-                <h1>This is rendered only on mobile</h1>
-            </MobileView>
-        </>
+        &lt;>
+            &lt;BrowserView>
+                &lt;h1>This is rendered only in browser&lt;/h1>
+            &lt;/BrowserView>
+            &lt;MobileView>
+                &lt;h1>This is rendered only on mobile&lt;/h1>
+            &lt;/MobileView>
+        &lt;/>
     );
 };
 
@@ -274,11 +292,11 @@ import {isMobile} from 'react-device-detect';
 const MyComponent = () => {
     if(isMobile) {
         return (
-            <div> This content is available only on mobile</div>
+            &lt;div> This content is available only on mobile&lt;/div>
         )
     }
     return (
-        <div> content... </div>
+        &lt;div> content... &lt;/div>
     );
 };
 ----------------
@@ -300,5 +318,27 @@ function handleWindowSizeChange() {
 }
 
 // If we are in a moble browser or not
-const isDebugMobile = width <= 768;
-*/
+const isDebugMobile = width &lt;= 768;
+*/</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

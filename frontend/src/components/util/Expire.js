@@ -1,3 +1,8 @@
+/**
+ * Checks if the page is expiring
+ * The imports which are required for this page to run which includes packages from React.
+ */
+
 import React, { useEffect, useState } from "react";
 
 const Expire = props => {
