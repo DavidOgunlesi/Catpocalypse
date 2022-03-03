@@ -131,21 +131,17 @@ function Map(gps){
       lastMouseX = e.clientX;
     }
     function rotateMap(e){
-      if (e.which == 1) {
-        console.log("X: " + e.pageX + " Y: " + e.pageY);
-      }
-      console.log("X: " + e.pageX + " Y: " + e.pageY);
       console.log("mouse location:", e.clientX, e.clientY);
-      //const mousePosXDelta = e.clientX - lastMouseX;
-      //map.setHeading(map.getHeading() + mousePosXDelta);
-      //console.log("mouse delta:", mousePosXDelta);
+      const mousePosXDelta = e.clientX - lastMouseX;
+      map.setHeading(map.getHeading() + mousePosXDelta);
+      console.log("mouse delta:", mousePosXDelta);
     }
 
     /**
      * MAIN MAP HTML
      */
     return (
-        <div style={{ height: '100vh', width: '100%' }} onMouseMove={rotateMap}>
+        <div style={{ height: '100vh', width: '100%' }} /*onMouseDown={saveMouseX} onMouseMove={rotateMap}*/>
         <HorizontalCompass />
         <ModalWindow 
             title="Be aware of your surroundings" 
@@ -161,7 +157,7 @@ function Map(gps){
                 mapId: id, 
                 draggable: false,  
                 disableDefaultUI: true,
-                gestureHandling: "cooperative"
+                gestureHandling: "greedy"
             }}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
