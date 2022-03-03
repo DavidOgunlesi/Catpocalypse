@@ -9,6 +9,8 @@ import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
+import GoogleLogin from 'react-google-login';
+
 
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 
@@ -49,6 +51,7 @@ export default function App(){
             console.log(data);
         });
     }
+
     /*
     <ModalWindow 
         title="*Crickets*" 

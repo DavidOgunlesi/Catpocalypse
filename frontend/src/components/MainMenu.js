@@ -14,9 +14,21 @@ import GoogleLogo from '/static/images/GoogleLogo.png';
 import ModalWindow from "./dynamic/ModalWindow";
 
 export default function MainMenu(){
+    const [musicEnabled,setMusicEnabled] = useState(false);
     const [audioModalOpen,setAudioModalOpen] = useState(true);
     const requireLogin = true;
-    function responseGoogle(response) {
+
+    useEffect(()=>{
+        setMusicEnabled(manageModalState(isMusicPlaying()));
+    })
+
+    function responseGoogleSuccess(response) {
+        console.log("SUCCESS");
+        console.log(response);
+        console.log(response.profileObj);
+    }
+    function responseGoogleFailure(response) {
+        console.log("FAIL");
         console.log(response);
     }
 
@@ -97,16 +109,16 @@ export default function MainMenu(){
                 render={renderProps => (
                     <Grid item xs={12}>
                         <Button 
-                    variant="contained"
-                    size="large" 
-                    style={{ borderRadius: 25, background: "white" }}
-                    fullWidth={true}
-                    onClick={renderProps.onClick} disabled={renderProps.disabled}
-                    startIcon={
-                            <InputAdornment position="start">
-                                <img src={GoogleLogo} width={20}/>
-                            </InputAdornment>}
-                    >
+                        variant="contained"
+                        size="large" 
+                        style={{ borderRadius: 25, background: "white" }}
+                        fullWidth={true}
+                        onClick={renderProps.onClick} disabled={renderProps.disabled}
+                        startIcon={
+                                <InputAdornment position="start">
+                                    <img src={GoogleLogo} width={20}/>
+                                </InputAdornment>}
+                        >
                         <Typography  style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                             GOOGLE
                         </Typography>
@@ -114,8 +126,8 @@ export default function MainMenu(){
                 </Grid>
                   )}
                 buttonText="Login"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onSuccess={responseGoogleSuccess}
+                onFailure={responseGoogleFailure}
                 cookiePolicy={'single_host_origin'}
                 />
             </Grid>
@@ -135,6 +147,21 @@ export default function MainMenu(){
         document.getElementById('soundtrack').play();
     }
 
+    function isMusicPlaying(){
+        console.log("g");
+        var audio = document.getElementById('soundtrack');
+        console.log(audio);
+        console.log(!(audio == null ? false : audio.paused));
+        return (audio == null ? false : audio.paused);
+    }
+
+    function manageModalState(isMusicPlaying){
+        if (!isMusicPlaying == false || audioModalOpen == false) {
+            return false;
+        }
+        return true;
+    }
+
     return (
         <Background 
         gradient={false} 
@@ -146,9 +173,9 @@ export default function MainMenu(){
         >
             <ModalWindow 
                 title="Enable Audio?" 
-                content="Would you like audio to play in the game?" 
-                open={true}
-                openState={audioModalOpen}
+                content="Would you like audio to play in the game?"
+                open = {true}
+                openState={!musicEnabled}
                 onClick={_=>{enableAudio()}}
                 buttonText="Yes"
                 extraContentAfter={
