@@ -77,7 +77,7 @@ export default function HorizontalCompass(){
                     }}
 
                 ></div>
-                <button
+                {/* <button
                     onClick={() => {
                     console.log(coordinate);
                     setCoordinate(coordinate + 10);
@@ -92,7 +92,7 @@ export default function HorizontalCompass(){
                     }}
                 >
                     decrement
-                </button>
+                </button> -->*/}
           
         </Box>
       );
