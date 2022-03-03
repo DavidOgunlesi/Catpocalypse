@@ -8,13 +8,19 @@ import HorizontalCompass from "./dynamic/HorizontalCompass";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
-const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91";
+const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 import MapMarker from "./static/MapMarker";
 
 var map ,maps = null;
 
 function Map(gps){
+  var mouseDiv = document.getElementById("mouseDiv");
+  $(mouseDiv).on("mousemove", function(e) {
+      if (e.which == 1) {
+          console.log("X: " + e.pageX + " Y: " + e.pageY);
+      }
+  });
     const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
     const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 
@@ -33,7 +39,7 @@ function Map(gps){
         map = _map;
         maps = _maps;
         //map.setMapTypeId('hybrid');
-        //map.setTilt(45);
+        map.setTilt(55);
       };
 
     //Get GPS data from geolocated and update state
@@ -118,28 +124,44 @@ function Map(gps){
         </Background>
       );
     }
+
+    var lastMouseX = 0;
+    function saveMouseX(e){
+      console.log("saved mouseX:", e.clientX);
+      lastMouseX = e.clientX;
+    }
+    function rotateMap(e){
+      if (e.which == 1) {
+        console.log("X: " + e.pageX + " Y: " + e.pageY);
+      }
+      console.log("X: " + e.pageX + " Y: " + e.pageY);
+      console.log("mouse location:", e.clientX, e.clientY);
+      //const mousePosXDelta = e.clientX - lastMouseX;
+      //map.setHeading(map.getHeading() + mousePosXDelta);
+      //console.log("mouse delta:", mousePosXDelta);
+    }
+
     /**
      * MAIN MAP HTML
      */
     return (
-        <div style={{ height: '100vh', width: '100%' }}>
+        <div style={{ height: '100vh', width: '100%' }} onMouseMove={rotateMap}>
+        <HorizontalCompass />
         <ModalWindow 
             title="Be aware of your surroundings" 
             content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
             open={true}
             imageSrc = {warningCat}
             /> 
-            <HorizontalCompass/>
           <GoogleMapReact
             bootstrapURLKeys={{ key: key }}
             defaultCenter={defaultLocation}
-            defaultZoom={20}
+            defaultZoom={19}
             options= {{ 
                 mapId: id, 
                 draggable: false,  
                 disableDefaultUI: true,
-                rotateControl: true,
-                rotateControlOptions: true
+                gestureHandling: "cooperative"
             }}
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
