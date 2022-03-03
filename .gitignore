@@ -133,12 +133,8 @@ dmypy.json
 node_modules/
 
 #stinky mac stuff
-**/.DS_Store
-.main.js
-main.js
-.main.js.LICENSE.txt
-main.js.LICENSE.txt
 .DS_Store
-.DS_Store/
-frontend/static/frontend/main.js
-frontend/static/frontend/main.js.LICENSE.txt
+
+#Javascript stuff
+main.js
+main.js.LICENSE.txt
