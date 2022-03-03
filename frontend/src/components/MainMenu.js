@@ -12,6 +12,7 @@ import LoginPage from "./LoginPage";
 import {GoogleLogin} from 'react-google-login';
 import GoogleLogo from '/static/images/GoogleLogo.png';
 import ModalWindow from "./dynamic/ModalWindow";
+import ChoiceModalWindow from "./dynamic/ChoiceModalWindow";
 
 export default function MainMenu(){
     const [musicEnabled,setMusicEnabled] = useState(false);
@@ -162,6 +163,19 @@ export default function MainMenu(){
         return true;
     }
 
+    function renderModal(){
+        if (!musicEnabled) {
+            return (
+                <ChoiceModalWindow
+                title="Enable Audio?" 
+                content="Would you like audio to play in the game?"
+                onClick={_=>{enableAudio()}}
+                />
+            );
+        }
+        return null;
+    }
+
     return (
         <Background 
         gradient={false} 
@@ -171,27 +185,7 @@ export default function MainMenu(){
         skew={-32}
         backgroundCol="#FFF59D"
         >
-            <ModalWindow 
-                title="Enable Audio?" 
-                content="Would you like audio to play in the game?"
-                open = {true}
-                openState={!musicEnabled}
-                onClick={_=>{enableAudio()}}
-                buttonText="Yes"
-                extraContentAfter={
-                    <Button 
-                    color = 'primary' 
-                    variant="contained"
-                    size="large" 
-                    style={{ borderRadius: 50 }}
-                    disableElevation={true}
-                    fullWidth={true}
-                    onClick={_=>{setAudioModalOpen(false);}}
-                    >
-                        No
-                    </Button>
-                }
-                />
+            {renderModal()}
             <Button 
             variant="outline" 
             style={{ width:"100%", height: "100%", position:"absolute"}}
