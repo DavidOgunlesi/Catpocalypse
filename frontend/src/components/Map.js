@@ -5,6 +5,7 @@ import { geolocated } from "react-geolocated";
 import GoogleMapReact from 'google-map-react';
 import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
+import { useDrag, useGesture } from '@use-gesture/react'
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -17,6 +18,33 @@ var map ,maps = null;
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+
+	var mouseX, lastHeading = 0;
+	/*const drag = useDrag(({ down, movement: [mx, my] }) => {
+		map.setHeading(map.getHeading() -  mx);
+		console.log({ x: down ? mx : 0, y: down ? my : 0 });
+	})*/
+
+	const onMouseDown = ({xy: [mx, my] }) =>{
+		mouseX = mx;
+		lastHeading = map.getHeading();
+		console.log(`setting mouseX: ${mouseX} last Heading:${lastHeading}`);
+	};
+
+	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
+		var mouseDelta =  mx - mouseX;
+		map.setHeading(lastHeading -  mouseDelta/10);
+		//console.log(`mouseX: ${mouseX}`)
+		//console.log(`mouseDelta: ${mouseDelta}`);
+		//console.log({ x: down ? mx : 0, y: down ? my : 0 });
+	};
+
+	const drag2 = useGesture(
+		{
+		  onDrag: onDrag,
+		  onDragStart: onMouseDown,
+		}
+	  );
 
   	var playerGPSData = {
 		lat: null, 
@@ -37,7 +65,7 @@ function Map(gps){
 		// Initialise map object and assign to global variable
 		map = _map;
 		maps = _maps;
-		map.setTilt(55);
+		map.setTilt(75);
 	};
 
 	//Get GPS data from geolocated and update state
@@ -47,7 +75,7 @@ function Map(gps){
 		if(gps.coords == null){
 			return;
 		}
-		console.log(playerGPSData);
+		//console.log(playerGPSData);
 		const lat = gps.coords.latitude;
 		const lng = gps.coords.longitude;
 		const altitude = gps.coords.altitude;
@@ -141,7 +169,7 @@ function Map(gps){
 	 * MAIN MAP HTML
 	 */
 	return (
-		<div style={{ height: '100vh', width: '100%' }} /*onMouseDown={saveMouseX} onMouseMove={rotateMap}*/>
+		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
 		<HorizontalCompass />
 		<ModalWindow 
 			title="Be aware of your surroundings" 

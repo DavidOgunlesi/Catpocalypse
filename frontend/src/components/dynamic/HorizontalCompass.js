@@ -65,7 +65,7 @@ function CompassLetter({coordinate, children}) {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    pointerEvents: 'none',
+    //pointerEvents: 'none',
     background: 'transparent',
     textAlign: 'center',
     zIndex: 100000
@@ -75,10 +75,11 @@ function CompassLetter({coordinate, children}) {
  * 
  * @returns The box showing the direction the user is currently in.
  */
-export default function HorizontalCompass(){
+export default function HorizontalCompass(props){
     const [coordinate, setCoordinate] = useState(0);
 
     return (
+        <div {...props}>
         <Box sx={style}>
                 <North coordinate={coordinate} />
                 <East coordinate={coordinate} />
@@ -116,6 +117,7 @@ export default function HorizontalCompass(){
                 </button> -->*/}
           
         </Box>
+        </div>
       );
     
 }
