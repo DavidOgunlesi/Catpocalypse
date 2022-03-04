@@ -4,6 +4,7 @@ from .views import LoginAPIView
 from .views import IsLoggedInAPIView
 from .views import VerifyEmail
 from .views import GetCats
+from .views import LogoutAPIView
 
 #from rest_framework.routers import DefaultRouter
 
@@ -19,7 +20,8 @@ urlpatterns = [
     path('login', LoginAPIView.as_view()),
     path('isLoggedIn', IsLoggedInAPIView.as_view()),
     path('email-verify/', VerifyEmail.as_view(), name="email-verify"),
-    path('get-cats', GetCats.as_view())
+    path('get-cats', GetCats.as_view()),
+    path('logout', LogoutAPIView.as_view())
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),
     # path('get_url', GetCatView.as_view())

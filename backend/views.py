@@ -101,6 +101,19 @@ class LoginAPIView(GenericAPIView):
                     return JsonResponse(data, status=status.HTTP_200_OK)
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
+class LogoutAPIView(GenericAPIView):
+    
+    def get(self, request):
+        # check if current user has an active session
+        if not self.request.session.exists(self.request.session.session_key):
+            # if current user does not have an active session, do nothing
+            return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
+        else:
+            # if current user does have ana active session, delete current session data and session cookie
+            self.request.session.flush()
+            return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
+
+
 
 class IsLoggedInAPIView(GenericAPIView):
 
