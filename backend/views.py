@@ -5,19 +5,20 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import response, status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser
+from .models import CustomUser, Wildcat
 from .utils import Util
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 import jwt
 from django.conf import settings
 from rest_framework.response import Response
+from . import functions
 
 # Import Models here (if necessary)
 from .models import CustomUser
 
 # Import Serializers here
-from .serializers import LoginSerializer, RegisterSerializer
+from .serializers import CatSerializer, LoginSerializer, RegisterSerializer
 
 
 # Create your api views here. 
@@ -111,6 +112,28 @@ class IsLoggedInAPIView(GenericAPIView):
                 'username':self.request.session.get('username')
             }
             return JsonResponse(data, status=status.HTTP_200_OK) 
+
+
+# API view to let us view a list of all the different wildcats
+class GetCats(GenericAPIView):
+
+    serializer_class = CatSerializer
+    queryset = Wildcat.objects.all()
+
+    def get(self, request):
+        serializer = self.serializer_class()
+        wildcats = Wildcat.objects.all()
+
+        if wildcats:
+            # if wildcats exist in the database, send wildcats
+            serializer = CatSerializer(wildcats, many=True)
+            return Response(serializer.data)
+        else:
+            # first generate wildcats, then send wildcats
+            functions.cat_generation(10)
+            serializer = CatSerializer(wildcats, many=True)
+            return Response(serializer.data)
+
 
 '''
 class UserLoggedIn(APIView):
