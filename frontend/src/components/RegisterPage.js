@@ -84,6 +84,20 @@ export default function RegisterPage(){
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
+
+    function renderModalWindow(){
+        if (showRegisteredModal) {
+            return(
+                <ModalWindow
+                title="Check your Email!"
+                content="Check your email for a verification link."
+                open= {true}
+                />
+            );
+        }
+        return null;
+    }
+
     // Only allows registeration to take place if the user is playing in their mobile and not their desktop.
     /**
      * Returns a pop - up window asking the user to check their email for the verification link.
@@ -98,11 +112,7 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
-                <ModalWindow
-                title="Check your Email!"
-                content="Check your email for a verification link."
-                open= {showRegisteredModal}
-                />
+                {renderModalWindow()}
                 <SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 
