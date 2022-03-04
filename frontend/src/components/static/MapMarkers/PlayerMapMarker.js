@@ -9,10 +9,12 @@ import marker from "/static/images/marker.png";
  * Main Function of PlayerMapMarker.js
  * @returns A basic marker showing the player their current location using GPS
  */
-export default function PlayerMapMarker(){
+export default function PlayerMapMarker({
+    size=50
+}){
     return (
         <div>
-            <img src={marker} width="50" style={{position: "absolute", bottom: 1}} />
+            <img src={marker} width={size} style={{position: "absolute", bottom: 1}} />
         </div>
     );
     

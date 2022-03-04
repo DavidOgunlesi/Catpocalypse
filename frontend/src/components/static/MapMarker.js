@@ -12,18 +12,16 @@ import PlayerMapMarker from "./MapMarkers/PlayerMapMarker";
  * @returns the marker at which the player is at using the GPS location and also returns the location at which the cats are being spawned
  */
 export default function MapMarker({
-    markerType=""
+    markerType="",
+    size=50
 }){
     switch (markerType) {
         case "cat":
-            return(<CatMapMarker/>);
-            break;
+            return(<CatMapMarker size={size} />);
         case "player":
-            return(<PlayerMapMarker/>);
-            break;
+            return(<PlayerMapMarker size={size} />);
         default:
             return(null);
-            break;
     }
     
 }

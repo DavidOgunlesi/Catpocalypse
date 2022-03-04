@@ -9,10 +9,12 @@ import Cat from "/static/images/cat.png";
  * Main Function of CatMapMarker.js
  * @returns The cat image which bounces on the interactive map
  */
-export default function CatMapMarker(){
+export default function CatMapMarker({
+    size=50
+}){
     return (
         <div class="markerImg">
-            <img class="bounce"  src={Cat}/>
+            <img class="bounce" width={size} src={Cat}/>
         </div>
     );
     

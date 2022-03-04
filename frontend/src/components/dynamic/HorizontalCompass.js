@@ -65,6 +65,7 @@ function CompassLetter({coordinate, children}) {
     position: 'absolute',
     width: '100%',
     height: '100%',
+    pointerEvents: 'none',
     background: 'transparent',
     textAlign: 'center',
     zIndex: 100000
