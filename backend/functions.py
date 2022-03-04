@@ -42,7 +42,7 @@ def cat_generation(num):
     Args:
         num (_int_): the number of cats to be generated
     """
-    make_test_cats() # create some cats (REMOVE THIS)
+    # make_test_cats() # create some cats (REMOVE THIS)
     for i in range(num):
         # get a random cat from the Cats table
         rand_cat = Cats.objects.order_by('?').first() # May be a more efficient way to do this

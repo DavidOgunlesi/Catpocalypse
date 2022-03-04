@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 # Import Models here
-from .models import ExampleModel
+from .models import ExampleModel, Wildcat
 from .models import CustomUser
 
 
@@ -34,6 +34,14 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('email','username','password')
+
+
+# serializer takes Model and translates into JSON response
+class CatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wildcat
+        # all the fields we want to include in the output/serialization
+        fields = ('wildcat_id','cat_id','latitude','longitude','start_health')
 
 
 
