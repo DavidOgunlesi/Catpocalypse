@@ -1,6 +1,6 @@
 from csv import list_dialects
 from django.contrib import admin
-from backend.models import CustomUser
+from backend.models import CustomUser, Cats
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
@@ -20,5 +20,9 @@ class CustomUserAdmin(UserAdmin):
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
+
+class CatIndexAdmin(admin.ModelAdmin):
+    list_display = [f.name for f in Cats._meta.fields]
     
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Cats, CatIndexAdmin)

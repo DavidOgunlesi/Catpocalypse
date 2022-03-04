@@ -143,7 +143,8 @@ class GetCats(GenericAPIView):
             return Response(serializer.data)
         else:
             # first generate wildcats, then send wildcats
-            functions.cat_generation(10)
+            functions.capacity_check()
+            
             serializer = CatSerializer(wildcats, many=True)
             return Response(serializer.data)
 
