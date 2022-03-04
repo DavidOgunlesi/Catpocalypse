@@ -119,6 +119,7 @@ export default function App(){
                         <Route path="/register" element={redirectIfLoggedIn(<RegisterPage/>)}/>
                         <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
+                        <Route path="/dev/map" element={<Map/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
