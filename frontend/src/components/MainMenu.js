@@ -37,6 +37,11 @@ export default function MainMenu(){
      */
     const requireLogin = true;
 
+    /**
+     * @returns {clientId} The ClientID which is required for the Google Login for the user to use their Google account instead of registering with Catpocalypse.
+     */
+    const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
+
     useEffect(()=>{
         setMusicEnabled(manageModalState(isMusicPlaying()));
     })
