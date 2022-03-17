@@ -26,6 +26,7 @@ import ChoiceModalWindow from "./dynamic/ChoiceModalWindow";
  * @returns the Main Menu of Catpocalypse when the game gets initialised.
  */
 export default function MainMenu(){
+    const clientId = ""
     const [musicEnabled,setMusicEnabled] = useState(false);
     /**
      * Fixed Variables which cannot be changed or modified
