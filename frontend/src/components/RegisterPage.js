@@ -138,7 +138,6 @@ export default function RegisterPage(){
                                         placeholder="Username"
                                         variant="standard"
                                         textalign="center"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -155,7 +154,6 @@ export default function RegisterPage(){
                                         onChange={e=> setEmailStart(e.target.value)}
                                         variant="standard"
                                         textalign="center"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -187,7 +185,6 @@ export default function RegisterPage(){
                                         placeholder="Password"
                                         variant="standard"
                                         textalign="center"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -218,7 +215,6 @@ export default function RegisterPage(){
                                         placeholder="Re-enter Password"
                                         variant="standard"
                                         textalign="center"
-                                        variant="outlined"
                                         size="small"
                                         fullWidth={true}
                                         style={{

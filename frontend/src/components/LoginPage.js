@@ -100,7 +100,6 @@ export default function LoginPage(){
                             placeholder="Enter Email"
                             variant="standard"
                             textalign="center"
-                            variant="outlined"
                             size="small"
                             fullWidth={true}
                             style={{
@@ -118,7 +117,6 @@ export default function LoginPage(){
                         placeholder="Enter Password"
                         variant="standard"
                         textalign="center"
-                        variant="outlined"
                         size="small"
                         fullWidth={true}
                         style={{
