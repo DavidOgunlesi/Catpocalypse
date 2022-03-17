@@ -72,6 +72,7 @@ export default function RegisterPage(){
                 email: fullEmail
             }),
         };
+        
         //send post request to our api!
         fetch('/api/register', requestOptions)
         .then((response) => {
@@ -80,18 +81,20 @@ export default function RegisterPage(){
                 return;
             }
             setShowRegisteredModal(true);
+            console.log("SENT!");
             return response.json();
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
 
-    function renderModalWindow(){
+    function renderSuccessModal(){
         if (showRegisteredModal) {
             return(
                 <ModalWindow
                 title="Check your Email!"
                 content="Check your email for a verification link."
                 open= {true}
+                //openState= {showRegisteredModal}
                 />
             );
         }
@@ -112,7 +115,7 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
-                {renderModalWindow()}
+                {renderSuccessModal()}
                 <SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 

@@ -34,11 +34,27 @@ function CompassLetter({coordinate, children}) {
         </div>
     );
   };
+  const NorthEast = ({coordinate}) => {
+    coordinate += 45;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360}> NE </CompassLetter>
+        </div>
+    );
+  };
   const East = ({coordinate}) => {
     coordinate += 90;
     return (
         <div>
             <CompassLetter coordinate={coordinate % 360}> E </CompassLetter>
+        </div>
+    );
+  };
+  const SouthEast = ({coordinate}) => {
+    coordinate += 135;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360}> SE </CompassLetter>
         </div>
     );
   };
@@ -50,11 +66,27 @@ function CompassLetter({coordinate, children}) {
         </div>
     );
   };
+  const SouthWest = ({coordinate}) => {
+    coordinate += 225;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360}> SW </CompassLetter>
+        </div>
+    );
+  };
   const West = ({coordinate}) => {
     coordinate += 270;
     return (
         <div>
             <CompassLetter coordinate={coordinate % 360}> W </CompassLetter>
+        </div>
+    );
+  };
+  const NorthWest = ({coordinate}) => {
+    coordinate += 315;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360}> NW </CompassLetter>
         </div>
     );
   };
@@ -82,9 +114,13 @@ export default function HorizontalCompass(props){
         <div {...props}>
         <Box sx={style}>
                 <North coordinate={coordinate} />
+                <NorthEast coordinate={coordinate} />
                 <East coordinate={coordinate} />
+                <SouthEast coordinate={coordinate} />
                 <South coordinate={coordinate} />
+                <SouthWest coordinate={coordinate} />
                 <West coordinate={coordinate} />
+                <NorthWest coordinate={coordinate} />
                 <div
                     style={{
                         position: 'relative',
