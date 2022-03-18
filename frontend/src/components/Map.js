@@ -7,6 +7,7 @@ import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
 import { useDrag, useGesture } from '@use-gesture/react'
 import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import MapMarker from "./static/MapMarker";
 import {IconButton} from '@material-ui/core'
 import OverayUI from "./dynamic/OverlayUI";
@@ -17,7 +18,7 @@ const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=b
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
 
-var map ,maps = null;
+var map, maps = null;
 
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
@@ -32,7 +33,7 @@ function Map(gps){
 	const onMouseDown = ({xy: [mx, my] }) =>{
 		mouseX = mx;
 		lastHeading = map.getHeading();
-		console.log(`setting mouseX: ${mouseX} last Heading:${lastHeading}`);
+		// console.log(`setting mouseX: ${mouseX} last Heading:${lastHeading}`);
 	};
 
 	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
@@ -101,8 +102,8 @@ function Map(gps){
 			return;
 		}
 		defaultLocation
-		slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
-		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
+		// slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
+		slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
   	const renderCats = () =>{
@@ -176,10 +177,11 @@ function Map(gps){
 	 */
 	return (
 		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
-		<HorizontalCompass/>
+		<HorizontalCompass mapObj={map}/>
 		<OverayUI>
 		<IconButton 
-			x="-10px"
+			x="0px"
+			y="140px"
 			float="right"
 			size="large"
 			color = 'primary' 
@@ -211,10 +213,10 @@ function Map(gps){
 			>
 			{renderCats()}
 			<MapMarker
-				lat={playerGPSData.lat}
-				lng={playerGPSData.lng}
 				markerType="player"
+				size={120}
 			/>
+
 			</GoogleMapReact>
 		</div>
 	);
