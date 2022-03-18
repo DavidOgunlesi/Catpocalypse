@@ -96,8 +96,9 @@ function Map(gps){
 		if (map == null){
 			return;
 		}
-
-		slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
+		defaultLocation
+		slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
+		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
   	const renderCats = () =>{
@@ -113,6 +114,7 @@ function Map(gps){
 						lng={cat.longitude}
 						markerType="cat"
 						size={60}
+						id={cat.cat_id}
 					/>
 				);
 			}
@@ -170,7 +172,7 @@ function Map(gps){
 	 */
 	return (
 		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
-		<HorizontalCompass />
+		{/*<HorizontalCompass />*/}
 		<ModalWindow 
 			title="Be aware of your surroundings" 
 			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
@@ -191,11 +193,6 @@ function Map(gps){
 			onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 			>
 			{renderCats()}
-			{/*<MapMarker
-				lat={playerGPSData.lat+0.0003}
-				lng={playerGPSData.lng+0.0003}
-				markerType="cat"
-			/>*/}
 			<MapMarker
 				lat={playerGPSData.lat}
 				lng={playerGPSData.lng}

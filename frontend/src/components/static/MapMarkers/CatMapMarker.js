@@ -21,12 +21,17 @@ export default class CatMapMarker extends Component{
         this.state = {
             style: style,
           };
-        console.log("Constructed");
+        // console.log("Constructed");
+        this.loadCatImageFromId = this.loadCatImageFromId.bind(this);
       }
+
+    loadCatImageFromId(id){
+        return `/static/images/cats/${id}.png`
+    }  
     render() {
     return (
         <div class="markerImg">
-            <img width={this.props.size} src={Cat} style={this.state.style}/>
+            <img width={this.props.size} src={this.loadCatImageFromId(this.props.id)} style={this.state.style}/>
         </div>
     );
 }
