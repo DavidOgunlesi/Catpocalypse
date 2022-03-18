@@ -20,7 +20,7 @@ export default function MapMarker({
         case "cat":
             return(<CatMapMarker size={size} id={id}/>);
         case "player":
-            return(<PlayerMapMarker size={size} />);
+            return(<PlayerMapMarker size={size}/>);
         default:
             return(null);
     }
