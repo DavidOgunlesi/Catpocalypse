@@ -100,7 +100,6 @@ export default function VerifyPage(){
                             onChange={e=> setEmailStart(e.target.value)}
                             variant="standard"
                             textalign="center"
-                            variant="outlined"
                             size="small"
                             fullWidth={true}
                             style={{
