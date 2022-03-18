@@ -4,7 +4,7 @@
  */
 import React, {Component} from "react";
 import MissingCat from "/static/images/cats/undefined.png";
-import {getRandomRange} from '/src/util/math.js'
+import {getRandomRange} from '/src/util/math.js';
 
 /**
  * Main Function of CatMapMarker.js
