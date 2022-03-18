@@ -113,7 +113,7 @@ function Map(gps){
 						lat={cat.latitude}
 						lng={cat.longitude}
 						markerType="cat"
-						size={60}
+						size={120}
 						id={cat.cat_id}
 					/>
 				);
