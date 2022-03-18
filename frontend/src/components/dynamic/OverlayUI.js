@@ -58,7 +58,6 @@ export default function OverayUI({
         // Checking isValidElement is the safe way and avoids a typescript
         // error too.
         if (React.isValidElement(child)) {
-            console.log(child.props)
             var childrenStyle = {
                 position: 'relative',
                 float: child.props.float,
