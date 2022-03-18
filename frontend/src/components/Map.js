@@ -205,7 +205,7 @@ function Map(gps){
 			options= {{ 
 				mapId: id, 
 				draggable: false,  
-				//disableDefaultUI: true,
+				disableDefaultUI: true,
 				gestureHandling: "greedy"
 			}}
 			yesIWantToUseGoogleMapApiInternals
