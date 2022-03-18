@@ -3,7 +3,7 @@
  * The imports which are required for this page to run which includes packages from React and other files which exist.
  */
 import React, {Component} from "react";
-import Cat from "/static/images/cat.png";
+import MissingCat from "/static/images/cats/undefined.png";
 import {getRandomRange} from '/src/util/math.js'
 
 /**
@@ -21,17 +21,22 @@ export default class CatMapMarker extends Component{
         this.state = {
             style: style,
           };
-        // console.log("Constructed");
         this.loadCatImageFromId = this.loadCatImageFromId.bind(this);
       }
-
+    
+    /**
+     * Loads a cat image from the appropriate id
+     */
+    
     loadCatImageFromId(id){
         return `/static/images/cats/${id}.png`
     }  
     render() {
     return (
         <div class="markerImg">
-            <img width={this.props.size} src={this.loadCatImageFromId(this.props.id)} style={this.state.style}/>
+            <object data={this.loadCatImageFromId(this.props.id)} width={this.props.size} style={this.state.style} type="image/png">
+                <img width={this.props.size} src={MissingCat} style={this.state.style}/>
+            </object>
         </div>
     );
 }
