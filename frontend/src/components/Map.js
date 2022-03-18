@@ -6,12 +6,16 @@ import GoogleMapReact from 'google-map-react';
 import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
 import { useDrag, useGesture } from '@use-gesture/react'
+import SettingsIcon from '@material-ui/icons/Settings';
+import MapMarker from "./static/MapMarker";
+import {IconButton} from '@material-ui/core'
+import OverayUI from "./dynamic/OverlayUI";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
-import MapMarker from "./static/MapMarker";
+
 
 var map ,maps = null;
 
@@ -172,7 +176,20 @@ function Map(gps){
 	 */
 	return (
 		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
-		{/*<HorizontalCompass />*/}
+		<HorizontalCompass/>
+		<OverayUI>
+		<IconButton 
+			x="-10px"
+			float="right"
+			size="large"
+			color = 'primary' 
+			variant="text"
+			style={{ borderRadius: 50 }}
+			disableElevation={true}
+		>
+		<SettingsIcon iconStyle={{largeIcon:{width:60, height:60}}}/>
+		</IconButton>
+		</OverayUI>
 		<ModalWindow 
 			title="Be aware of your surroundings" 
 			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
