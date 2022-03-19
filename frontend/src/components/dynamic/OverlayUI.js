@@ -20,7 +20,7 @@ import { makeStyles } from "@material-ui/core";
     //pointerEvents: 'none',
     background: 'transparent',
     textAlign: 'center',
-    zIndex: 100000
+    zIndex: 10000
   };
 
   const useDefStyles = makeStyles((theme) => ({
