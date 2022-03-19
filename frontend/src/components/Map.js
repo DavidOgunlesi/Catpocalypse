@@ -11,6 +11,8 @@ import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import MapMarker from "./static/MapMarker";
 import {IconButton} from '@material-ui/core'
 import OverayUI from "./dynamic/OverlayUI";
+import SlideUpWindow from "./dynamic/SlideUpWindow";
+import SettingsPage from "./SettingsPage"
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -23,6 +25,7 @@ var map, maps = null;
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+	const [showSettings, setSettings] = useState(false);
 
 	var mouseX, lastHeading = 0;
 	/*const drag = useDrag(({ down, movement: [mx, my] }) => {
@@ -176,23 +179,32 @@ function Map(gps){
 	 * MAIN MAP HTML
 	 */
 	return (
-		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
-		<HorizontalCompass mapObj={map}/>
-		<OverayUI>
-		<IconButton 
-			x="0px"
-			y="140px"
-			float="right"
-			size="large"
-			color = 'primary' 
-			variant="text"
-			style={{ borderRadius: 50 }}
-			disableElevation={true}
-		>
-		<SettingsIcon iconStyle={{largeIcon:{width:60, height:60}}}/>
-		</IconButton>
-		</OverayUI>
-		<ModalWindow 
+		<div>
+			<SlideUpWindow
+			open={showSettings}
+			title="Settings"
+			callback={() => setSettings(false)}
+			blur={true}
+			content={<SettingsPage/>}
+			/>
+			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
+			<HorizontalCompass mapObj={map}/>
+			<OverayUI>
+			<IconButton 
+				x="0px"
+				y="140px"
+				float="right"
+				size="large"
+				color = 'primary' 
+				variant="text"
+				style={{ borderRadius: 50 }}
+				disableElevation={true}
+				onClick={() => setSettings(true)}
+			>
+			<SettingsIcon iconStyle={{largeIcon:{width:60, height:60}}}/>
+			</IconButton>
+			</OverayUI>
+			<ModalWindow 
 			title="Be aware of your surroundings" 
 			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
 			open={true}
@@ -213,12 +225,13 @@ function Map(gps){
 			onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 			>
 			{renderCats()}
-			<MapMarker
-				markerType="player"
-				size={120}
-			/>
+				<MapMarker
+					markerType="player"
+					size={120}
+				/>
 
 			</GoogleMapReact>
+			</div>
 		</div>
 	);
     
