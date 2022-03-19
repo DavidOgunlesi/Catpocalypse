@@ -151,7 +151,7 @@ Sliding up Component
     overflow: hidden;
     background-color: #000; color: #FFF;
     transition: all 1s;
-    z-index: 1000;
+    z-index: 100000;
   }
   
 .slider.close {
@@ -167,7 +167,26 @@ Sliding up Component
     overflow:auto;
     overflow-x: hidden;
 }
-
+/*
+-----------------------------------
+Transparent Sliding up Component
+------------------------------------
+*/
+.blurSlider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    backdrop-filter: blur(20px) brightness(80%) hue-rotate(120deg) contrast(100%);
+    transition: all 1s;
+    z-index: 100000;
+  }
+  
+.blurSlider.close {
+    top: 100%;
+    height: 0;
+}
 /*
 -----------------------------------
 Map Markers
