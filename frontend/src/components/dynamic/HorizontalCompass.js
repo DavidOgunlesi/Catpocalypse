@@ -114,10 +114,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    //pointerEvents: 'none',
+    pointerEvents: 'none',
     background: 'transparent',
     textAlign: 'center',
-    zIndex: 100000
+    zIndex: 10000
   };
 
 /**
