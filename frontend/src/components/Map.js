@@ -7,9 +7,10 @@ import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
 import { useDrag, useGesture } from '@use-gesture/react'
 import SettingsIcon from '@material-ui/icons/Settings';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import MenuButtonImg from '/static/images/MApMenuButton.png';
+import PlayerMarker from '/static/images/marker.png';
 import MapMarker from "./static/MapMarker";
-import {IconButton} from '@material-ui/core'
+import {IconButton, Button} from '@material-ui/core'
 import OverayUI from "./dynamic/OverlayUI";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
 import SettingsPage from "./SettingsPage"
@@ -190,19 +191,41 @@ function Map(gps){
 			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
 			<HorizontalCompass mapObj={map}/>
 			<OverayUI>
-			<IconButton 
-				x="0px"
-				y="140px"
-				float="right"
-				size="large"
-				color = 'primary' 
-				variant="text"
-				style={{ borderRadius: 50 }}
-				disableElevation={true}
-				onClick={() => setSettings(true)}
-			>
-			<SettingsIcon iconStyle={{largeIcon:{width:60, height:60}}}/>
-			</IconButton>
+				<div  x="55%" y="50%">
+					<img src={PlayerMarker} width={50} style={{
+						position:"absolute",
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						margin: "auto",
+					}}/>
+				</div>
+				<IconButton 
+					x="0px"
+					y="140px"
+					anchor="top right"
+					size="large"
+					color = 'primary' 
+					variant="text"
+					style={{ borderRadius: 50 }}
+					disableElevation={true}
+					onClick={() => setSettings(true)}
+				>
+				<SettingsIcon/>
+				</IconButton>
+				<IconButton 
+					x="-100px"
+					y="-100px"
+					anchor="bottom right"
+					size="large"
+					color = 'primary' 
+					variant="text"
+					style={{ borderRadius: 0 }}
+					disableElevation={true}
+				>
+				<img src={MenuButtonImg} width={200}/>
+				</IconButton>
 			</OverayUI>
 			<ModalWindow 
 			title="Be aware of your surroundings" 
@@ -225,11 +248,6 @@ function Map(gps){
 			onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 			>
 			{renderCats()}
-				<MapMarker
-					markerType="player"
-					size={120}
-				/>
-
 			</GoogleMapReact>
 			</div>
 		</div>
