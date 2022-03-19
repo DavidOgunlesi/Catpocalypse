@@ -8,6 +8,7 @@
 import React from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
 
+
 /**
  * Main function for SlideUpWindow.js
  * @param {string} content The content will be input when the Sliding Up Window shows up 
@@ -17,19 +18,24 @@ export default function SlideUpWindow({
     title = "Modal Title",
     content = "Modal Content",
     open = false,
-    callback = null
+    callback = null,
+    blur = false
 }){
+    var styleClass = blur ? "blurSlider" : "slider";
+
     if (open) {
-        $('.slider').toggleClass('close');
+        $(`.${styleClass}`).toggleClass('close');
     }
     
     function closeWindow(){
-        callback();
-        $('.slider').toggleClass('close');
+        if (callback!=null){
+            callback();
+        }
+        $(`.${styleClass}`).toggleClass('close');
     }
-
+    
     return (
-        <div class="slider close">
+        <div class={`${styleClass} close`}>
             <div class="content">
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -57,5 +63,6 @@ export default function SlideUpWindow({
                 </Button>
         </div>
     );
+    
     
 }
