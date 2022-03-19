@@ -37,7 +37,8 @@ function CompassLetter({coordinate, children, fontVariant}) {
                     fontWeight: 600
                 }} 
                 variant={fontVariant} 
-                component={fontVariant}>
+                component={fontVariant}
+                >
                     {children}
                 </Typography>
             </animated.div>
@@ -47,7 +48,7 @@ function CompassLetter({coordinate, children, fontVariant}) {
   const North = ({coordinate}) => {
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360} fontVariant="h2"> N </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> N </CompassLetter>
         </div>
     );
   };
@@ -63,7 +64,7 @@ function CompassLetter({coordinate, children, fontVariant}) {
     coordinate += 90;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360} fontVariant="h2"> E </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> E </CompassLetter>
         </div>
     );
   };
@@ -79,7 +80,7 @@ function CompassLetter({coordinate, children, fontVariant}) {
     coordinate += 180;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360} fontVariant="h2"> S </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> S </CompassLetter>
         </div>
     );
   };
@@ -95,7 +96,7 @@ function CompassLetter({coordinate, children, fontVariant}) {
     coordinate += 270;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360} fontVariant="h2"> W </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> W </CompassLetter>
         </div>
     );
   };
@@ -155,7 +156,7 @@ export default function HorizontalCompass({
                 <div
                     style={{
                         position: 'relative',
-                        top:"100px",
+                        top:"80px",
                         height: "5px",
                         width: '80%',
                         background: "black",
