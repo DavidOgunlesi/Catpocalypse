@@ -19,7 +19,8 @@ export default function SlideUpWindow({
     content = "Modal Content",
     open = false,
     callback = null,
-    blur = false
+    blur = false,
+    textColor=""
 }){
     var styleClass = blur ? "blurSlider" : "slider";
 
@@ -39,12 +40,12 @@ export default function SlideUpWindow({
             <div class="content">
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                    <Typography id="modal-modal-title" variant="h3" component="h3">
+                    <Typography style={{color: textColor}} id="modal-modal-title" variant="h3" component="h3">
                         {title}
                     </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography style={{color: textColor}} id="modal-modal-description" sx={{ mt: 2 }}>
                         {content}
                     </Typography>
                     </Grid>
