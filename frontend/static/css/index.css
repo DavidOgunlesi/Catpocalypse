@@ -186,7 +186,10 @@ Transparent Sliding up Component
 .blurSlider.close {
     top: 100%;
     height: 0;
+    backdrop-filter: blur(0px) brightness(100%) hue-rotate(0deg) contrast(100%);
+    display: "none";
 }
+
 /*
 -----------------------------------
 Map Markers
@@ -235,4 +238,19 @@ Map Markers
 }
 img[src="http://maps.gstatic.com/mapfiles/api-3/images/google_white2.png"], a[href^="http://maps.google.com/maps"]{
     display:none !important;
+}
+/*
+--------------------------------------
+Circle
+-------------------------------------
+*/
+.transparentCircle {
+    background-color: rgba(255,255,255, 0);
+    border:10px rgba(255,255,255, 0.5);    
+    height:100px; 
+    width:100px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    
 }
