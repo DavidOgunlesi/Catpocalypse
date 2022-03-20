@@ -19,8 +19,7 @@ import { makeStyles } from "@material-ui/core";
 	height: '100%',
 	//pointerEvents: 'none',
 	background: 'transparent',
-	textAlign: 'center',
-	zIndex: 10000
+	textAlign: 'center'
   };
 
   const useDefStyles = makeStyles((theme) => ({
@@ -63,43 +62,50 @@ export default function OverayUI({
 				childrenStyle = {
 					position: 'absolute',
 					top: child.props.y,
-					left: child.props.x
+					left: child.props.x,
+					zIndex: child.props.sortingLayer
 				}
 		  	}else if (child.props.anchor == "top right"){
 				childrenStyle = {
 					position: 'absolute',
 					top: child.props.y,
-					right: child.props.x
+					right: child.props.x,
+					zIndex: child.props.sortingLayer
 				}
 			}else if (child.props.anchor == "top middle"){
 				childrenStyle = {
 					position: 'absolute',
 					top: child.props.y,
-					left: child.props.x
+					left: child.props.x,
+					zIndex: child.props.sortingLayer
 				}
 			} else if (child.props.anchor == "top bottom"){
 				childrenStyle = {
 					position: 'absolute',
 					left: child.props.x,
-					bottom: child.props.y
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
 				}
 			}else if (child.props.anchor == "bottom right"){
 				childrenStyle = {
 					position: 'absolute',
 					right: child.props.x,
-					bottom: child.props.y
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
 				}
 			}else if (child.props.anchor == "bottom left"){
 				childrenStyle = {
 					position: 'absolute',
 					left: child.props.x,
-					bottom: child.props.y
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
 				}
 			}else{
 				childrenStyle = {
 					position: 'absolute',
 					right: child.props.x,
-					top: child.props.y
+					top: child.props.y,
+					zIndex: child.props.sortingLayer
 				}
 			}
 		  
