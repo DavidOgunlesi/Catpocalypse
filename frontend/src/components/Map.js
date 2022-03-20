@@ -10,10 +10,19 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import MenuButtonImg from '/static/images/MApMenuButton.png';
 import PlayerMarker from '/static/images/marker.png';
 import MapMarker from "./static/MapMarker";
-import {IconButton, Button} from '@material-ui/core'
-import OverayUI from "./dynamic/OverlayUI";
+import {IconButton, Button, Typography} from '@material-ui/core'
+import OverlayUI from "./dynamic/OverlayUI";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
-import SettingsPage from "./SettingsPage"
+import SettingsPage from "./SettingsPage";
+import GameIcon from "./GameIcon";
+import { CircleMenu, CircleMenuItem, TooltipPlacement } from "react-circular-menu";
+import { useSpring, animated } from 'react-spring';
+import Battle from "./subpages/Battle";
+import Catdex from "./subpages/Catdex";
+import CatPlayerInventory from "./subpages/CatPlayerInventory";
+import Catsino from "./subpages/Catsino";
+import Friends from "./subpages/Friends";
+import Shop from "./subpages/Shop";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -27,6 +36,9 @@ function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 	const [showSettings, setSettings] = useState(false);
+	const [showMapMenu, setMapMenu] = useState(false);
+	const [currentSubMenu, setSubMenu] = useState("none");
+	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
 	/*const drag = useDrag(({ down, movement: [mx, my] }) => {
@@ -65,7 +77,10 @@ function Map(gps){
 
     //Run refresh every second
 	useEffect(() => {
-		var timerID = setInterval(() =>  refeshGPSData(), 1000);
+		var timerID = setInterval(() =>  {
+			refeshGPSData();
+			hideBadElements();
+		}, 1000);
 		return () => clearInterval(timerID);
 	});
     
@@ -76,6 +91,21 @@ function Map(gps){
 		maps = _maps;
 		map.setTilt(75);
 	};
+
+	/*
+	* Hides elements associated with radial menu, so all the buttons can be clicked
+	* Elemnts it forcibly hides cover one row of buttons due to the hacky setup I
+	* created. But it works without issues so if not broken why fix it! 
+	*/
+	const hideBadElements = () =>{
+		var collection = document.getElementsByClassName("sc-dkPtRN kZbNWb");
+		for (let index = 0; index < collection.length; index++) {
+			const element = collection.item(index);
+			element.style.display = "none";
+			element.style.visibility = "hidden";
+			
+		}
+	}
 
 	//Get GPS data from geolocated and update state
 	const refeshGPSData = () =>{
@@ -131,6 +161,271 @@ function Map(gps){
 		return cats;
   	}
 
+	const renderTransparentBackground = () =>{
+		return (
+			<animated.div 
+				style={useSpring({
+					to: {
+						position: "absolute",
+						width: "100%",
+						height: "100%",
+						top: 0,
+						overflow: "hidden",
+						display: showMapMenu ? "block" : "none",
+						backdropFilter: showMapMenu ? " blur(5px) brightness(70%) hue-rotate(120deg)" : null,
+						zIndex: 10000,
+						touchAction: "none",
+						backgroundImage: "radial-gradient(circle at bottom right, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0))"
+					},
+					delay: 0,
+				})}
+			>
+			</animated.div>
+		);
+		
+	}
+
+	const renderOverlayUI = () => {
+		return (
+			<div>
+			<OverlayUI>
+				<div  x="55%" y="50%" sortingLayer={1000}>
+					<img src={PlayerMarker} width={50} style={{
+						position:"absolute",
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						margin: "auto"
+					}}/>
+				</div>
+				
+				<div 
+				x="-100px"
+				y="-100px"
+				anchor="bottom right"
+				sortingLayer= {20010}
+				>
+					<CircleMenu
+					startAngle={200}
+					rotationAngle={70}
+					itemSize={4}
+					radius={10}
+					menuToggleElement={
+						<IconButton
+							size="large"
+							color = 'primary' 
+							variant="text"
+							disableElevation={true}
+						>
+						<img src={MenuButtonImg} width={200}/>
+						</IconButton>
+					}
+					onMenuToggle={(menuActive)=>{
+						setMapMenu(menuActive);
+						inputRef.current.click();
+					}}
+					/**
+					 * rotationAngleInclusive (default true)
+					 * Whether to include the ending angle in rotation because an
+					 * item at 360deg is the same as an item at 0deg if inclusive.
+					 * Leave this prop for angles other than 360deg unless otherwise desired.
+					 */
+					rotationAngleInclusive={true}
+					>
+					<CircleMenuItem
+					onClick={() => setSubMenu("catdex")}
+					tooltip="Catdex"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="catdex"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("cats")}
+					tooltip="Cats" 
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="cats"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("battle")}
+					tooltip="Battle" 
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="battle"/>
+					</CircleMenuItem>
+					</CircleMenu>
+					</div>
+			</OverlayUI>
+			<OverlayUI>
+				<div 
+				className="transparentCircle"
+				zIndex={100000}
+				/>
+				<div 
+				x="-100px"
+				y="-100px"
+				anchor="bottom right"
+				sortingLayer= {20000}
+				>
+					<CircleMenu
+					startAngle={200}
+					rotationAngle={70}
+					itemSize={4}
+					radius={20}
+					menuToggleElement={
+						<IconButton
+							size="large"
+							color = 'primary' 
+							variant="text"
+							disableElevation={true}
+							ref={inputRef}
+						>
+						<img src={MenuButtonImg} width={200}/>
+						</IconButton>
+					}
+					/**
+					 * rotationAngleInclusive (default true)
+					 * Whether to include the ending angle in rotation because an
+					 * item at 360deg is the same as an item at 0deg if inclusive.
+					 * Leave this prop for angles other than 360deg unless otherwise desired.
+					 */
+					rotationAngleInclusive={true}
+					>
+					<CircleMenuItem
+					onClick={() => setSubMenu("friends")}
+					tooltip="Friends"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="friends"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("shop")}
+					tooltip="Shop"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="shop"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => {
+						setSubMenu("catsino");
+						console.log(currentSubMenu);
+					}}
+					tooltip="Catsino"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="catsino"/>
+					</CircleMenuItem>
+					</CircleMenu>
+					
+					</div>
+			</OverlayUI>
+			</div>
+		);
+	}
+
+	const renderSettingsButton = () =>{
+		return (
+			<div
+			style={{
+				display: showMapMenu ? "block" : "none"
+			}}
+			>
+			<OverlayUI>
+				<IconButton 
+					x="0px"
+					y="140px"
+					anchor="top right"
+					sortingLayer={30000}
+					size="large"
+					color = 'primary' 
+					variant="text"
+					style={{ borderRadius: 50 }}
+					onClick={() => setSubMenu("settings")}
+				>
+				<animated.div
+				style={useSpring({
+					from:{
+						opacity: 0
+					},
+					to: {
+						opacity: 1
+					},
+					delay: 1000,
+				})}
+				>
+					<Typography variant="h4" component="h4" style={{color:'white'}}>Settings</Typography>
+				</animated.div>
+				<animated.div
+				style={useSpring({
+					from:{
+						opacity: 0,
+						transform:" rotate(0deg)",
+					},
+					to: {
+						transform: "rotate(180deg)",
+						opacity: 1,
+					},
+					delay: 1000,
+				})}
+				>
+					<SettingsIcon style={{color:'white'}}/>
+				</animated.div>
+				</IconButton>
+			</OverlayUI>
+			</div>
+		);
+	}
+
+	const renderSubMenus = () => {
+		var page = (<SettingsPage/>)
+		var title = ""
+		switch (currentSubMenu) {
+			case "settings":
+				page = (<SettingsPage/>)
+				title = "Settings"
+				break;
+			case "catdex":
+				page = (<Catdex/>)
+				title = "Catdex"
+				break;
+			case "catinv":
+				page = (<CatPlayerInventory/>)
+				title = "Cats"
+				break;
+			case "battle":
+				page = (<Battle/>)
+				title = "Battle"
+				break;
+			case "friends":
+				page = (<Friends/>)
+				title = "Friends"
+				break;
+			case "shop":
+				page = (<Shop/>)
+				title = "Shop"
+				break;
+			case "catsino":
+				page = (<Catsino/>)
+				title = "Catsino"
+				break;
+			default:
+				break;
+			}
+		console.log(page)
+		return (
+			<div>
+				<SlideUpWindow
+				open={currentSubMenu != "none"}
+				title={title}
+				callback={() => setSubMenu("none")}
+				blur={true}
+				content={page}
+				textColor = "#fff"
+				/>
+				</div>
+		);
+	}
   /**
    * WARNINGS
    */
@@ -179,54 +474,22 @@ function Map(gps){
 	/**
 	 * MAIN MAP HTML
 	 */
+	/**
+	 * import Battle from "./Battle";
+import Catdex from "./Catdex";
+import CatPlayerInventory from "./CatPlayerInventory";
+import Catsino from "./Catsino";
+import Friends from "./Friends";
+import Shop from "./Shop";
+	 */
 	return (
 		<div>
-			<SlideUpWindow
-			open={showSettings}
-			title="Settings"
-			callback={() => setSettings(false)}
-			blur={true}
-			content={<SettingsPage/>}
-			/>
+			{renderSubMenus()}
 			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
 			<HorizontalCompass mapObj={map}/>
-			<OverayUI>
-				<div  x="55%" y="50%">
-					<img src={PlayerMarker} width={50} style={{
-						position:"absolute",
-						top: 0,
-						left: 0,
-						right: 0,
-						bottom: 0,
-						margin: "auto",
-					}}/>
-				</div>
-				<IconButton 
-					x="0px"
-					y="140px"
-					anchor="top right"
-					size="large"
-					color = 'primary' 
-					variant="text"
-					style={{ borderRadius: 50 }}
-					disableElevation={true}
-					onClick={() => setSettings(true)}
-				>
-				<SettingsIcon/>
-				</IconButton>
-				<IconButton 
-					x="-100px"
-					y="-100px"
-					anchor="bottom right"
-					size="large"
-					color = 'primary' 
-					variant="text"
-					style={{ borderRadius: 0 }}
-					disableElevation={true}
-				>
-				<img src={MenuButtonImg} width={200}/>
-				</IconButton>
-			</OverayUI>
+			{renderOverlayUI()}
+			{renderTransparentBackground()}
+			{renderSettingsButton()}
 			<ModalWindow 
 			title="Be aware of your surroundings" 
 			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
