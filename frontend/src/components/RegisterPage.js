@@ -72,6 +72,7 @@ export default function RegisterPage(){
                 email: fullEmail
             }),
         };
+        
         //send post request to our api!
         fetch('/api/register', requestOptions)
         .then((response) => {
@@ -80,18 +81,20 @@ export default function RegisterPage(){
                 return;
             }
             setShowRegisteredModal(true);
+            console.log("SENT!");
             return response.json();
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
 
-    function renderModalWindow(){
+    function renderSuccessModal(){
         if (showRegisteredModal) {
             return(
                 <ModalWindow
                 title="Check your Email!"
                 content="Check your email for a verification link."
                 open= {true}
+                //openState= {showRegisteredModal}
                 />
             );
         }
@@ -112,7 +115,7 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
-                {renderModalWindow()}
+                {renderSuccessModal()}
                 <SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 
@@ -133,9 +136,8 @@ export default function RegisterPage(){
                                         onChange={e => setUsername(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Username"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -150,9 +152,8 @@ export default function RegisterPage(){
                                         className="inputRounded"
                                         placeholder="Email"
                                         onChange={e=> setEmailStart(e.target.value)}
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -182,9 +183,8 @@ export default function RegisterPage(){
                                         onChange={e => setPassword(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Password"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -213,9 +213,8 @@ export default function RegisterPage(){
                                         onChange={e => setPasswordAgain(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Re-enter Password"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{

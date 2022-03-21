@@ -75,7 +75,7 @@ export default function VerifyPage(){
                 title="Success!" 
                 content={`Congratulations ${playerName}! You have successfully verified your account. Come join us in the Catpocalypse World!!`}
                 open={true}
-    
+                buttonLink="/"
                 />);
         } else {
             /**
@@ -100,7 +100,6 @@ export default function VerifyPage(){
                             onChange={e=> setEmailStart(e.target.value)}
                             variant="standard"
                             textalign="center"
-                            variant="outlined"
                             size="small"
                             fullWidth={true}
                             style={{

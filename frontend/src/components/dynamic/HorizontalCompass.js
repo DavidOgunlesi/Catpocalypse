@@ -6,31 +6,57 @@
 /**
  * The imports which are required for this page to run which includes packages from React.
  */
-import { Box, Grid, Typography } from "@material-ui/core";
-import React,{useState} from "react";
+import { Box, Typography } from "@material-ui/core";
+import React,{useState, useEffect} from "react";
+import { useSpring, animated } from 'react-spring'
 
 /**
  * 
  * @param {*} param0 
  * @returns The Compass Letter
  */
-function CompassLetter({coordinate, children}) {
-    console.log(window.innerWidth/50)
+function CompassLetter({coordinate, children, fontVariant}) {
+    // console.log(window.innerWidth/50)
     var absPixelPos = (90 + coordinate)*(window.innerWidth/50);
-    const style = {
-        position: 'absolute',
-        left: `${absPixelPos}px`,
-        display: `${ coordinate < 90 && coordinate > -90 ? "block" : "none"}`
-    }
+
+    const props = useSpring({
+        to: {
+            left: `${absPixelPos}px`, 
+            position: 'absolute',
+            
+        },
+        delay: 0,
+      })
+      //console.log(coordinate)
     return(
-            <div style={style}><Typography variant="h2" component="h2">{children}</Typography></div>
+            <animated.div style={props}>
+                <Typography 
+                style={{
+                    padding: "10px",
+                    display: `${ coordinate < 90 && coordinate > -90 ? "block" : "none"}`,
+                    fontWeight: 600
+                }} 
+                variant={fontVariant} 
+                component={fontVariant}
+                >
+                    {children}
+                </Typography>
+            </animated.div>
     );
 }
   /** */
   const North = ({coordinate}) => {
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360}> N </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> N </CompassLetter>
+        </div>
+    );
+  };
+  const NorthEast = ({coordinate}) => {
+    coordinate += 45;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h4"> NE </CompassLetter>
         </div>
     );
   };
@@ -38,7 +64,15 @@ function CompassLetter({coordinate, children}) {
     coordinate += 90;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360}> E </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> E </CompassLetter>
+        </div>
+    );
+  };
+  const SouthEast = ({coordinate}) => {
+    coordinate += 135;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h4"> SE </CompassLetter>
         </div>
     );
   };
@@ -46,7 +80,15 @@ function CompassLetter({coordinate, children}) {
     coordinate += 180;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360}> S </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> S </CompassLetter>
+        </div>
+    );
+  };
+  const SouthWest = ({coordinate}) => {
+    coordinate += 225;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h4"> SW </CompassLetter>
         </div>
     );
   };
@@ -54,7 +96,15 @@ function CompassLetter({coordinate, children}) {
     coordinate += 270;
     return (
         <div>
-            <CompassLetter coordinate={coordinate % 360}> W </CompassLetter>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h3"> W </CompassLetter>
+        </div>
+    );
+  };
+  const NorthWest = ({coordinate}) => {
+    coordinate += 315;
+    return (
+        <div>
+            <CompassLetter coordinate={coordinate % 360} fontVariant="h4"> NW </CompassLetter>
         </div>
     );
   };
@@ -65,30 +115,48 @@ function CompassLetter({coordinate, children}) {
     position: 'absolute',
     width: '100%',
     height: '100%',
-    //pointerEvents: 'none',
+    pointerEvents: 'none',
     background: 'transparent',
     textAlign: 'center',
-    zIndex: 100000
+    zIndex: 10000
   };
 
 /**
  * 
  * @returns The box showing the direction the user is currently in.
  */
-export default function HorizontalCompass(props){
+export default function HorizontalCompass({
+    mapObj = null
+}){
     const [coordinate, setCoordinate] = useState(0);
-
+    //Run refresh every second
+	useEffect(() => {
+		var timerID = setInterval(() =>  {
+            if (mapObj != null){
+                // console.log(`h:${mapObj.heading}`)
+                if (coordinate >= 0){
+                    setCoordinate(-mapObj.heading)
+                }else {
+                    setCoordinate(-360-mapObj.heading)
+                }
+            }
+        }, 1000);
+		return () => clearInterval(timerID);
+	});
     return (
-        <div {...props}>
         <Box sx={style}>
                 <North coordinate={coordinate} />
+                <NorthEast coordinate={coordinate} />
                 <East coordinate={coordinate} />
+                <SouthEast coordinate={coordinate} />
                 <South coordinate={coordinate} />
+                <SouthWest coordinate={coordinate} />
                 <West coordinate={coordinate} />
+                <NorthWest coordinate={coordinate} />
                 <div
                     style={{
                         position: 'relative',
-                        top:"100px",
+                        top:"80px",
                         height: "5px",
                         width: '80%',
                         background: "black",
@@ -99,32 +167,8 @@ export default function HorizontalCompass(props){
                     }}
 
                 ></div>
-                {/* <button
-                    onClick={() => {
-                    console.log(coordinate);
-                    setCoordinate(coordinate + 10);
-                    }}
-                >
-                    increment
-                </button>
-                <button
-                    onClick={() => {
-                    console.log(coordinate);
-                    setCoordinate(coordinate - 10);
-                    }}
-                >
-                    decrement
-                </button> -->*/}
           
         </Box>
-        </div>
       );
     
 }
-/*
-<div>
-<North coordinate={coordinate} />
-<East coordinate={coordinate} />
-<South coordinate={coordinate} />
-<West coordinate={coordinate} />
-</div>*/

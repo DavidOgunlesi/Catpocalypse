@@ -5,38 +5,52 @@ import { geolocated } from "react-geolocated";
 import GoogleMapReact from 'google-map-react';
 import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
-import { useDrag, useGesture } from '@use-gesture/react'
+import {useGesture } from '@use-gesture/react'
+import SettingsIcon from '@material-ui/icons/Settings';
+import MenuButtonImg from '/static/images/MApMenuButton.png';
+import PlayerMarker from '/static/images/marker.png';
+import MapMarker from "./static/MapMarker";
+import {IconButton, Typography} from '@material-ui/core'
+import OverlayUI from "./dynamic/OverlayUI";
+import SlideUpWindow from "./dynamic/SlideUpWindow";
+import SettingsPage from "./SettingsPage";
+import GameIcon from "./GameIcon";
+import { CircleMenu, CircleMenuItem, TooltipPlacement } from "react-circular-menu";
+import { useSpring, animated } from 'react-spring';
+import Battle from "./subpages/Battle";
+import Catdex from "./subpages/Catdex";
+import CatPlayerInventory from "./subpages/CatPlayerInventory";
+import Catsino from "./subpages/Catsino";
+import Friends from "./subpages/Friends";
+import Shop from "./subpages/Shop";
+import CatchingCat from "./CatchingCat";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
-import MapMarker from "./static/MapMarker";
 
-var map ,maps = null;
+
+var map, maps = null;
 
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+	const [showMapMenu, setMapMenu] = useState(false);
+	const [currentSubMenu, setSubMenu] = useState("none");
+	const [currentCatch, setCurrentCatch] = useState(null);
+	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
-	/*const drag = useDrag(({ down, movement: [mx, my] }) => {
-		map.setHeading(map.getHeading() -  mx);
-		console.log({ x: down ? mx : 0, y: down ? my : 0 });
-	})*/
 
 	const onMouseDown = ({xy: [mx, my] }) =>{
 		mouseX = mx;
 		lastHeading = map.getHeading();
-		console.log(`setting mouseX: ${mouseX} last Heading:${lastHeading}`);
 	};
 
 	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
 		var mouseDelta =  mx - mouseX;
 		map.setHeading(lastHeading -  mouseDelta/10);
-		//console.log(`mouseX: ${mouseX}`)
-		//console.log(`mouseDelta: ${mouseDelta}`);
-		//console.log({ x: down ? mx : 0, y: down ? my : 0 });
 	};
 
 	const drag2 = useGesture(
@@ -56,7 +70,10 @@ function Map(gps){
 
     //Run refresh every second
 	useEffect(() => {
-		var timerID = setInterval(() =>  refeshGPSData(), 1000);
+		var timerID = setInterval(() =>  {
+			refeshGPSData();
+			hideBadElements();
+		}, 1000);
 		return () => clearInterval(timerID);
 	});
     
@@ -68,6 +85,21 @@ function Map(gps){
 		map.setTilt(75);
 	};
 
+	/*
+	* Hides elements associated with radial menu, so all the buttons can be clicked
+	* Elemnts it forcibly hides cover one row of buttons due to the hacky setup I
+	* created. But it works without issues so if not broken why fix it! 
+	*/
+	const hideBadElements = () =>{
+		var collection = document.getElementsByClassName("sc-dkPtRN kZbNWb");
+		for (let index = 0; index < collection.length; index++) {
+			const element = collection.item(index);
+			element.style.display = "none";
+			element.style.visibility = "hidden";
+			
+		}
+	}
+
 	//Get GPS data from geolocated and update state
 	const refeshGPSData = () =>{
 		setIsOnline(window.navigator.onLine);
@@ -75,7 +107,7 @@ function Map(gps){
 		if(gps.coords == null){
 			return;
 		}
-		//console.log(playerGPSData);
+		
 		const lat = gps.coords.latitude;
 		const lng = gps.coords.longitude;
 		const altitude = gps.coords.altitude;
@@ -97,7 +129,8 @@ function Map(gps){
 			return;
 		}
 
-		slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
+		slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
+		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
   	const renderCats = () =>{
@@ -112,7 +145,8 @@ function Map(gps){
 						lat={cat.latitude}
 						lng={cat.longitude}
 						markerType="cat"
-						size={60}
+						size={120}
+						id={cat.cat_id}
 					/>
 				);
 			}
@@ -120,6 +154,245 @@ function Map(gps){
 		return cats;
   	}
 
+	const renderTransparentBackground = () =>{
+		return (
+			<div 
+				style={{
+						position: "absolute",
+						width: "100%",
+						height: "100%",
+						top: 0,
+						overflow: "hidden",
+						display: showMapMenu ? "block" : "none",
+						backdropFilter: showMapMenu ? " blur(5px) brightness(70%) hue-rotate(120deg)" : null,
+						zIndex: 10000,
+						touchAction: "none",
+						backgroundImage: "radial-gradient(circle at bottom right, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0))"
+					}}
+			>
+			</div>
+		);
+		
+	}
+
+	const renderOverlayUI = () => {
+		return (
+			<div>
+			<OverlayUI>
+				<div  x="55%" y="50%" sortingLayer={1000}>
+					<img src={PlayerMarker} width={50} style={{
+						position:"absolute",
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						margin: "auto"
+					}}/>
+				</div>
+				
+				<div 
+				x="-100px"
+				y="-100px"
+				anchor="bottom right"
+				sortingLayer= {20010}
+				>
+					<CircleMenu
+					startAngle={200}
+					rotationAngle={70}
+					itemSize={4}
+					radius={10}
+					menuToggleElement={
+						<IconButton
+							size="large"
+							color = 'primary' 
+							variant="text"
+							disableElevation={true}
+						>
+						<img src={MenuButtonImg} width={200}/>
+						</IconButton>
+					}
+					onMenuToggle={(menuActive)=>{
+						setMapMenu(menuActive);
+						inputRef.current.click();
+					}}
+					/**
+					 * rotationAngleInclusive (default true)
+					 * Whether to include the ending angle in rotation because an
+					 * item at 360deg is the same as an item at 0deg if inclusive.
+					 * Leave this prop for angles other than 360deg unless otherwise desired.
+					 */
+					rotationAngleInclusive={true}
+					>
+					<CircleMenuItem
+					onClick={() => setSubMenu("catdex")}
+					tooltip="Catdex"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="catdex"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("cats")}
+					tooltip="Cats" 
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="cats"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("battle")}
+					tooltip="Battle" 
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="battle"/>
+					</CircleMenuItem>
+					</CircleMenu>
+					</div>
+			</OverlayUI>
+			<OverlayUI>
+				<div 
+				className="transparentCircle"
+				zIndex={100000}
+				/>
+				<div 
+				x="-100px"
+				y="-100px"
+				anchor="bottom right"
+				sortingLayer= {20000}
+				>
+					<CircleMenu
+					startAngle={200}
+					rotationAngle={70}
+					itemSize={4}
+					radius={20}
+					menuToggleElement={
+						<IconButton
+							size="large"
+							color = 'primary' 
+							variant="text"
+							disableElevation={true}
+							ref={inputRef}
+						>
+						<img src={MenuButtonImg} width={200}/>
+						</IconButton>
+					}
+					/**
+					 * rotationAngleInclusive (default true)
+					 * Whether to include the ending angle in rotation because an
+					 * item at 360deg is the same as an item at 0deg if inclusive.
+					 * Leave this prop for angles other than 360deg unless otherwise desired.
+					 */
+					rotationAngleInclusive={true}
+					>
+					<CircleMenuItem
+					onClick={() => setSubMenu("friends")}
+					tooltip="Friends"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="friends"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => setSubMenu("shop")}
+					tooltip="Shop"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="shop"/>
+					</CircleMenuItem>
+					<CircleMenuItem 
+					onClick={() => {
+						setSubMenu("catsino");
+						console.log(currentSubMenu);
+					}}
+					tooltip="Catsino"
+					tooltipPlacement={TooltipPlacement.Top}
+					>
+						<GameIcon src="catsino"/>
+					</CircleMenuItem>
+					</CircleMenu>
+					
+					</div>
+			</OverlayUI>
+			</div>
+		);
+	}
+
+	const renderSettingsButton = () =>{
+		return (
+			<div
+			style={{
+				display: showMapMenu ? "block" : "none"
+			}}
+			>
+			<OverlayUI>
+				<IconButton 
+					x="0px"
+					y="140px"
+					anchor="top right"
+					sortingLayer={30000}
+					size="large"
+					color = 'primary' 
+					variant="text"
+					style={{ borderRadius: 50 }}
+					onClick={() => setSubMenu("settings")}
+				>
+				<div>
+					<Typography variant="h4" component="h4" style={{color:'white'}}>Settings</Typography>
+				</div>
+				<div>
+					<SettingsIcon style={{color:'white'}}/>
+				</div>
+				</IconButton>
+			</OverlayUI>
+			</div>
+		);
+	}
+
+	const renderSubMenus = () => {
+		var page = (<SettingsPage/>)
+		var title = ""
+		switch (currentSubMenu) {
+			case "settings":
+				page = (<SettingsPage/>)
+				title = "Settings"
+				break;
+			case "catdex":
+				page = (<Catdex/>)
+				title = "Catdex"
+				break;
+			case "catinv":
+				page = (<CatPlayerInventory/>)
+				title = "Cats"
+				break;
+			case "battle":
+				page = (<Battle/>)
+				title = "Battle"
+				break;
+			case "friends":
+				page = (<Friends/>)
+				title = "Friends"
+				break;
+			case "shop":
+				page = (<Shop/>)
+				title = "Shop"
+				break;
+			case "catsino":
+				page = (<Catsino/>)
+				title = "Catsino"
+				break;
+			default:
+				break;
+			}
+		return (
+			<div>
+				<SlideUpWindow
+				open={currentSubMenu != "none"}
+				title={title}
+				callback={() => setSubMenu("none")}
+				blur={true}
+				content={page}
+				textColor = "#fff"
+				/>
+				</div>
+		);
+	}
   /**
    * WARNINGS
    */
@@ -164,44 +437,49 @@ function Map(gps){
 			</Background>
 		);
 	}
+	if(currentCatch != null){
+		console.log("d")
+		return (<CatchingCat catId={currentCatch}/>);
+	}
 
 	/**
 	 * MAIN MAP HTML
 	 */
+	 const onCatClick = (key, childProps) => {
+		setCurrentCatch(childProps.id)
+	  }
 	return (
-		<div style={{ height: '100vh', width: '100%', touchAction: 'none' }} {...drag2()} >
-		<HorizontalCompass />
-		<ModalWindow 
+		<div>
+			{renderSubMenus()}
+			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
+			<HorizontalCompass mapObj={map}/>
+			{renderOverlayUI()}
+			{renderTransparentBackground()}
+			{renderSettingsButton()}
+			<ModalWindow 
 			title="Be aware of your surroundings" 
 			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
 			open={true}
 			imageSrc = {warningCat}
 			/> 
 			<GoogleMapReact
+			onChildClick={onCatClick}
 			bootstrapURLKeys={{ key: key }}
 			defaultCenter={defaultLocation}
 			defaultZoom={19}
 			options= {{ 
 				mapId: id, 
 				draggable: false,  
-				//disableDefaultUI: true,
+				disableDefaultUI: true,
+				keyboardShortcuts: false,
 				gestureHandling: "greedy"
 			}}
 			yesIWantToUseGoogleMapApiInternals
 			onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 			>
 			{renderCats()}
-			{/*<MapMarker
-				lat={playerGPSData.lat+0.0003}
-				lng={playerGPSData.lng+0.0003}
-				markerType="cat"
-			/>*/}
-			<MapMarker
-				lat={playerGPSData.lat}
-				lng={playerGPSData.lng}
-				markerType="player"
-			/>
 			</GoogleMapReact>
+			</div>
 		</div>
 	);
     

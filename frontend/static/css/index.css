@@ -44,9 +44,9 @@ Logo
  }
 
 /* On screens that are 1000px or more*/
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 500px) {
     .logo {
-        width: 1000px;
+        width: 500px;
         display: block;
         margin-left: auto;
         margin-right: auto;
@@ -55,7 +55,7 @@ Logo
 }
 
 /* On screens that are 1000px or less*/
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 500px) {
     .logo {
         width: 100%;
     }
@@ -151,7 +151,7 @@ Sliding up Component
     overflow: hidden;
     background-color: #000; color: #FFF;
     transition: all 1s;
-    z-index: 1000;
+    z-index: 100000;
   }
   
 .slider.close {
@@ -167,6 +167,28 @@ Sliding up Component
     overflow:auto;
     overflow-x: hidden;
 }
+/*
+-----------------------------------
+Transparent Sliding up Component
+------------------------------------
+*/
+.blurSlider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    overflow: hidden;
+    backdrop-filter: blur(20px) brightness(80%) hue-rotate(120deg) contrast(100%);
+    transition: all 1s;
+    z-index: 100000;
+  }
+  
+.blurSlider.close {
+    top: 100%;
+    height: 0;
+    backdrop-filter: blur(0px) brightness(100%) hue-rotate(0deg) contrast(100%);
+    display: "none";
+}
 
 /*
 -----------------------------------
@@ -176,6 +198,8 @@ Map Markers
 .markerImg {
     display: flex;
     justify-content: center;
+    -webkit-filter: drop-shadow(0px 15px 5px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 15px 5px rgba(0, 0, 0, 0.5));
 }
 .bounce {
     animation: bounce 0.5s infinite alternate;
@@ -186,7 +210,7 @@ Map Markers
       transform: translateY(0px);
     }
     to {
-      transform: translateY(-20px);
+      transform: translateY(-10px);
     }
   }
   @-webkit-keyframes bounce {
@@ -194,10 +218,39 @@ Map Markers
       transform: translateY(0px);
     }
     to {
-      transform: translateY(-20px);
+      transform: translateY(-10px);
     }
   }
 
   .spin {
     animation: spin 1s linear infinite;
   }
+  /*
+  ---------------------------------
+  Remove google logo
+  ---------------------------------
+  */
+.gmnoprint a, .gmnoprint span {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
+}
+img[src="http://maps.gstatic.com/mapfiles/api-3/images/google_white2.png"], a[href^="http://maps.google.com/maps"]{
+    display:none !important;
+}
+/*
+--------------------------------------
+Circle
+-------------------------------------
+*/
+.transparentCircle {
+    background-color: rgba(255,255,255, 0);
+    border:10px rgba(255,255,255, 0.5);    
+    height:100px; 
+    width:100px;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+    
+}
