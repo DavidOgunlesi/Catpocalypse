@@ -5,12 +5,12 @@ import { geolocated } from "react-geolocated";
 import GoogleMapReact from 'google-map-react';
 import Background from "./static/Background";
 import HorizontalCompass from "./dynamic/HorizontalCompass";
-import { useDrag, useGesture } from '@use-gesture/react'
+import {useGesture } from '@use-gesture/react'
 import SettingsIcon from '@material-ui/icons/Settings';
 import MenuButtonImg from '/static/images/MApMenuButton.png';
 import PlayerMarker from '/static/images/marker.png';
 import MapMarker from "./static/MapMarker";
-import {IconButton, Button, Typography} from '@material-ui/core'
+import {IconButton, Typography} from '@material-ui/core'
 import OverlayUI from "./dynamic/OverlayUI";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
 import SettingsPage from "./SettingsPage";
@@ -23,6 +23,7 @@ import CatPlayerInventory from "./subpages/CatPlayerInventory";
 import Catsino from "./subpages/Catsino";
 import Friends from "./subpages/Friends";
 import Shop from "./subpages/Shop";
+import CatchingCat from "./CatchingCat";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -35,29 +36,21 @@ var map, maps = null;
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
-	const [showSettings, setSettings] = useState(false);
 	const [showMapMenu, setMapMenu] = useState(false);
 	const [currentSubMenu, setSubMenu] = useState("none");
+	const [currentCatch, setCurrentCatch] = useState(null);
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
-	/*const drag = useDrag(({ down, movement: [mx, my] }) => {
-		map.setHeading(map.getHeading() -  mx);
-		console.log({ x: down ? mx : 0, y: down ? my : 0 });
-	})*/
 
 	const onMouseDown = ({xy: [mx, my] }) =>{
 		mouseX = mx;
 		lastHeading = map.getHeading();
-		// console.log(`setting mouseX: ${mouseX} last Heading:${lastHeading}`);
 	};
 
 	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
 		var mouseDelta =  mx - mouseX;
 		map.setHeading(lastHeading -  mouseDelta/10);
-		//console.log(`mouseX: ${mouseX}`)
-		//console.log(`mouseDelta: ${mouseDelta}`);
-		//console.log({ x: down ? mx : 0, y: down ? my : 0 });
 	};
 
 	const drag2 = useGesture(
@@ -114,7 +107,7 @@ function Map(gps){
 		if(gps.coords == null){
 			return;
 		}
-		//console.log(playerGPSData);
+		
 		const lat = gps.coords.latitude;
 		const lng = gps.coords.longitude;
 		const altitude = gps.coords.altitude;
@@ -135,9 +128,9 @@ function Map(gps){
 		if (map == null){
 			return;
 		}
-		defaultLocation
-		// slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
-		slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
+
+		slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
+		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
   	const renderCats = () =>{
@@ -163,9 +156,8 @@ function Map(gps){
 
 	const renderTransparentBackground = () =>{
 		return (
-			<animated.div 
-				style={useSpring({
-					to: {
+			<div 
+				style={{
 						position: "absolute",
 						width: "100%",
 						height: "100%",
@@ -176,11 +168,9 @@ function Map(gps){
 						zIndex: 10000,
 						touchAction: "none",
 						backgroundImage: "radial-gradient(circle at bottom right, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0))"
-					},
-					delay: 0,
-				})}
+					}}
 			>
-			</animated.div>
+			</div>
 		);
 		
 	}
@@ -343,34 +333,12 @@ function Map(gps){
 					style={{ borderRadius: 50 }}
 					onClick={() => setSubMenu("settings")}
 				>
-				<animated.div
-				style={useSpring({
-					from:{
-						opacity: 0
-					},
-					to: {
-						opacity: 1
-					},
-					delay: 1000,
-				})}
-				>
+				<div>
 					<Typography variant="h4" component="h4" style={{color:'white'}}>Settings</Typography>
-				</animated.div>
-				<animated.div
-				style={useSpring({
-					from:{
-						opacity: 0,
-						transform:" rotate(0deg)",
-					},
-					to: {
-						transform: "rotate(180deg)",
-						opacity: 1,
-					},
-					delay: 1000,
-				})}
-				>
+				</div>
+				<div>
 					<SettingsIcon style={{color:'white'}}/>
-				</animated.div>
+				</div>
 				</IconButton>
 			</OverlayUI>
 			</div>
@@ -412,7 +380,6 @@ function Map(gps){
 			default:
 				break;
 			}
-		console.log(page)
 		return (
 			<div>
 				<SlideUpWindow
@@ -470,18 +437,17 @@ function Map(gps){
 			</Background>
 		);
 	}
+	if(currentCatch != null){
+		console.log("d")
+		return (<CatchingCat catId={currentCatch}/>);
+	}
 
 	/**
 	 * MAIN MAP HTML
 	 */
-	/**
-	 * import Battle from "./Battle";
-import Catdex from "./Catdex";
-import CatPlayerInventory from "./CatPlayerInventory";
-import Catsino from "./Catsino";
-import Friends from "./Friends";
-import Shop from "./Shop";
-	 */
+	 const onCatClick = (key, childProps) => {
+		setCurrentCatch(childProps.id)
+	  }
 	return (
 		<div>
 			{renderSubMenus()}
@@ -497,6 +463,7 @@ import Shop from "./Shop";
 			imageSrc = {warningCat}
 			/> 
 			<GoogleMapReact
+			onChildClick={onCatClick}
 			bootstrapURLKeys={{ key: key }}
 			defaultCenter={defaultLocation}
 			defaultZoom={19}
