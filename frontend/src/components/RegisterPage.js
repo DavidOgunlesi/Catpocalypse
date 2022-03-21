@@ -136,7 +136,7 @@ export default function RegisterPage(){
                                         onChange={e => setUsername(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Username"
-                                        variant="standard"
+                                        variant="outlined"
                                         textalign="center"
                                         size="small"
                                         fullWidth={true}
@@ -152,7 +152,7 @@ export default function RegisterPage(){
                                         className="inputRounded"
                                         placeholder="Email"
                                         onChange={e=> setEmailStart(e.target.value)}
-                                        variant="standard"
+                                        variant="outlined"
                                         textalign="center"
                                         size="small"
                                         fullWidth={true}
@@ -183,7 +183,7 @@ export default function RegisterPage(){
                                         onChange={e => setPassword(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Password"
-                                        variant="standard"
+                                        variant="outlined"
                                         textalign="center"
                                         size="small"
                                         fullWidth={true}
@@ -213,7 +213,7 @@ export default function RegisterPage(){
                                         onChange={e => setPasswordAgain(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Re-enter Password"
-                                        variant="standard"
+                                        variant="outlined"
                                         textalign="center"
                                         size="small"
                                         fullWidth={true}

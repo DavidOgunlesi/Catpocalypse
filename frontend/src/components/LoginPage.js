@@ -98,7 +98,7 @@ export default function LoginPage(){
                             type = "text"
                             className="inputRounded"
                             placeholder="Enter Email"
-                            variant="standard"
+                            variant="outlined"
                             textalign="center"
                             size="small"
                             fullWidth={true}
@@ -115,7 +115,7 @@ export default function LoginPage(){
                         type = "password"
                         className="inputRounded"
                         placeholder="Enter Password"
-                        variant="standard"
+                        variant="outlined"
                         textalign="center"
                         size="small"
                         fullWidth={true}
