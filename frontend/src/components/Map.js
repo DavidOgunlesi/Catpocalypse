@@ -10,6 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import MenuButtonImg from '/static/images/MApMenuButton.png';
 import PlayerMarker from '/static/images/marker.png';
 import MapMarker from "./static/MapMarker";
+import RingImg from "/static/images/rings.png"
 import {IconButton, Typography} from '@material-ui/core'
 import OverlayUI from "./dynamic/OverlayUI";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
@@ -258,10 +259,6 @@ function Map(gps){
 			</OverlayUI>
 			<OverlayUI>
 				<div 
-				className="transparentCircle"
-				zIndex={100000}
-				/>
-				<div 
 				x="-100px"
 				y="-100px"
 				anchor="bottom right"
@@ -273,6 +270,7 @@ function Map(gps){
 					itemSize={4}
 					radius={20}
 					menuToggleElement={
+						<div>
 						<IconButton
 							size="large"
 							color = 'primary' 
@@ -282,6 +280,7 @@ function Map(gps){
 						>
 						<img src={MenuButtonImg} width={200}/>
 						</IconButton>
+						</div>
 					}
 					/**
 					 * rotationAngleInclusive (default true)
