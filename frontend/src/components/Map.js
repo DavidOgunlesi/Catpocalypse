@@ -10,7 +10,6 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import MenuButtonImg from '/static/images/MApMenuButton.png';
 import PlayerMarker from '/static/images/marker.png';
 import MapMarker from "./static/MapMarker";
-import RingImg from "/static/images/rings.png"
 import {IconButton, Typography} from '@material-ui/core'
 import OverlayUI from "./dynamic/OverlayUI";
 import SlideUpWindow from "./dynamic/SlideUpWindow";
