@@ -48,7 +48,7 @@ import { makeStyles } from "@material-ui/core";
 /**
  * 
  */
-export default function OverayUI({
+export default function OverlayUI({
 	children
 }){
 	const defClasses = useDefStyles();
