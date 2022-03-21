@@ -16,7 +16,6 @@ import SlideUpWindow from "./dynamic/SlideUpWindow";
 import SettingsPage from "./SettingsPage";
 import GameIcon from "./GameIcon";
 import { CircleMenu, CircleMenuItem, TooltipPlacement } from "react-circular-menu";
-import { useSpring, animated } from 'react-spring';
 import Battle from "./subpages/Battle";
 import Catdex from "./subpages/Catdex";
 import CatPlayerInventory from "./subpages/CatPlayerInventory";
@@ -24,6 +23,7 @@ import Catsino from "./subpages/Catsino";
 import Friends from "./subpages/Friends";
 import Shop from "./subpages/Shop";
 import CatchingCat from "./CatchingCat";
+import LoadingScreen from "./static/LoadingScreen";
 
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
@@ -39,6 +39,7 @@ function Map(gps){
 	const [showMapMenu, setMapMenu] = useState(false);
 	const [currentSubMenu, setSubMenu] = useState("none");
 	const [currentCatch, setCurrentCatch] = useState(null);
+	const [mapLoaded, setMapLoaded] = useState(false);
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
@@ -74,7 +75,15 @@ function Map(gps){
 			refeshGPSData();
 			hideBadElements();
 		}, 1000);
-		return () => clearInterval(timerID);
+		var loadTimerID = setInterval(() =>  {
+			if (map != null){
+				setMapLoaded(true);
+			}
+		}, 5000);
+		return () => {
+			clearInterval(loadTimerID);
+			clearInterval(timerID);
+		}
 	});
     
 	const handleApiLoaded = (_map, _maps) =>{
@@ -348,34 +357,50 @@ function Map(gps){
 	const renderSubMenus = () => {
 		var page = (<SettingsPage/>)
 		var title = ""
+		var txtcolor = ""
+		var color = ""
+		var fillBox = false;
 		switch (currentSubMenu) {
 			case "settings":
-				page = (<SettingsPage/>)
-				title = "Settings"
+				page = (<SettingsPage/>);
+				title = "Settings";
+				txtcolor = "#FFF";
 				break;
 			case "catdex":
-				page = (<Catdex/>)
-				title = "Catdex"
+				page = (<Catdex/>);
+				title = "Catdex";
+				color = "#FFF";
+				txtcolor = "#000";
 				break;
 			case "catinv":
-				page = (<CatPlayerInventory/>)
-				title = "Cats"
+				page = (<CatPlayerInventory/>);
+				title = "Cats";
+				color = "#FFF";
+				txtcolor = "#000";
 				break;
 			case "battle":
-				page = (<Battle/>)
-				title = "Battle"
+				page = (<Battle/>);
+				color = "#FFF";
+				txtcolor = "#000";
+				fillBox = true;
 				break;
 			case "friends":
-				page = (<Friends/>)
-				title = "Friends"
+				page = (<Friends/>);
+				title = "Friends";
+				color = "#FFF";
+				txtcolor = "#000";
 				break;
 			case "shop":
-				page = (<Shop/>)
-				title = "Shop"
+				page = (<Shop/>);
+				title = "Shop";
+				color = "#FFF";
+				txtcolor = "#000";
 				break;
 			case "catsino":
-				page = (<Catsino/>)
-				title = "Catsino"
+				page = (<Catsino/>);
+				title = "Catsino";
+				color = "#FFF";
+				txtcolor = "#000";
 				break;
 			default:
 				break;
@@ -388,13 +413,21 @@ function Map(gps){
 				callback={() => setSubMenu("none")}
 				blur={true}
 				content={page}
-				textColor = "#fff"
+				textColor = {txtcolor}
+				backgroundColor = {color}
+				fillBox = {fillBox}
 				/>
 				</div>
 		);
 	}
+
+	const renderLoadingScreen=() =>{
+		if (!mapLoaded){
+			return(<LoadingScreen/>);
+		}
+	}
   /**
-   * WARNINGS
+   * Conditional Views
    */
 	if(!isOnline){
 		return(
@@ -438,7 +471,6 @@ function Map(gps){
 		);
 	}
 	if(currentCatch != null){
-		console.log("d")
 		return (<CatchingCat catId={currentCatch}/>);
 	}
 
@@ -450,6 +482,7 @@ function Map(gps){
 	  }
 	return (
 		<div>
+			{renderLoadingScreen()}
 			{renderSubMenus()}
 			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
 			<HorizontalCompass mapObj={map}/>
