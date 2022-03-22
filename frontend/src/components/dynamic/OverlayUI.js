@@ -58,7 +58,7 @@ export default function OverlayUI({
 		// error too.
 		if (React.isValidElement(child)) {
 		  var childrenStyle = {}
-		  if (child.props.anchor == "left"){
+		  if (child.props.anchor == "top left"){
 				childrenStyle = {
 					position: 'absolute',
 					top: child.props.y,
