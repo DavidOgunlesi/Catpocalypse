@@ -25,13 +25,39 @@ export default function Catdex(props){
      * Loads a cat image from the appropriate id if the cat is obtained,
      * else it displays the missing cat image
      */
-    //function loadCatImageFromCatdex(id){
-        //if (ownCat) {
-            //return `/static/images/cats/${id}.png`
-        //} else {
-            //return `/static/images/cats/undefined.png`
-        //}
-    //}
+
+    function renderCats(){
+        //first do the fetch
+        //then all data is 
+        var cats = [];
+		fetch('/api/get-all-cats')
+		.then(response => response.json())
+		.then(data => {
+			for(var i = 0; i < data.length; i++) {
+				cats.push(cat_id);
+			}
+		})
+
+        var ownedCats = [];
+        fetch('/api/get-owned-cats')
+        .then(response => response.json())
+        .then(data => {
+			for(var i = 0; i < data.length; i++) {
+                var cat = data[i];
+				cats.push(id ={cat.cat_id}
+                          cat_name = {cat.cat_name});
+			}
+        })
+        loadCatImageFromCatdex(ownedCats);
+
+    }
+
+    function loadCatImageFromCatdex(ownedCats){
+        for(i in ownedCats){
+            return `/static/images/cats/${id}.png`
+        }
+    }
+
 
 	if (isMobile){
 		return(
