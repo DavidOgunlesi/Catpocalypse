@@ -73,7 +73,8 @@ export default function SlideUpWindow({
                 style={{ 
                     borderRadius: 50,
                     position: "fixed",
-                    bottom: "10px"
+                    bottom: "10px",
+                    display: open ? "block" : "none"
                     }}
                 disableElevation={true}
                 fullWidth={true}
