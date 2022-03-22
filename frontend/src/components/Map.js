@@ -1,3 +1,9 @@
+/**
+ * Renders the Map Page of this 
+ */
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React, {useEffect, useState} from "react";
 import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
@@ -25,14 +31,21 @@ import Shop from "./subpages/Shop";
 import CatchingCat from "./CatchingCat";
 import LoadingScreen from "./static/LoadingScreen";
 
+/**
+ * Variables which cannot be reassigned. This includes the API key, ID and the fixed location of the center of campus as decided by the team of Catpocalypse
+ */
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
-
 var map, maps = null;
 
+/**
+ * 
+ * @param gps - Takes the player's live location from the mobile device's GPS
+ * @returns the map when loading the map view page
+ */
 function Map(gps){
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
@@ -69,7 +82,9 @@ function Map(gps){
 		speed: null
 	};
 
-    //Run refresh every second
+	/**
+	 * Runs refresh every second with this function
+	 */
 	useEffect(() => {
 		var timerID = setInterval(() =>  {
 			refeshGPSData();
@@ -87,8 +102,10 @@ function Map(gps){
 	});
     
 	const handleApiLoaded = (_map, _maps) =>{
-		// use map and maps objects
-		// Initialise map object and assign to global variable
+		/**
+		 * Uses map and maps objects
+		 * Initialise map object and assign it to a global variable
+		 */
 		map = _map;
 		maps = _maps;
 		map.setTilt(75);
@@ -109,20 +126,28 @@ function Map(gps){
 		}
 	}
 
-	//Get GPS data from geolocated and update state
+	/**
+	 * 
+	 * @returns the GPS data from geolocated and update state
+	 */
 	const refeshGPSData = () =>{
 		setIsOnline(window.navigator.onLine);
 		setGpsEnabled(gps.isGeolocationEnabled);
 		if(gps.coords == null){
 			return;
 		}
-		
+		/**
+		 * Variables such as latitude, longtitude, altitude, heading and speed
+		 */
 		const lat = gps.coords.latitude;
 		const lng = gps.coords.longitude;
 		const altitude = gps.coords.altitude;
 		const heading = gps.coords.heading;
 		const speed = gps.coords.speed;
 
+		/**
+		 * Gets the GPS data of the player
+		 */
 		playerGPSData = {
 			lat: lat, 
 			lng: lng,
@@ -142,7 +167,11 @@ function Map(gps){
 		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
-  	const renderCats = () =>{
+  	/**
+	   * Spawns the cats in a specific size in random locations and fetches the API call from the backend
+	   * @returns the cats of Catpocalypse will render on the map as expected
+	   */
+	const renderCats = () =>{
 		var cats = [];
 		fetch('/api/get-cats')
 		.then(response => response.json())
@@ -163,7 +192,11 @@ function Map(gps){
 		return cats;
   	}
 
-	const renderTransparentBackground = () =>{
+	/**
+	 * 
+	 * @returns transparent background in the map view
+	 */
+	  const renderTransparentBackground = () =>{
 		return (
 			<div 
 				style={{
@@ -184,6 +217,11 @@ function Map(gps){
 		
 	}
 
+	/**
+	 * 
+	 * @returns Creates a button in the map page which redirects the user to further options 
+	 * such as Settings, CatDex, Catsino, Friends and Battle
+	 */
 	const renderOverlayUI = () => {
 		return (
 			<div>
@@ -321,6 +359,10 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns the Settings button once the radio menu is opened - it is present on the top right of the screen
+	 */
 	const renderSettingsButton = () =>{
 		return (
 			<div
@@ -352,6 +394,10 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns Submenus such as CatDex, CatSino, Battle, Friends and Cats
+	 */
 	const renderSubMenus = () => {
 		var page = (<SettingsPage/>)
 		var title = ""
@@ -419,6 +465,10 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns Before the map is loaded, the loading screen shows up
+	 */
 	const renderLoadingScreen=() =>{
 		if (!mapLoaded){
 			return(<LoadingScreen/>);
