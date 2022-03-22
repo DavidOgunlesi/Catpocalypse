@@ -54,11 +54,6 @@ class CatdexSerializer(serializers.ModelSerializer):
         model = Catdex
         fields = ['cat_id','user_id','level','health']
 
-class WildcatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Wildcat
-        fields = ['wildcat_id']
-
 
 
 
