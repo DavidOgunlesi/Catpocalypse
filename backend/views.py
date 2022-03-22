@@ -29,11 +29,8 @@ class RetrieveCats(APIView):
     
     def post(self, request):
 
-        print(request.data)
-
         for wildcat in Wildcat.objects.all():
             if wildcat.wildcat_id == int(request.data['wildcat_id']):
-                print("IN HERE")
                 found_wildcat = wildcat
                 found_health = wildcat.start_health
                 cat = wildcat.cat_id
