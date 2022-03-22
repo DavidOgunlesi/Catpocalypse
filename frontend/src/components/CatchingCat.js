@@ -20,6 +20,10 @@ export default function CatchingCat({
      callback=null
  }){
 
+    /**
+     * 
+     * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
+     */
     const chooseGradient = () =>{
         
         const dayTimeGradient ={
@@ -40,9 +44,12 @@ export default function CatchingCat({
             background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
         }
         var gradient = dayTimeGradient;
-        const d = new Date();
-        let hour = d.getHours();
+        const d = new Date(); //checks the current date
+        let hour = d.getHours(); // checks the current time from the hour
         console.log(hour);
+        /**
+         * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
+         */
         if (hour >= 20 || hour < 5){
             console.log("1");
             gradient = nightTimeGradient;
@@ -62,9 +69,15 @@ export default function CatchingCat({
         return (gradient);
     }
 
+    /**
+     * Variable which returns a specific cat from the map to continue the process of catching.
+     */
     const loadCatImageFromId = (id) =>{
         return `/static/images/cats/${id}.png`
     }  
+     /**
+      * Returns the cat which needs to be caught
+      */
 
     const getCatData = () =>{
         return ({name: "Wild Cat", health: 10, maxHealth: 20})
