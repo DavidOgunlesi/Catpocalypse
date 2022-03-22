@@ -1,3 +1,4 @@
+import re
 import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate
@@ -13,7 +14,7 @@ from rest_framework.decorators import APIView
 
 from . import functions
 # Import Models here (if necessary)
-from .models import CustomUser, Wildcat
+from .models import Catdex, CustomUser, Wildcat
 # Import Serializers here
 from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer, WildcatSerializer
 from .utils import Util
@@ -27,10 +28,25 @@ from .utils import Util
 class RetrieveCats(APIView):
     
     def post(self, request):
-        serializer = WildcatSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print("wildcat id is below")
+        print(request.data['wildcat_id'])
+
+        for wildcat in Wildcat.objects.all():
+            if wildcat.wildcat_id == request.data['wildcat_id']:
+                print("IN HERE")
+                found_wildcat = wildcat
+                found_health = wildcat.start_health
+                cat = wildcat.cat_id
+        
+        for user in CustomUser.objects.all():
+            if user.username == self.request.session.get('username'):
+                found_user = user
+        
+        Catdex.objects.create(cat_id = cat, user_id = found_user, health=found_health)
+        found_wildcat.delete()
+
+        return Response({}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
