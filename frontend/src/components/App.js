@@ -14,7 +14,6 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 import GoogleLogin from 'react-google-login';
-import CatdexMain from "./CatdexMain";
 
 
 /**
@@ -122,7 +121,6 @@ export default function App(){
                         <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/dev/map" element={<Map/>}/>
-                        <Route path="/catdex" element={<CatdexMain/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
