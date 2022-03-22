@@ -135,7 +135,7 @@ export default function OverlayUI({
 				default:
 					break;
 			}
-			return React.cloneElement(child, { className: sizeClass, style: childrenStyle });
+			return React.cloneElement(child, { className: sizeClass, style: {...childrenStyle,...child.props.style} });
 		}
 		return child;
 	  });
