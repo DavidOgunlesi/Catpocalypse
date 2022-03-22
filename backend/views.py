@@ -3,7 +3,7 @@ import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from rest_framework import generics, response, status
@@ -16,7 +16,7 @@ from . import functions
 # Import Models here (if necessary)
 from .models import Catdex, CustomUser, Wildcat
 # Import Serializers here
-from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer, WildcatSerializer
+from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
 from .utils import Util
 
 # Create your api views here. 
@@ -171,6 +171,20 @@ class GetCats(GenericAPIView):
             serializer = CatSerializer(wildcats, many=True)
             return Response(serializer.data)
 
+class WildcatDetail(APIView):
+    """
+    Return data for a wildcat given a wildcat id
+    """
+    def get_object(self, pk):
+        try:
+            return Wildcat.objects.get(pk=pk)
+        except Wildcat.DoesNotExist:
+            raise Http404
+    
+    def get(self, request, pk, format=None):
+        wildcat = self.get_object(pk)
+        serializer = CatSerializer(wildcat)
+        return Response(serializer.data)
 
 '''
 class UserLoggedIn(APIView):
