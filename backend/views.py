@@ -9,13 +9,13 @@ from rest_framework import generics, response, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.decorators import APIView ########
+from rest_framework.decorators import APIView
 
 from . import functions
 # Import Models here (if necessary)
 from .models import CustomUser, Wildcat
 # Import Serializers here
-from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
+from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer, WildcatSerializer
 from .utils import Util
 
 # Create your api views here. 
@@ -23,11 +23,11 @@ from .utils import Util
     #queryset = CustomUser.objects.all()
     #serializer_class = CustomerUserSerializer
 
-# class based api view#############
-class RetrieveCats(APIView):###########################
+
+class RetrieveCats(APIView):
     
     def post(self, request):
-        serializer = CatdexSerializer(data=request.data)
+        serializer = WildcatSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
