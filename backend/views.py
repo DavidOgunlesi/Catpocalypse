@@ -29,18 +29,17 @@ class RetrieveCats(APIView):
     
     def post(self, request):
 
-        print("wildcat id is below")
-        print(request.data['wildcat_id'])
+        print(request.data)
 
         for wildcat in Wildcat.objects.all():
-            if wildcat.wildcat_id == request.data['wildcat_id']:
+            if wildcat.wildcat_id == int(request.data['wildcat_id']):
                 print("IN HERE")
                 found_wildcat = wildcat
                 found_health = wildcat.start_health
                 cat = wildcat.cat_id
         
         for user in CustomUser.objects.all():
-            if user.username == self.request.session.get('username'):
+            if user.username == str(self.request.session.get('username')):
                 found_user = user
         
         Catdex.objects.create(cat_id = cat, user_id = found_user, health=found_health)
