@@ -9,9 +9,19 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 # Import models and serializers
-from .serializers import UserSerializer
+from backend.models import CustomUser
+
+class TestModel(APITestCase):
+
+        def test_creates_user(self):
+                user=CustomUser.objects.create_user('TestUser','testuser@test.com','password123')
+                self.assertIsInstance(user, CustomUser)
+                #self.asser
+                self.assertEqual(user.email, 'testuser@test.com')
 
 
+
+"""
 class RegistrationTestCase(APITestCase):
 
     def test_registration(self):
@@ -21,6 +31,7 @@ class RegistrationTestCase(APITestCase):
                 }
         response = self.client.post("/api/users/", data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+"""
     
     
 

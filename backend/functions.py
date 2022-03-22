@@ -56,6 +56,7 @@ def cat_generation(num):
 
 #when i deal with sending/recieving cats, i will call capacity check. then capacity check can return 
 # true or false depending on whether cat generation was needed. if true, then i can send the updated cats back to frontend
+# HI
     
 def add_cats(apps, schema_editor):
     '''
@@ -77,6 +78,7 @@ def add_cats(apps, schema_editor):
     )
     '''
     Cats = apps.get_model('backend', 'Cats')
+<<<<<<< HEAD
     Cats.objects.create(name="Normal Cat", type=1, rarity=1) #1
     Cats.objects.create(name="Rock Cat", type=0, rarity=1) #2
     Cats.objects.create(name="Flame Cat", type=2, rarity=1) #3
@@ -116,6 +118,42 @@ def add_cats(apps, schema_editor):
     Cats.objects.create(name="Credit Card Cat", type=1, rarity=4) #30
     Cats.objects.create(name="Bagged Cat", type=1, rarity=1) #31
     Cats.objects.create(name="Toaster Cat", type=0, rarity=3) #32
+=======
+    Cats.objects.create(name="Normal Cat", type=1, rarity=1, sex='Female')
+    Cats.objects.create(name="Rock Cat", type=0, rarity=1, sex='Male')
+    Cats.objects.create(name="Flame Cat", type=2, rarity=1, sex='Male')
+    Cats.objects.create(name="Aqua Cat", type=3, rarity=1, sex='Female')
+
+    Cats.objects.create(name="Injured Cat", type=1, rarity=2, sex='Male')
+    Cats.objects.create(name="Lanky Cat", type=2, rarity=2, sex='Female')
+    Cats.objects.create(name="Buff Cat", type=0, rarity=2, sex='Male')
+
+    Cats.objects.create(name="Business Cat", type=1, rarity=3, sex='Female')
+    Cats.objects.create(name="Boxer Cat", type=0, rarity=3, sex='Male')
+    Cats.objects.create(name="Epic Cat", type=3, rarity=3, sex='Male')
+    Cats.objects.create(name="Ninja Cat", type=4, rarity=3, sex='Female')
+
+    Cats.objects.create(name="Void Cat", type=2, rarity=4, sex='Female')
+    Cats.objects.create(name="Mini Cat", type=4, rarity=4, sex='Female')
+    Cats.objects.create(name="Death Cat", type=2, rarity=4, sex='Male')
+
+    Cats.objects.create(name="Neo Cat", type=3, rarity=5, sex='Female')
+    Cats.objects.create(name="Terminator Cat", type=4, rarity=5, sex='Male')
+    Cats.objects.create(name="Bat Cat", type=0, rarity=5, sex='Male')
+
+    Cats.objects.create(name="God Cat", type=2, rarity=6, sex='Male')
+    Cats.objects.create(name="FZ01 Cat", type=1, rarity=6, sex='Female')
+    Cats.objects.create(name="Genesis Cat", type=3, rarity=6, sex='Female')
+    Cats.objects.create(name="Messiah Cat", type=4, rarity=6, sex='Male')
+
+    Cats.objects.create(name="Box Cat", type=1, rarity=0, sex='Female')
+    Cats.objects.create(name="Grizzly Cat", type=4, rarity=2, sex='Male')
+    Cats.objects.create(name="Spider Cat", type=0, rarity=2, sex='Female')
+    Cats.objects.create(name="Top Cat", type=4, rarity=3, sex='Female')
+    Cats.objects.create(name="Bull Cat", type=0, rarity=3, sex='Male')
+    Cats.objects.create(name="Catoplane", type=3, rarity=4, sex='Male')
+    Cats.objects.create(name="LionFlower", type=2, rarity=4, sex='Female')
+>>>>>>> catCollection
 
 
 
