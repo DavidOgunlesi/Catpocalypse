@@ -14,13 +14,15 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 import GoogleLogin from 'react-google-login';
+import CatdexEntry from "./CatdexEntry";
+import Catdex from "./subpages/Catdex";
 
 
 /**
  * Imports the background music from the media folder
  */
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
-import CatdexEntry from "./CatdexEntry";
+
 
 /**
  * Sets a fixed theme for the App
@@ -121,6 +123,7 @@ export default function App(){
                         <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/dev/map" element={<Map/>}/>
+                        <Route path="/dev/catdex" element={<Catdex/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
