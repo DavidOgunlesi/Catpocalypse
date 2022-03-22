@@ -15,6 +15,24 @@ export default function Catdex(props){
      * Creates JSON object to fetch all cats from the database
      * @returns The JSON object of all cats in the database
      */
+    const getCats = () => {
+		var cats = [];
+		fetch('/api/get-all-cats')
+		.then(response => response.json())
+		.then(data => {
+			for(var i = 0; i < data.length; i++) {
+				var cat = data[i];
+				cats.push(
+                <Grid item xs={4} align="center">
+                    <img width={100} src={MissingCat}/>
+                </Grid>
+				);
+			}
+		})
+        console.log(cats);
+		return cats;
+  	}
+
     function renderCats(){
         var cats = [];
 		fetch('/api/get-all-cats')
@@ -24,6 +42,7 @@ export default function Catdex(props){
                 var cat = data[i];
 				cats.push({id:cat.cat_id});
 			}
+            console.log(cats);
 		})
         return cats;
     }
@@ -37,9 +56,10 @@ export default function Catdex(props){
         fetch('/api/get-owned-cats')
         .then(response => response.json())
         .then(data => {
-			for(var i = 0; i < data.length; i++) {
-                var cat = data[i];
+			for(var i = 0; i < data.data.length; i++) {
+                var cat = data.data[i];
 				ownedCats.push({id:cat.cat_id});
+                console.log(cat);
 			}
         })
         return ownedCats;
@@ -53,6 +73,7 @@ export default function Catdex(props){
      * @returns The cat image displayed on the Catdex
      */
     function loadCatImageFromCatdex(id, ownedCats){
+        console.log("IM WORKING!!");
         const isFound = ownedCats.some(ownedCat => {
             if (ownedCat.id === id) {
                 return `/static/images/cats/${id}.png`;
@@ -64,52 +85,39 @@ export default function Catdex(props){
     }
 
 
-	if (isMobile){
-        //var cats = renderCats()
-        //var ownedCats = renderOwnedCats()
 
-        //PUT INSIDE GRID
-        //{cats.map(cat => {
-            //<Grid item xs={4} align="center">
-                //<img width={100} src={loadCatImageFromCatdex(cat.id, ownedCats)}/>
-            //</Grid>
-        //})}
+    function displayCats() {
+        var cats = renderCats()
+        console.log(cats.length);
+        var ownedCats = renderOwnedCats()
+        var catdexEntry = [];
+        for (let i = 0; i < cats.length; i++) {
+            catdexEntry.push(
+                <Grid item xs={4} align="center">
+                    <img width={100} src={loadCatImageFromCatdex(cats[i].id, ownedCats)}/>
+                </Grid>
+            )
+        }
+        return catdexEntry;
+    }
 
-		return(
-            <Background 
-            gradient={false} 
-            primaryCol="#E2FADD" 
-            outlineCol="#9EE6C9" 
-            outlineThickness={200} 
-            skew={-32}
-            backgroundCol="#B8FCF3"
-            >
-            <div>
-            <Grid container spacing={2} style={{padding:20}}>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
+    return(
+        <Background 
+        gradient={false} 
+        primaryCol="#E2FADD" 
+        outlineCol="#9EE6C9" 
+        outlineThickness={200} 
+        skew={-32}
+        backgroundCol="#B8FCF3"
+        >
+        <div>
+        <Grid container spacing={2} style={{padding:20}}>
+            {getCats()}
+            <Grid item xs={4} align="center">
+                <img width={100} src={MissingCat}/>
             </Grid>
-            </div>
-            </Background>
-        );
-		}
-	else{
-		return(<p>Yessir</p>);
-	}
+        </Grid>
+        </div>
+        </Background>
+    );
 }
