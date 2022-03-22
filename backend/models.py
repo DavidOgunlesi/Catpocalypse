@@ -23,6 +23,7 @@ RARITY_CHOICES = (
     (6, 'Cat God')
 )
 
+
 def rand_val():
     """_summary_
     Return a random number to the code
@@ -128,6 +129,7 @@ class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, null=False, unique=True)
+    sex = models.CharField(max_length=10, null=False)
     type = models.IntegerField(choices = TYPE_CHOICES, null=False)   
     rarity = models.IntegerField(choices = RARITY_CHOICES, null=False)   
 
@@ -140,6 +142,11 @@ class Wildcat(models.Model):
     longitude = models.DecimalField(max_digits=22, decimal_places=16, null=False)
     # rand_val generated in function above, limits can be changed
     start_health = models.IntegerField(null=False, default=rand_val)
+
+    # ADD OPTIONAL ATTRIBUTE OR 2 HERE TO SPECIFY WHICH 2 USERS CAN ADD THE CAT
+    # IF None/Null, then any player can catch
+    # IF players are there, then frintend only display for those players
+    # WE only allow those players or one of them to catch it   
 
 class Catdex(models.Model):
     catdex_id = models.AutoField(primary_key=True)
