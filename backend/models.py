@@ -143,6 +143,11 @@ class Wildcat(models.Model):
     # rand_val generated in function above, limits can be changed
     start_health = models.IntegerField(null=False, default=rand_val)
 
+    # ADD OPTIONAL ATTRIBUTE OR 2 HERE TO SPECIFY WHICH 2 USERS CAN ADD THE CAT
+    # IF None/Null, then any player can catch
+    # IF players are there, then frintend only display for those players
+    # WE only allow those players or one of them to catch it   
+
 class Catdex(models.Model):
     catdex_id = models.AutoField(primary_key=True)
     cat_id = models.ForeignKey(Cats,on_delete=models.CASCADE, null=False)

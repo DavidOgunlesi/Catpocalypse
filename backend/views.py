@@ -64,6 +64,32 @@ class GetAllCats(GenericAPIView):
         serializer = CatIDSerializer(cats, many=True)
         return Response(serializer.data)
 
+class GetOwnedCats(GenericAPIView):
+
+    def get(self, request):
+
+        queryset = Catdex.objects.all()
+        res = []
+
+        for user in CustomUser.objects.all():
+                if user.username == str(self.request.session.get('username')):
+                    found_user = user
+
+        for catDexIns in queryset:
+            if catDexIns.user_id == found_user:
+                catIns = catDexIns.cat_id
+                res.append({
+                    'level':catDexIns.level, 
+                    'health':catDexIns.health,
+                    'name':catIns.name,
+                    'sex':catIns.sex,
+                    'type':catIns.type,
+                    'rarity':catIns.rarity})  
+                
+        return response.Response({'data':res}, status=status.HTTP_200_OK)
+
+
+
 
 class RegisterAPIView(GenericAPIView):
 
