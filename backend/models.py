@@ -23,6 +23,7 @@ RARITY_CHOICES = (
     (6, 'Cat God')
 )
 
+
 def rand_val():
     """_summary_
     Return a random number to the code
@@ -128,6 +129,7 @@ class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, null=False, unique=True)
+    sex = models.CharField(max_length=10, null=False)
     type = models.IntegerField(choices = TYPE_CHOICES, null=False)   
     rarity = models.IntegerField(choices = RARITY_CHOICES, null=False)   
 
