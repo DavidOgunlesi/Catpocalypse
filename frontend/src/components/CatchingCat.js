@@ -1,13 +1,20 @@
 /**
- * A set template used to check if the page is working or not.
- * Imports React from the React Package
+ * The Catching Cats page is used to allow players to catch cats from the map view
+ */
+/**
+ * The imports which are required for the CatchingCat.js page to run which includes packages from React and other files which exist.
  */
 import React, { useState } from "react";
 import {Typography, IconButton} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 
- export default function CatchingCat({
+/**
+ * The main function for CatchingCat.js
+ * @param {catId} param {callback} 
+ * @returns gets activated when the user clicks on a cat on the map and displays the cat which needs to be caught
+ */ 
+export default function CatchingCat({
      catId = null,
      callback=null
  }){
