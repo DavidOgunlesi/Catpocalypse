@@ -30,6 +30,8 @@ def get_free_players():
 
     player1.is_available = False
     player2.is_available = False
+    player1.save()
+    player2.save()
 
     # get a random cat from the Cats table
     rand_cat = Cats.objects.order_by('?').first() 
