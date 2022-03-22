@@ -4,6 +4,7 @@
  */
  import React from "react";
  import {LinearProgress, Typography} from '@material-ui/core';
+ import LoadingScreenImg from '/static/images/loadingScreen.png';
 
  export default function LoadingScreen(){
     const [progress, setProgress] = React.useState(0);
@@ -38,25 +39,36 @@
       */
      return (
         <div 
+        className="animatedLoadingScreenGradient"
         style={{
             position: "absolute",
-            backgroundColor: "#B8FCF3",
             width: '100%',
             height: "100%",
             zIndex: 100000
         }}
         >
-            <div 
-            style={{
+        <div 
+        style={{
             position: "absolute",
-            backgroundColor: "#B8FCF3",
-            top: "80%",
+            backgroundImage: `url("${LoadingScreenImg}")`,
+            backgroundSize: "cover",
             width: '100%',
+            height: "100%",
             zIndex: 100000
+        }}
+        >
+        <div 
+        style={{
+        position: "absolute",
+        backgroundColor: "#FFF",
+        top: "80%",
+        width: '100%',
+        zIndex: 100000
         }}>
             <Typography variant="h3" component="h3">Loading...</Typography>
                 <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
             </div>
+        </div>
         </div>
      );
      
