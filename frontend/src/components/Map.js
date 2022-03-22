@@ -237,13 +237,6 @@ function Map(gps){
 					tooltip="Catdex"
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="catdex"/>
-					</CircleMenuItem>
-					<CircleMenuItem 
-					onClick={() => setSubMenu("cats")}
-					tooltip="Cats" 
-					tooltipPlacement={TooltipPlacement.Top}
-					>
 						<GameIcon src="cats"/>
 					</CircleMenuItem>
 					<CircleMenuItem 
@@ -366,9 +359,9 @@ function Map(gps){
 				break;
 			case "catdex":
 				page = (<Catdex/>);
-				title = "Catdex";
 				color = "#FFF";
 				txtcolor = "#000";
+				fillBox = true;
 				break;
 			case "catinv":
 				page = (<CatPlayerInventory/>);
