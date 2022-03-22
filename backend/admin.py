@@ -1,6 +1,6 @@
 from csv import list_dialects
 from django.contrib import admin
-from backend.models import CustomUser, Cats
+from backend.models import Catdex, CustomUser, Cats
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
@@ -26,3 +26,4 @@ class CatIndexAdmin(admin.ModelAdmin):
     
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Cats, CatIndexAdmin)
+admin.site.register(Catdex)

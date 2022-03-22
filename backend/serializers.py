@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 # Import Models here
-from .models import ExampleModel, Wildcat
+from .models import Catdex, ExampleModel, Wildcat
 from .models import CustomUser
 
 
@@ -42,6 +42,14 @@ class CatSerializer(serializers.ModelSerializer):
         model = Wildcat
         # all the fields we want to include in the output/serialization
         fields = ('wildcat_id','cat_id','latitude','longitude','start_health')
+    
+
+class CatdexSerializer(serializers.ModelSerializer):##########
+    class Meta:
+        model = Catdex
+        fields = ['cat_id','user_id','level','health']
+
+
 
 
 

@@ -1,30 +1,38 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework import generics
-from rest_framework.generics import GenericAPIView
-from rest_framework import response, status
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser, Wildcat
-from .utils import Util
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
 import jwt
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.urls import reverse
+from rest_framework import generics, response, status
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import APIView ########
+
 from . import functions
-
 # Import Models here (if necessary)
-from .models import CustomUser
-
+from .models import CustomUser, Wildcat
 # Import Serializers here
-from .serializers import CatSerializer, LoginSerializer, RegisterSerializer
-
+from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
+from .utils import Util
 
 # Create your api views here. 
 #class CustomUserView(generics.CreateAPIView):
     #queryset = CustomUser.objects.all()
     #serializer_class = CustomerUserSerializer
+
+# class based api view#############
+class RetrieveCats(APIView):###########################
+    
+    def post(self, request):
+        serializer = CatdexSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class RegisterAPIView(GenericAPIView):
 

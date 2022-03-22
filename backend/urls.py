@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RegisterAPIView
+from .views import RegisterAPIView, RetrieveCats
 from .views import LoginAPIView
 from .views import IsLoggedInAPIView
 from .views import VerifyEmail
@@ -21,6 +21,7 @@ urlpatterns = [
     path('isLoggedIn', IsLoggedInAPIView.as_view()),
     path('email-verify/', VerifyEmail.as_view(), name="email-verify"),
     path('get-cats', GetCats.as_view()),
+    path('send-cats', RetrieveCats.as_view()),
     path('logout', LogoutAPIView.as_view())
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),
