@@ -1,9 +1,14 @@
 from rest_framework import serializers
 
 # Import Models here
-from .models import Catdex, ExampleModel, Wildcat
+from .models import Catdex, Cats, ExampleModel, Wildcat
 from .models import CustomUser
 
+
+class CatIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Cats
+        fields = ['cat_id']
 
 
 # Define Serializers here

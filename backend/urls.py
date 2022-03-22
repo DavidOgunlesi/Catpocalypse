@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import RegisterAPIView, RetrieveCats, WildcatDetail
+from .views import RegisterAPIView, RetrieveCats, GetAllCats, WildcatDetail
 from .views import LoginAPIView
 from .views import IsLoggedInAPIView
 from .views import VerifyEmail
@@ -23,7 +23,9 @@ urlpatterns = [
     path('get-cats', GetCats.as_view()),
     path('send-cats', RetrieveCats.as_view()),
     path('get-wild-cat/<int:pk>/', WildcatDetail.as_view()),
-    path('logout', LogoutAPIView.as_view())
+    path('logout', LogoutAPIView.as_view()),
+    path('logout', LogoutAPIView.as_view()),
+    path('get-all-cats', GetAllCats.as_view())
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),
     # path('get_url', GetCatView.as_view())
