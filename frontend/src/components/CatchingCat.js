@@ -2,14 +2,16 @@
  * A set template used to check if the page is working or not.
  * Imports React from the React Package
  */
- import React from "react";
- import {Typography} from "@material-ui/core";
+import React, { useState } from "react";
+import {Typography, IconButton} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
+import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 
  export default function CatchingCat({
-     catId = null
+     catId = null,
+     callback=null
  }){
-    
+
     const chooseGradient = () =>{
         
         const dayTimeGradient ={
@@ -58,6 +60,7 @@ import OverlayUI from "./dynamic/OverlayUI";
      /**
       * Returns Hello World!
       */
+
      return (
          <div style={{
              ...chooseGradient(), 
@@ -70,12 +73,21 @@ import OverlayUI from "./dynamic/OverlayUI";
             <img src={loadCatImageFromId(catId)} width={200}/>
             </div>
             <OverlayUI>
-                <Typography 
+                <IconButton
                 variant="h4"
+                x="0px"
+                y="0px"
+                size="large"
                 anchor = "top left"
+                onClick={() => {
+                    if (callback!=null){
+                        callback();
+                    }
+                }}
                 >
-                    Back
-                </Typography>
+                    <ArrowBackRounded style={{color:'white'}}/>
+                </IconButton>
+
             </OverlayUI>
         </div>
      );
