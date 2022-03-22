@@ -7,16 +7,16 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from rest_framework import generics, response, status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import APIView
 
 from . import functions
 # Import Models here (if necessary)
-from .models import Catdex, CustomUser, Wildcat
+from .models import Catdex, CustomUser, Wildcat, Cats
 # Import Serializers here
-from .serializers import CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer, WildcatSerializer
+from .serializers import CatIDSerializer, CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer, WildcatSerializer
 from .utils import Util
 
 # Create your api views here. 
@@ -47,6 +47,22 @@ class RetrieveCats(APIView):
 
         return Response({}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class GetAllCats(GenericAPIView):
+
+    serializer_class = CatIDSerializer
+    queryset = Cats.objects.all()
+
+    def get(self, request):
+        serializer = self.serializer_class()
+        cats = Cats.objects.all()
+
+
+        # if wildcats exist in the database, send wildcats
+        serializer = CatIDSerializer(cats, many=True)
+        return Response(serializer.data)
 
 
 class RegisterAPIView(GenericAPIView):
