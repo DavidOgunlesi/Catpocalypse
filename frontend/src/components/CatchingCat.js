@@ -5,9 +5,10 @@
  * The imports which are required for the CatchingCat.js page to run which includes packages from React and other files which exist.
  */
 import React, { useState } from "react";
-import {Typography, IconButton} from "@material-ui/core";
+import {Typography, IconButton, Slider} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
+import {getRandomRange} from '/src/util/math.js';
 
 /**
  * The main function for CatchingCat.js
@@ -64,20 +65,63 @@ export default function CatchingCat({
     const loadCatImageFromId = (id) =>{
         return `/static/images/cats/${id}.png`
     }  
-     /**
-      * Returns Hello World!
-      */
+
+    const getCatData = () =>{
+        return ({name: "Wild Cat", health: 10, maxHealth: 20})
+    }
+
+    var randomBounceTime = getRandomRange(0.3,1);
+    var catAnimStyling = {
+        animation: `bounce ${randomBounceTime}s infinite alternate`,
+        webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
+    }
+    var catData = getCatData();
 
      return (
-         <div style={{
+        <div style={{
              ...chooseGradient(), 
              width: "100%",
              height: "100%"
-         }}>
-             <div
-            className="center"
-            >
-            <img src={loadCatImageFromId(catId)} width={200}/>
+        }}>
+            <div 
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center"
+            }}>
+                <div
+                style={{
+                position: "absolute",
+                backgroundColor: "rgba(1,1,1,0.4)",
+                transform: "skew(20deg)",
+                borderRadius: 10,
+                zIndex: 10000,
+                width: "30%",
+                height: "50px",
+                top: "25%"
+                }}
+                >
+                    <Typography variant="h5" component="h5" style={{
+                        color: "white",
+                        transform: "skew(-20deg)"
+                    }}
+                        >
+                        {catData.name} HP: {catData.health}/{catData.maxHealth}
+                    </Typography>
+                    <Slider
+                    defaultValue={(catData.health/catData.maxHealth) * 100}
+                    valueLabelDisplay="auto"
+                    color="#9EE6C9"
+                    disabled
+                    style={{
+                        transform: "skew(-20deg)"
+                    }}
+                    />
+                </div>
+            </div>
+            <div className="center">
+            <img src={loadCatImageFromId(catId)} width={200} style={catAnimStyling}/>
             </div>
             <OverlayUI>
                 <IconButton
@@ -92,7 +136,8 @@ export default function CatchingCat({
                     }
                 }}
                 >
-                    <ArrowBackRounded style={{color:'white'}}/>
+                    <ArrowBackRounded style = {{color:'white'}}/>
+                    <Typography variant="h4" component="h4" style={{color: "white"}}>Back</Typography>
                 </IconButton>
 
             </OverlayUI>
