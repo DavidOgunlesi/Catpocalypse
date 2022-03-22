@@ -56,10 +56,6 @@ class CatdexSerializer(serializers.ModelSerializer):
 
 
 
-
-
-
-
 class ExampleSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExampleModel

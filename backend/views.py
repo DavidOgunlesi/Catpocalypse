@@ -25,7 +25,7 @@ from .utils import Util
     #serializer_class = CustomerUserSerializer
 
 
-class RetrieveCats(APIView):
+class CatchingCats(APIView):
     
     def post(self, request):
 
@@ -76,6 +76,7 @@ class GetOwnedCats(GenericAPIView):
             if catDexIns.user_id == found_user:
                 catIns = catDexIns.cat_id
                 res.append({
+                    'cat_id':catIns.cat_id,
                     'level':catDexIns.level, 
                     'health':catDexIns.health,
                     'name':catIns.name,
