@@ -148,6 +148,9 @@ class LoginAPIView(GenericAPIView):
             if not user.is_verified:
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
+                # user is available to play hunt the cat
+                user.is_available = True
+                user.save()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):
@@ -162,6 +165,7 @@ class LoginAPIView(GenericAPIView):
                         'username':self.request.session.get('username')
                     }
                     return JsonResponse(data, status=status.HTTP_200_OK)
+                
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutAPIView(GenericAPIView):
@@ -172,6 +176,10 @@ class LogoutAPIView(GenericAPIView):
             # if current user does not have an active session, do nothing
             return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
         else:
+            username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username)[0]
+            user.is_available = False
+            user.save()
             # if current user does have ana active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
