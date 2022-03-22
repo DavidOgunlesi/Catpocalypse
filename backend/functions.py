@@ -18,7 +18,7 @@ lon_RANGE = 0.00367
 
 
 def get_free_players():
-    qs = CustomUser.objects.filter(is_hunting = False)
+    qs = CustomUser.objects.filter(is_available = True)
 
     if len(qs) >= 2:
         x = random.randint(0,len(qs))
@@ -28,8 +28,8 @@ def get_free_players():
         player2 = qs[x]
         qs.remove(player2)
 
-    player1.is_hunting = True
-    player2.is_hunting = True
+    player1.is_available = False
+    player2.is_available = False
 
     # get a random cat from the Cats table
     rand_cat = Cats.objects.order_by('?').first() 
