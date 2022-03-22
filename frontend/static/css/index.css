@@ -161,11 +161,13 @@ Sliding up Component
 
 .content
 {
+    position: relative;
     padding: 50px;
-    width: 90%;
-    height: 80%;
+    margin: 0px 50px 0px 50px;
+    height:  100%;
     overflow:auto;
     overflow-x: hidden;
+    background-color: #FFF;
 }
 /*
 -----------------------------------
@@ -253,4 +255,33 @@ Circle
     -moz-border-radius:50%;
     -webkit-border-radius:50%;
     
+}
+/*
+--------------------------------------
+LoadingScreenGradient
+-------------------------------------
+*/
+.animatedLoadingScreenGradient {
+    background: linear-gradient(181deg, #b8dbf6, #0b4571);
+    background-size: 400% 400%;
+
+    -webkit-animation: LoadingScreenGradient 10s ease infinite;
+    -moz-animation: LoadingScreenGradient 10s ease infinite;
+    animation: LoadingScreenGradient 10s ease infinite;
+}
+
+@-webkit-keyframes LoadingScreenGradient {
+    0%{background-position:41% 0%}
+    50%{background-position:60% 100%}
+    100%{background-position:41% 0%}
+}
+@-moz-keyframes LoadingScreenGradient {
+    0%{background-position:41% 0%}
+    50%{background-position:60% 100%}
+    100%{background-position:41% 0%}
+}
+@keyframes LoadingScreenGradient {
+    0%{background-position:41% 0%}
+    50%{background-position:60% 100%}
+    100%{background-position:41% 0%}
 }

@@ -119,7 +119,7 @@ export default function RegisterPage(){
                 <SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 
-                content={<PrivacyPolicy/>}
+                textContent={<PrivacyPolicy/>}
                 callback={setShowPrivacyPolicy}
                 />
                 <div className="gradient">

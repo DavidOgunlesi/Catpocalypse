@@ -15,12 +15,15 @@ import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
  * @returns The entire Slide Up Window with a pre-defined style, font and background.
  */
 export default function SlideUpWindow({
-    title = "Modal Title",
-    content = "Modal Content",
+    title = null,
+    textContent = null,
+    content = null,
     open = false,
     callback = null,
     blur = false,
-    textColor=""
+    textColor="",
+    backgroundColor="",
+    fillBox = false
 }){
     var styleClass = blur ? "blurSlider" : "slider";
 
@@ -37,7 +40,18 @@ export default function SlideUpWindow({
     
     return (
         <div class={`${styleClass} close`}>
-            <div class="content">
+            <div 
+            style={{
+                position: "relative",
+                padding: fillBox ? "0px" : "50px",
+                margin: "0px 25px 0px 25px",
+                height:  "100%",
+                overflow: "auto",
+                overflowX: "hidden",
+                overflow: fillBox ? "hidden" : "",
+                backgroundColor: backgroundColor
+            }}
+            >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                     <Typography style={{color: textColor}} id="modal-modal-title" variant="h3" component="h3">
@@ -46,16 +60,22 @@ export default function SlideUpWindow({
                     </Grid>
                     <Grid item xs={12}>
                     <Typography style={{color: textColor}} id="modal-modal-description" sx={{ mt: 2 }}>
-                        {content}
+                        {textContent}
                     </Typography>
                     </Grid>
                 </Grid> 
+                {content}
             </div>
             <Button 
                 color = 'secondary' 
                 variant="contained"
                 size="large" 
-                style={{ borderRadius: 50 }}
+                style={{ 
+                    borderRadius: 50,
+                    position: "fixed",
+                    bottom: "10px",
+                    display: open ? "block" : "none"
+                    }}
                 disableElevation={true}
                 fullWidth={true}
                 onClick={closeWindow}

@@ -1,5 +1,5 @@
 /**
- * Overay UI component handles overlaying UI on the main map screen. I can be passed
+ * Overlay UI component handles overlaying UI on the main map screen. I can be passed
  * child components which get rendered at a given x and y.
  */
 
@@ -46,9 +46,9 @@ import { makeStyles } from "@material-ui/core";
   }));
 
 /**
- * 
+ * Put elements on a child using absolute coordinates when displayed on the screen.
  */
-export default function OverayUI({
+export default function OverlayUI({
 	children
 }){
 	const defClasses = useDefStyles();
@@ -58,7 +58,7 @@ export default function OverayUI({
 		// error too.
 		if (React.isValidElement(child)) {
 		  var childrenStyle = {}
-		  if (child.props.anchor == "left"){
+		  if (child.props.anchor == "top left"){
 				childrenStyle = {
 					position: 'absolute',
 					top: child.props.y,
@@ -135,7 +135,7 @@ export default function OverayUI({
 				default:
 					break;
 			}
-			return React.cloneElement(child, { className: sizeClass, style: childrenStyle });
+			return React.cloneElement(child, { className: sizeClass, style: {...childrenStyle,...child.props.style} });
 		}
 		return child;
 	  });
