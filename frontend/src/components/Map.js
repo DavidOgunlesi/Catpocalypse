@@ -469,7 +469,7 @@ function Map(gps){
 		);
 	}
 	if(currentCatch != null){
-		return (<CatchingCat catId={currentCatch}/>);
+		return (<CatchingCat callback={() => setCurrentCatch(null)} catId={currentCatch}/>);
 	}
 
 	/**
@@ -494,7 +494,7 @@ function Map(gps){
 			imageSrc = {warningCat}
 			/> 
 			<GoogleMapReact
-			onChildClick={onCatClick}
+			onChildClick={(key, childProps) => onCatClick(key, childProps)}
 			bootstrapURLKeys={{ key: key }}
 			defaultCenter={defaultLocation}
 			defaultZoom={19}
