@@ -60,12 +60,12 @@
         <div 
         style={{
         position: "absolute",
-        backgroundColor: "#FFF",
+        backgroundColor: "rgba(0,0,0,0.5)",
         top: "80%",
         width: '100%',
         zIndex: 100000
         }}>
-            <Typography variant="h3" component="h3">Loading...</Typography>
+            <Typography variant="h3" component="h3" style={{color: "white"}}>Loading...</Typography>
                 <LinearProgress variant="buffer" value={progress} valueBuffer={buffer} />
             </div>
         </div>
