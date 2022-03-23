@@ -92,7 +92,7 @@ class CustomUser(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-
+    is_available = models.BooleanField(default=False)
     # additional fields
     is_verified = models.BooleanField(default=False)
 
@@ -129,9 +129,9 @@ class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, null=False, unique=True)
-    sex = models.CharField(max_length=10, null=False)
     type = models.IntegerField(choices = TYPE_CHOICES, null=False)   
-    rarity = models.IntegerField(choices = RARITY_CHOICES, null=False)   
+    rarity = models.IntegerField(choices = RARITY_CHOICES, null=False) 
+
 
 class Wildcat(models.Model):
     # define fields for the Cats table in the database
@@ -142,11 +142,16 @@ class Wildcat(models.Model):
     longitude = models.DecimalField(max_digits=22, decimal_places=16, null=False)
     # rand_val generated in function above, limits can be changed
     start_health = models.IntegerField(null=False, default=rand_val)
+    is_huntable = models.BooleanField(null=False, default=False)
+    sex = models.CharField(max_length=10, null=False)
 
-    # ADD OPTIONAL ATTRIBUTE OR 2 HERE TO SPECIFY WHICH 2 USERS CAN ADD THE CAT
-    # IF None/Null, then any player can catch
-    # IF players are there, then frintend only display for those players
-    # WE only allow those players or one of them to catch it   
+
+
+class HuntableCats(models.Model):
+    player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player1")
+    player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player2")
+    wildcat_id = models.ForeignKey(Wildcat,on_delete=models.CASCADE, null=False)
+
 
 class Catdex(models.Model):
     catdex_id = models.AutoField(primary_key=True)
@@ -156,3 +161,5 @@ class Catdex(models.Model):
     # this could be changed to a DecimalField which is preferable at a later stage
     level = models.FloatField(null=False, default=1)
     health = models.IntegerField(null=False)
+    sex = models.CharField(max_length=10, null=False)
+
