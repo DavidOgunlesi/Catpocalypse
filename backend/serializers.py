@@ -12,6 +12,7 @@ class CatIDSerializer(serializers.ModelSerializer):
 
 
 # Define Serializers here
+
 class RegisterSerializer(serializers.ModelSerializer):
 
     # password should not be sent to front end at all

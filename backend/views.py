@@ -26,6 +26,7 @@ from .utils import Util
 
 
 class CatchingCats(APIView):
+
     def post(self, request):
 
         if not self.request.session.exists(self.request.session.session_key):
@@ -34,11 +35,11 @@ class CatchingCats(APIView):
             username = self.request.session.get('username')
             user = CustomUser.objects.filter(username=username)[0]
 
-            id = request.POST["wildcat_id"]
+            id = request.data.get("wildcat_id")
             wildcat = Wildcat.objects.filter(wildcat_id=id).first()
         
             if not wildcat:
-                return Response({'error':'Wilcat with id ' + id + ' does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error':'Wildcat does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 
                 Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)

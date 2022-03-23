@@ -39,6 +39,7 @@ export default function CatchingCat({
      catId: wildCatId = 1,
      callback=null
  }){
+     console.log(wildCatId)
      const [showCatnip, setShowCatnip] = useState(false);
      const [hookAnimState, setHookAnimState] = useState(-1)
      const [failHookAnimState, setFailHookAnimState] = useState(-1)
@@ -172,6 +173,7 @@ export default function CatchingCat({
                 wildcat_id: wildCatId
             }),
         };
+        console.log(requestOptions.body)
 		fetch('/api/send-cats', requestOptions)
 		.then(response => response.json())
 		.then(data => console.log(data))
