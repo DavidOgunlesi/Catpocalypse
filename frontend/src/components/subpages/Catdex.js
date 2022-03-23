@@ -28,7 +28,7 @@ export default function Catdex(props){
         }
         if (ownedCatsOfThisId.length > 0) {
             //swipe up component thing
-            //swipe right component thing for each element
+            //swipe right component thing for each element, (use onDrag?)
         } else {
             console.log("Not discovered yet!");
         }
@@ -79,7 +79,7 @@ export default function Catdex(props){
             catdexEntry.push(
                 <Grid item xs={3} align="center">
                     <IconButton onClick={_ => loadOwnedCats(cats[i].id, ownedCats)}>
-                    <img width={100} src={loadCatImage(cats[i].id, ownedCats)}/>
+                    <img height={setImageHeight(cats[i].id)} src={loadCatImage(cats[i].id, ownedCats)} align="center"/>
                     </IconButton>
                 </Grid>
             )
@@ -105,6 +105,24 @@ export default function Catdex(props){
         return imagePath;
     }
 
+    /**
+     * Sets the image path for the particular catId if it has been obtained,
+     * else it sets the path to the missing cat image.
+     * @param {integer} param0 == the id for the particular cat being displayed in the Catdex.
+     * @param {JSON} param1 == the list of cats the user owns.
+     * @returns The path to the image displayed for the particular cat in the Catdex.
+     */
+    function setImageHeight(id){
+        var height;
+        if (id == 4 || id == 24) {
+            console.log("ID: " + id)
+            height = 40;
+        } else {
+            height = 65;
+        }
+        return height;
+    }
+
     //renders each Catdex entry as a grid item
     if (catdexEntries.length == 0){
         renderCatdex()
@@ -120,8 +138,28 @@ export default function Catdex(props){
         backgroundCol="#B8FCF3"
         >
         <div>
-        <Grid container spacing={2} style={{padding:20}}>
+        <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">
             {catdexEntries}
+            <Grid item xs={3} align="center">
+                <IconButton>
+                <img height={65} src={MissingCat}/>
+                </IconButton>
+            </Grid>
+            <Grid item xs={3} align="center">
+                <IconButton>
+                <img height={65} src={MissingCat}/>
+                </IconButton>
+            </Grid>
+            <Grid item xs={3} align="center">
+                <IconButton>
+                <img height={65} src={MissingCat}/>
+                </IconButton>
+            </Grid>
+            <Grid item xs={3} align="center">
+                <IconButton>
+                <img height={65} src={MissingCat}/>
+                </IconButton>
+            </Grid>
         </Grid>
         </div>
         </Background>
