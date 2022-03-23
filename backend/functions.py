@@ -45,7 +45,7 @@ def get_free_players():
     else:
         tmp = 'Female'
     
-    Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2,)
+    Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2)
 
 
 

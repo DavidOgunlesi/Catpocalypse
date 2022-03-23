@@ -37,11 +37,16 @@ class CatchingCats(APIView):
 
             id = request.data.get("wildcat_id")
             wildcat = Wildcat.objects.filter(wildcat_id=id).first()
-        
+
+            if wildcat.is_huntable:
+                if user.user_id == wildcat.player_1 or user.user_id == wildcat.player_2:
+                    Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
+                    wildcat.delete()
+                    return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+
             if not wildcat:
                 return Response({'error':'Wildcat does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                
                 Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
                 wildcat.delete()
                 return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
