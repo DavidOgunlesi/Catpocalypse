@@ -8,9 +8,12 @@ import React, { useState } from "react";
 import {Typography, IconButton, Button, Slider, Grid} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
-import {getRandomRange} from '/src/util/math.js';
 import MissingCat from '/static/images/cats/undefined.png';
 import SlideHorizontalWindow from "./dynamic/SlideHorizontalWindow";
+import { useSpring, animated } from 'react-spring';
+import HookImg from '/static/images/hooks.png';
+import ModalWindow from "./dynamic/ModalWindow";
+import {getRandomRange, getIntRandomRange} from '/src/util/math.js';
 
 function Catnip(){
     return (
@@ -36,7 +39,58 @@ export default function CatchingCat({
      callback=null
  }){
      const [showCatnip, setShowCatnip] = useState(false);
+     const [hookAnimState, setHookAnimState] = useState(-1)
+     const [failHookAnimState, setFailHookAnimState] = useState(-1)
+     const [successModal, setSuccessModal] = useState(false)
+     /**
+      * 
+      */
+     const hookAnim = useSpring({
+        from: {
+            bottom: "1000px",
+            
+        },
+        to: {
+            bottom: "200px",
+            
+        },
+        reverse: hookAnimState == 1,
+        pause: hookAnimState == 2 || hookAnimState < 0,
+        delay: 0,
+        onRest: () => {
+            setHookAnimState(hookAnimState+1);
+            setSuccessModal(true);
+        },
+      })
+      
+      const failhookAnim = useSpring({
+        from: {
+            bottom: "1000px",
+            
+        },
+        to: {
+            bottom: "200px",
+            
+        },
+        reverse: failHookAnimState == 1,
+        pause: failHookAnimState == 2 || failHookAnimState< 0,
+        delay: 0,
+        onRest: () => {
+            setFailHookAnimState(failHookAnimState+1);
+        },
+      })
 
+      const catAnim = useSpring({
+        from: {
+            top: "50%",
+            
+        },
+        to: {
+            top: "0%",
+            
+        },
+        delay: 0,
+      })
     /**
      * 
      * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
@@ -63,24 +117,19 @@ export default function CatchingCat({
         var gradient = dayTimeGradient;
         const d = new Date(); //checks the current date
         let hour = d.getHours(); // checks the current time from the hour
-        console.log(hour);
         /**
          * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
          */
         if (hour >= 20 || hour < 5){
-            console.log("1");
             gradient = nightTimeGradient;
         }
         if (hour >= 5 && hour < 6){
-            console.log("2");
             gradient = dawnGradient;
         }
         if (hour >= 6 && hour < 19){
-            console.log("3");
             gradient = dayTimeGradient;
         }
         if (hour >= 19 && hour < 20){
-            console.log("4");
             gradient = duskGradient;
         }
         return (gradient);
@@ -100,19 +149,33 @@ export default function CatchingCat({
         return ({name: "Wild Cat", health: 10, maxHealth: 20})
     }
 
+    const closeWindow = () => {
+        if (callback!=null){
+            callback();
+        }
+    }
+
     var randomBounceTime = getRandomRange(0.3,1);
     var catAnimStyling = {
         animation: `bounce ${randomBounceTime}s infinite alternate`,
         webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
     }
     var catData = getCatData();
-
+    
      return (
         <div style={{
              ...chooseGradient(), 
              width: "100%",
              height: "100%"
         }}>
+            <ModalWindow 
+				title="CATCHA!" 
+				content="You caught a cat!" 
+                open={true}
+				openState={successModal}
+				onClick={_=>{ closeWindow()}}
+				buttonText="Continue"
+				/>
             <div 
             style={{
                 display: "flex",
@@ -129,7 +192,8 @@ export default function CatchingCat({
                 zIndex: 10000,
                 width: "50%",
                 height: "50px",
-                top: "25%"
+                top: "25%",
+                display: hookAnimState < 1 ? "block" : "none"
                 }}
                 >
                     <Typography variant="h5" component="h5" style={{
@@ -150,8 +214,15 @@ export default function CatchingCat({
                     />
                 </div>
             </div>
-            <div className="center">
-            <img src={loadCatImageFromId(catId)} width={200} style={catAnimStyling}/>
+            <div>
+                <div className="center">
+                    <img src={loadCatImageFromId(catId)} width={200}
+                    style={{
+                        ...catAnimStyling,
+                        display: hookAnimState < 1 ? "block" : "none"
+                    }}
+                    />
+                </div>
             </div>
                 <SlideHorizontalWindow
                 open={showCatnip}
@@ -172,15 +243,16 @@ export default function CatchingCat({
 
             <OverlayUI>
                 <IconButton
+                style={{
+                    display: hookAnimState < 1 ? "block" : "none"
+                }}
                 variant="h4"
                 x="0px"
                 y="0px"
                 size="large"
                 anchor = "top left"
                 onClick={() => {
-                    if (callback!=null){
-                        callback();
-                    }
+                    closeWindow();
                 }}
                 >
                     <ArrowBackRounded style = {{color:'white'}}/>
@@ -190,6 +262,9 @@ export default function CatchingCat({
                 x="20px"
                 y="20px"
                 anchor = "bottom right"
+                style={{
+                    display: hookAnimState < 1 ? "block" : "none"
+                }}
                 >
                     <IconButton
                     variant="contained"
@@ -206,6 +281,61 @@ export default function CatchingCat({
                     </IconButton>
                     
                 </div>
+                <div
+                y="100px"
+                anchor = "bottom middle"
+                style={{
+                    display: hookAnimState < 1 ? "block" : "none"
+                }}
+                >
+                    <div className="center">
+                        <IconButton
+                        variant="contained"
+                        size="large" 
+                        style={{ 
+                            borderRadius: 500, 
+                            background: "rgba(255, 255, 255, 0.5)" 
+                        }}
+                        fullWidth={true}
+                        onClick={() => {
+                            var catchChance = 20
+                            if (getIntRandomRange(0,100) < catchChance){
+                                setHookAnimState(0);
+                            }else{
+                                setFailHookAnimState(0);
+                            }
+                        }}
+                        >
+                            <img src={MissingCat} style={{padding: "3px"}}width={120}/>
+                            
+                        </IconButton>
+                    </div>
+                    
+                </div>
+                <animated.img 
+                y="200px"
+                anchor = "bottom middle"
+                src={HookImg} 
+                width={200}
+                style={hookAnim}
+                /> 
+                <animated.img 
+                y="200px"
+                anchor = "bottom middle"
+                src={HookImg} 
+                width={200}
+                style={failhookAnim}
+                /> 
+                <animated.img 
+                y="200px"
+                anchor = "bottom middle"
+                src={loadCatImageFromId(catId)} 
+                width={120}
+                style={{
+                    ...hookAnim,
+                    display: hookAnimState == 1 ? "block" : "none"
+                }}
+                />        
             </OverlayUI>
         </div>
      );
