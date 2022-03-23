@@ -5,7 +5,7 @@
  * The imports which are required for the CatchingCat.js page to run which includes packages from React and other files which exist.
  */
 import React, { useState } from "react";
-import {Typography, IconButton, Button, Slider, Grid} from "@material-ui core";
+import {Typography, IconButton, Button, Slider, Grid} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 import MissingCat from '/static/images/cats/undefined.png';
