@@ -7,33 +7,39 @@ import MissingCat from "/static/images/cats/undefined.png";
 
 /**
  * Main Function of Catdex.js
- * @returns The catdex main page displaying all cats and which have been obtained.
+ * @returns The catdex main page displaying all cats which have been obtained.
  */
 export default function Catdex(props){
-
+    const [catdexEntries, setCatdexEntries] = useState([]);
     /**
      * Creates JSON object to fetch all cats from the database
      * @returns The JSON object of all cats in the database
      */
-    const getCats = () => {
-		var cats = [];
-		fetch('/api/get-all-cats')
-		.then(response => response.json())
-		.then(data => {
-			for(var i = 0; i < data.length; i++) {
-				var cat = data[i];
-				cats.push(
-                <Grid item xs={4} align="center">
-                    <img width={100} src={MissingCat}/>
-                </Grid>
-				);
-			}
-		})
-        console.log(cats);
-		return cats;
+    async function example(){
+        var entries = []
+        try{
+            await fetch('/api/get-all-cats')
+            .then(response => response.json())
+            .then(data => {
+                for(var i = 0; i < data.length; i++) {
+                    var cat = data[i];
+                    entries.push(
+                    <Grid item xs={4} align="center">
+                        <img width={100} src={MissingCat}/>
+                    </Grid>
+                    );
+                    console.log(entries)
+                }
+            })
+        }
+        catch(err) {
+            throw err;
+        }
+        console.log(entries);
+        setCatdexEntries(entries)
   	}
 
-    function renderCats(){
+    async function renderCats(){
         var cats = [];
 		fetch('/api/get-all-cats')
 		.then(response => response.json())
@@ -51,7 +57,7 @@ export default function Catdex(props){
      * Creates JSON object to fetch all cats the user owns
      * @returns The JSON object of all cats the user owns
      */
-    function renderOwnedCats() {
+    async function renderOwnedCats() {
         var ownedCats = [];
         fetch('/api/get-owned-cats')
         .then(response => response.json())
@@ -98,7 +104,10 @@ export default function Catdex(props){
                 </Grid>
             )
         }
-        return catdexEntry;
+        setCatdexEntries(entries);
+    }
+    if (catdexEntries.length == 0){
+        displayCats()
     }
 
     return(
@@ -112,7 +121,7 @@ export default function Catdex(props){
         >
         <div>
         <Grid container spacing={2} style={{padding:20}}>
-            {getCats()}
+            {catdexEntries}
             <Grid item xs={4} align="center">
                 <img width={100} src={MissingCat}/>
             </Grid>
