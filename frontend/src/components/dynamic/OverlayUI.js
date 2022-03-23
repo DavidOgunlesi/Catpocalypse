@@ -100,6 +100,13 @@ export default function OverlayUI({
 					bottom: child.props.y,
 					zIndex: child.props.sortingLayer
 				}
+			}else if (child.props.anchor == "bottom middle"){
+				childrenStyle = {
+					position: 'absolute',
+					left: "50%",
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
 			}else{
 				childrenStyle = {
 					position: 'absolute',
