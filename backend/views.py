@@ -43,6 +43,9 @@ class CatchingCats(APIView):
                     Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
                     wildcat.delete()
                     return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response({'message':'User is not allowed to catch this cat'}, status=status.HTTP_201_CREATED)
+
 
             if not wildcat:
                 return Response({'error':'Wildcat does not exist'}, status=status.HTTP_400_BAD_REQUEST)
@@ -173,6 +176,7 @@ class LoginAPIView(GenericAPIView):
                 # user is available to play hunt the cat
                 user.is_available = True
                 user.save()
+                functions.get_free_players()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):

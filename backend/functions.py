@@ -21,17 +21,15 @@ def get_free_players():
     qs = CustomUser.objects.filter(is_available = True)
 
     if len(qs) >= 2:
-        x = random.randint(0,len(qs))
+        x = random.randint(0,len(qs)-1)
         player1 = qs[x]
-        qs.remove(player1)
-        x = random.randint(0,len(qs))
+        player1.is_available = False
+        player1.save()
+        qs = CustomUser.objects.filter(is_available = True)
+        x = random.randint(0,len(qs)-1)
         player2 = qs[x]
-        qs.remove(player2)
-
-    player1.is_available = False
-    player2.is_available = False
-    player1.save()
-    player2.save()
+        player2.is_available = False
+        player2.save()
 
     # get a random cat from the Cats table
     rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
@@ -46,7 +44,7 @@ def get_free_players():
         tmp = 'Female'
     
     Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2)
-
+    print("YAY HUNTABLE WILDCAT CREATED")
 
 
 
