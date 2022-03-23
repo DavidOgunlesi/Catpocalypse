@@ -1,5 +1,5 @@
 /**
- * The standard component of the Slide up windows which show up throughout the app
+ * The standard component of the Slide Horizontal window which shows up throughout the app at multiple intervals
  */
 
 /**
@@ -14,19 +14,13 @@ import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
  * @param {string} content The content will be input when the Sliding Up Window shows up 
  * @returns The entire Slide Up Window with a pre-defined style, font and background.
  */
-export default function SlideUpWindow({
-    title = null,
-    textContent = null,
-    content = null,
+export default function SlideHorizontalWindow({
     open = false,
     callback = null,
-    blur = false,
-    textColor="",
     backgroundColor="",
-    fillBox = false
+    children
 }){
-    var styleClass = blur ? "blurSlider" : "slider";
-
+    var styleClass = "blurLeftSlider";
     if (open) {
         $(`.${styleClass}`).toggleClass('close');
     }
@@ -43,29 +37,23 @@ export default function SlideUpWindow({
             <div 
             style={{
                 position: "relative",
-                padding: fillBox ? "0px" : "50px",
                 margin: "0px 25px 0px 25px",
-                height:  "100%",
                 overflow: "auto",
-                overflowX: "hidden",
-                overflow: fillBox ? "hidden" : "",
+                overflowY: "hidden",
                 backgroundColor: backgroundColor
             }}
             >
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                    <Typography style={{color: textColor}} id="modal-modal-title" variant="h3" component="h3">
-                        {title}
-                    </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                    <Typography style={{color: textColor}} id="modal-modal-description" sx={{ mt: 2 }}>
-                        {textContent}
-                    </Typography>
-                    </Grid>
-                </Grid> 
-                {content}
+                {children}
             </div>
+            <Typography 
+            style={{ 
+                position: "fixed",
+                bottom: "-200px",
+                display: open ? "block" : "none"
+            }} 
+            variant="h5" 
+            component="h5"
+            >Catnip</Typography>
             <Button 
                 color = 'secondary' 
                 variant="contained"

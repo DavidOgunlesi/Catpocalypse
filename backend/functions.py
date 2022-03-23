@@ -112,6 +112,10 @@ def add_cats(apps, schema_editor):
     Cats.objects.create(name="Bull Cat", type=0, rarity=3, sex='Male')
     Cats.objects.create(name="Catoplane", type=3, rarity=4, sex='Male')
     Cats.objects.create(name="LionFlower", type=2, rarity=4, sex='Female')
+    Cats.objects.create(name="Double Headed Cat", type=1, rarity=4) #29
+    Cats.objects.create(name="Credit Card Cat", type=1, rarity=4) #30
+    Cats.objects.create(name="Bagged Cat", type=1, rarity=1) #31
+    Cats.objects.create(name="Toaster Cat", type=0, rarity=3) #32
 
 
 

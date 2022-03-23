@@ -11,7 +11,7 @@ import React,{useState, useEffect} from "react";
 import { useSpring, animated } from 'react-spring'
 
 /**
- * 
+ * Main function for the HorizontalCompass.js which shows the player the current direction they are in the compass - cardinal and ordinal directions.
  * @param {*} param0 
  * @returns The Compass Letter
  */
@@ -44,7 +44,9 @@ function CompassLetter({coordinate, children, fontVariant}) {
             </animated.div>
     );
 }
-  /** */
+  /**
+   * Variable to show the North direction
+   */
   const North = ({coordinate}) => {
     return (
         <div>
@@ -52,6 +54,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the North East direction
+   */
   const NorthEast = ({coordinate}) => {
     coordinate += 45;
     return (
@@ -60,6 +66,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the East direction
+   */
   const East = ({coordinate}) => {
     coordinate += 90;
     return (
@@ -68,6 +78,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the SouthEast direction
+   */
   const SouthEast = ({coordinate}) => {
     coordinate += 135;
     return (
@@ -76,6 +90,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the South direction
+   */
   const South = ({coordinate}) => {
     coordinate += 180;
     return (
@@ -84,6 +102,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the SouthWest direction
+   */
   const SouthWest = ({coordinate}) => {
     coordinate += 225;
     return (
@@ -92,6 +114,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the West direction
+   */
   const West = ({coordinate}) => {
     coordinate += 270;
     return (
@@ -100,6 +126,10 @@ function CompassLetter({coordinate, children, fontVariant}) {
         </div>
     );
   };
+
+  /**
+   * Variable to show the North West direction
+   */
   const NorthWest = ({coordinate}) => {
     coordinate += 315;
     return (

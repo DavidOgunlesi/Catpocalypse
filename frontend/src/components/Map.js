@@ -1,3 +1,9 @@
+/**
+ * Renders the Map Page of Catpocalypse using Google Map API which allows the player to continue the game
+ */
+/**
+ * The imports which are required for this page to run which includes packages from React and other files which exist.
+ */
 import React, {useEffect, useState} from "react";
 import ModalWindow from "./dynamic/ModalWindow";
 import warningCat from '/static/images/warningCat.png';
@@ -25,21 +31,32 @@ import Shop from "./subpages/Shop";
 import CatchingCat from "./CatchingCat";
 import LoadingScreen from "./static/LoadingScreen";
 
+/**
+ * Variables which cannot be reassigned. This includes the API key, ID and the fixed location of the center of campus as decided by the team of Catpocalypse
+ */
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
-
 var map, maps = null;
 
+/**
+ * 
+ * @param gps - Takes the player's live location from the mobile device's GPS
+ * @returns the map when loading the map view page
+ */
 function Map(gps){
+	/**
+	 * Variables which are assigned and cannot be changed
+	 */
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 	const [showMapMenu, setMapMenu] = useState(false);
 	const [currentSubMenu, setSubMenu] = useState("none");
 	const [currentCatch, setCurrentCatch] = useState(null);
 	const [mapLoaded, setMapLoaded] = useState(false);
+	const [shownWarning, setshownWarning] = useState(false);
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
@@ -49,11 +66,18 @@ function Map(gps){
 		lastHeading = map.getHeading();
 	};
 
+	/**
+	 * 
+	 * A fixed variable which shows the type of drag feature present
+	 */
 	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
 		var mouseDelta =  mx - mouseX;
 		map.setHeading(lastHeading -  mouseDelta/10);
 	};
 
+	/**
+	 * Another type of drag feature present
+	 */
 	const drag2 = useGesture(
 		{
 		  onDrag: onDrag,
@@ -61,6 +85,9 @@ function Map(gps){
 		}
 	  );
 
+	/**
+	 * Variable where the Player GPS Data is null
+	 */
   	var playerGPSData = {
 		lat: null, 
 		lng: null,
@@ -69,7 +96,9 @@ function Map(gps){
 		speed: null
 	};
 
-    //Run refresh every second
+	/**
+	 * Runs refresh every second with this function
+	 */
 	useEffect(() => {
 		var timerID = setInterval(() =>  {
 			refeshGPSData();
@@ -87,8 +116,10 @@ function Map(gps){
 	});
     
 	const handleApiLoaded = (_map, _maps) =>{
-		// use map and maps objects
-		// Initialise map object and assign to global variable
+		/**
+		 * Uses map and maps objects
+		 * Initialise map object and assign it to a global variable
+		 */
 		map = _map;
 		maps = _maps;
 		map.setTilt(75);
@@ -109,20 +140,28 @@ function Map(gps){
 		}
 	}
 
-	//Get GPS data from geolocated and update state
+	/**
+	 * 
+	 * @returns the GPS data from geolocated and update state
+	 */
 	const refeshGPSData = () =>{
 		setIsOnline(window.navigator.onLine);
 		setGpsEnabled(gps.isGeolocationEnabled);
 		if(gps.coords == null){
 			return;
 		}
-		
+		/**
+		 * Variables such as latitude, longtitude, altitude, heading and speed
+		 */
 		const lat = gps.coords.latitude;
 		const lng = gps.coords.longitude;
 		const altitude = gps.coords.altitude;
 		const heading = gps.coords.heading;
 		const speed = gps.coords.speed;
 
+		/**
+		 * Gets the GPS data of the player
+		 */
 		playerGPSData = {
 			lat: lat, 
 			lng: lng,
@@ -142,7 +181,11 @@ function Map(gps){
 		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
-  	const renderCats = () =>{
+  	/**
+	   * Spawns the cats in a specific size in random locations and fetches the API call from the backend
+	   * @returns the cats of Catpocalypse will render on the map as expected
+	   */
+	const renderCats = () =>{
 		var cats = [];
 		fetch('/api/get-cats')
 		.then(response => response.json())
@@ -156,6 +199,7 @@ function Map(gps){
 						markerType="cat"
 						size={120}
 						id={cat.cat_id}
+						wildCatId={cat.wildcat_id}
 					/>
 				);
 			}
@@ -163,7 +207,11 @@ function Map(gps){
 		return cats;
   	}
 
-	const renderTransparentBackground = () =>{
+	/**
+	 * 
+	 * @returns transparent background in the map view
+	 */
+	  const renderTransparentBackground = () =>{
 		return (
 			<div 
 				style={{
@@ -184,6 +232,11 @@ function Map(gps){
 		
 	}
 
+	/**
+	 * 
+	 * @returns Creates a button in the map page which redirects the user to further options 
+	 * such as Settings, CatDex, Catsino, Friends and Battle
+	 */
 	const renderOverlayUI = () => {
 		return (
 			<div>
@@ -258,10 +311,6 @@ function Map(gps){
 			</OverlayUI>
 			<OverlayUI>
 				<div 
-				className="transparentCircle"
-				zIndex={100000}
-				/>
-				<div 
 				x="-100px"
 				y="-100px"
 				anchor="bottom right"
@@ -273,6 +322,7 @@ function Map(gps){
 					itemSize={4}
 					radius={20}
 					menuToggleElement={
+						<div>
 						<IconButton
 							size="large"
 							color = 'primary' 
@@ -282,6 +332,7 @@ function Map(gps){
 						>
 						<img src={MenuButtonImg} width={200}/>
 						</IconButton>
+						</div>
 					}
 					/**
 					 * rotationAngleInclusive (default true)
@@ -323,6 +374,10 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns the Settings button once the radio menu is opened - it is present on the top right of the screen
+	 */
 	const renderSettingsButton = () =>{
 		return (
 			<div
@@ -354,6 +409,10 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns Submenus such as CatDex, CatSino, Battle, Friends and Cats
+	 */
 	const renderSubMenus = () => {
 		var page = (<SettingsPage/>)
 		var title = ""
@@ -421,9 +480,27 @@ function Map(gps){
 		);
 	}
 
+	/**
+	 * 
+	 * @returns Before the map is loaded, the loading screen shows up
+	 */
 	const renderLoadingScreen=() =>{
 		if (!mapLoaded){
 			return(<LoadingScreen/>);
+		}
+	}
+
+	const showWarningModal = () => {
+		if (!shownWarning){
+			setshownWarning(true);
+			return (
+				<ModalWindow 
+				title="Be aware of your surroundings" 
+				content="Ensure you are observant of your environment around campus as you play Catpocalypse." 
+				open={true}
+				imageSrc = {warningCat}
+				/> 
+			);
 		}
 	}
   /**
@@ -449,6 +526,9 @@ function Map(gps){
 			</Background>
 		);
 	}
+	/**
+	 * Ensures that the location has been turned on, if not an error message is returned
+	 */
 	if(!gpsEnabled){
 		return(
 			<Background 
@@ -471,14 +551,14 @@ function Map(gps){
 		);
 	}
 	if(currentCatch != null){
-		return (<CatchingCat catId={currentCatch}/>);
+		return (<CatchingCat callback={() => setCurrentCatch(null)} catId={currentCatch}/>);
 	}
 
 	/**
 	 * MAIN MAP HTML
 	 */
 	 const onCatClick = (key, childProps) => {
-		setCurrentCatch(childProps.id)
+		setCurrentCatch(childProps.wildCatId)
 	  }
 	return (
 		<div>
@@ -489,14 +569,9 @@ function Map(gps){
 			{renderOverlayUI()}
 			{renderTransparentBackground()}
 			{renderSettingsButton()}
-			<ModalWindow 
-			title="Be aware of your surroundings" 
-			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
-			open={true}
-			imageSrc = {warningCat}
-			/> 
+			{showWarningModal()}
 			<GoogleMapReact
-			onChildClick={onCatClick}
+			onChildClick={(key, childProps) => onCatClick(key, childProps)}
 			bootstrapURLKeys={{ key: key }}
 			defaultCenter={defaultLocation}
 			defaultZoom={19}
@@ -518,27 +593,33 @@ function Map(gps){
     
 }
 
-//Wrap Map component with geolocated so we can get gps information
+/**
+ * Wrap Map component with geolocated so we can get gps information
+ */
+
 export default geolocated({
 	positionOptions: {
 		enableHighAccuracy: true,
 	},
-	//determines how much time (in miliseconds) we give the 
-	//user to make the decision whether to allow to share 
-	//their location or not
+	/**
+	 * determines how much time (in miliseconds) we give the 
+	 * user to make the decision whether to allow to share 
+	 * their location or not
+	 */
+	
 	userDecisionTimeout: 15000,
 	watchPosition: true,
 })(Map);
 
-/*
-map: your google.maps.Map object
 
-endPosition: desired location to pan to, google.maps.LatLng
-
-n_intervals: number of pan intervals, the more the smoother the transition but the less performant
-
-T_msec: the total time interval for the slow pan to complete (milliseconds)
-*/
+/**
+ * Provided by Flaudre on StackOverFlow (https://stackoverflow.com/questions/9335150/slow-down-google-panto-function)
+ * @param {*} map  - your google.maps.Map object
+ * @param {*} endPosition - desired location to pan to, google.maps.LatLng
+ * @param {*} n_intervals - number of pan intervals, the more the smoother the transition but the less performant
+ * @param {*} T_msec - : the total time interval for the slow pan to complete (milliseconds)
+ * @returns makes slow pan steps from point to point around a map
+ */
 var slowPanTo = function(map, endPosition, n_intervals, T_msec) {
 	var f_timeout, getStep, i, j, lat_array, lat_delta, lat_step, lng_array, lng_delta, lng_step, pan, ref, startPosition;
 	getStep = function(delta) {
