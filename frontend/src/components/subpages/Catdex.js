@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {render} from "react-dom";
 import {isMobile} from 'react-device-detect';
-import {Button, Grid, Typography, InputAdornment, Item} from "@material-ui/core";
+import {Button, Grid, Typography, InputAdornment, Item, IconButton} from "@material-ui/core";
 import Background from "../static/Background";
 import MissingCat from "/static/images/cats/undefined.png";
 
@@ -19,21 +19,21 @@ export default function Catdex(props){
      * @param {JSON} param1 == the list of cats the user owns.
      * @returns ?
      */
-    function loadOwnedCats(id, ownedCats) {
-        console.log("ID: " + id);
-        console.log(ownedCats);
-        var ownedCatsForId = [];
-        const isFound = ownedCats.some(ownedCat => {
-            if (ownedCat.id === id) {
-                ownedCatsForId.push(ownedCat);
-            }
-        })
-        if (ownedCatsForId.length == 0) {
-            //do nothing!
+    const loadOwnedCats = (id, ownedCats) => {
+        var ownedCatsOfThisId = ownedCats.filter(function(cat){
+            return cat.id == id;
+        });
+        for (let i = 0; i < ownedCatsOfThisId.length; i++) {
+            console.log(ownedCatsOfThisId[i]);
+        }
+        if (ownedCatsOfThisId.length > 0) {
+            //swipe up component thing
+            //swipe right component thing for each element
         } else {
-            console.log("redirect to CatdexEntry(ownedCatsForId)!")
+            console.log("Not discovered yet!");
         }
     }
+    
 
     /**
      * Displays the image for each cat in the Catdex, displaying the missing cat if not yet obtained.
@@ -57,7 +57,15 @@ export default function Catdex(props){
             .then(data => {
                 for(var i = 0; i < data.data.length; i++) {
                     var cat = data.data[i];
-                    ownedCats.push({id:cat.cat_id});
+                    ownedCats.push({
+                        id:cat.cat_id,
+                        level: cat.level,
+                        health: cat.health,
+                        name: cat.name,
+                        sex: cat.sex,
+                        type: cat.type,
+                        rarity: cat.rarity
+                    });
 
                 }
             })
@@ -70,7 +78,9 @@ export default function Catdex(props){
         for (let i = 0; i < cats.length; i++) {
             catdexEntry.push(
                 <Grid item xs={3} align="center">
-                    <img width={100} src={loadCatImage(cats[i].id, ownedCats)} onClick={loadOwnedCats} id={cats[i].id} ownedCats={ownedCats}/>
+                    <IconButton onClick={_ => loadOwnedCats(cats[i].id, ownedCats)}>
+                    <img width={100} src={loadCatImage(cats[i].id, ownedCats)}/>
+                    </IconButton>
                 </Grid>
             )
         }
