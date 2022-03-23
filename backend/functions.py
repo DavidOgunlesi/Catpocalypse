@@ -81,8 +81,14 @@ def cat_generation(num):
         # get a random latitude and longitude within the approximate campus range
         rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
         rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
+        # get sex
+        if random.randint(0,1) == 0:
+            tmp = 'Male'
+        else:
+            tmp = 'Female'
+
         # create a wildcat instance from this
-        Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat)
+        Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat, sex=tmp)
 
 
 
@@ -92,40 +98,40 @@ def cat_generation(num):
     
 def add_cats(apps, schema_editor):
     Cats = apps.get_model('backend', 'Cats')
-    Cats.objects.create(name="Normal Cat", type=1, rarity=1, sex='Female')
-    Cats.objects.create(name="Rock Cat", type=0, rarity=1, sex='Male')
-    Cats.objects.create(name="Flame Cat", type=2, rarity=1, sex='Male')
-    Cats.objects.create(name="Aqua Cat", type=3, rarity=1, sex='Female')
+    Cats.objects.create(name="Normal Cat", type=1, rarity=1)
+    Cats.objects.create(name="Rock Cat", type=0, rarity=1)
+    Cats.objects.create(name="Flame Cat", type=2, rarity=1)
+    Cats.objects.create(name="Aqua Cat", type=3, rarity=1)
 
-    Cats.objects.create(name="Injured Cat", type=1, rarity=2, sex='Male')
-    Cats.objects.create(name="Lanky Cat", type=2, rarity=2, sex='Female')
-    Cats.objects.create(name="Buff Cat", type=0, rarity=2, sex='Male')
+    Cats.objects.create(name="Injured Cat", type=1, rarity=2)
+    Cats.objects.create(name="Lanky Cat", type=2, rarity=2)
+    Cats.objects.create(name="Buff Cat", type=0, rarity=2)
 
-    Cats.objects.create(name="Business Cat", type=1, rarity=3, sex='Female')
-    Cats.objects.create(name="Boxer Cat", type=0, rarity=3, sex='Male')
-    Cats.objects.create(name="Epic Cat", type=3, rarity=3, sex='Male')
-    Cats.objects.create(name="Ninja Cat", type=4, rarity=3, sex='Female')
+    Cats.objects.create(name="Business Cat", type=1, rarity=3)
+    Cats.objects.create(name="Boxer Cat", type=0, rarity=3)
+    Cats.objects.create(name="Epic Cat", type=3, rarity=3)
+    Cats.objects.create(name="Ninja Cat", type=4, rarity=3)
 
-    Cats.objects.create(name="Void Cat", type=2, rarity=4, sex='Female')
-    Cats.objects.create(name="Mini Cat", type=4, rarity=4, sex='Female')
-    Cats.objects.create(name="Death Cat", type=2, rarity=4, sex='Male')
+    Cats.objects.create(name="Void Cat", type=2, rarity=4)
+    Cats.objects.create(name="Mini Cat", type=4, rarity=4)
+    Cats.objects.create(name="Death Cat", type=2, rarity=4)
 
-    Cats.objects.create(name="Neo Cat", type=3, rarity=5, sex='Female')
-    Cats.objects.create(name="Terminator Cat", type=4, rarity=5, sex='Male')
-    Cats.objects.create(name="Bat Cat", type=0, rarity=5, sex='Male')
+    Cats.objects.create(name="Neo Cat", type=3, rarity=5)
+    Cats.objects.create(name="Terminator Cat", type=4, rarity=5)
+    Cats.objects.create(name="Bat Cat", type=0, rarity=5)
 
-    Cats.objects.create(name="God Cat", type=2, rarity=6, sex='Male')
-    Cats.objects.create(name="FZ01 Cat", type=1, rarity=6, sex='Female')
-    Cats.objects.create(name="Genesis Cat", type=3, rarity=6, sex='Female')
-    Cats.objects.create(name="Messiah Cat", type=4, rarity=6, sex='Male')
+    Cats.objects.create(name="God Cat", type=2, rarity=6)
+    Cats.objects.create(name="FZ01 Cat", type=1, rarity=6)
+    Cats.objects.create(name="Genesis Cat", type=3, rarity=6)
+    Cats.objects.create(name="Messiah Cat", type=4, rarity=6)
 
-    Cats.objects.create(name="Box Cat", type=1, rarity=0, sex='Female')
-    Cats.objects.create(name="Grizzly Cat", type=4, rarity=2, sex='Male')
-    Cats.objects.create(name="Spider Cat", type=0, rarity=2, sex='Female')
-    Cats.objects.create(name="Top Cat", type=4, rarity=3, sex='Female')
-    Cats.objects.create(name="Bull Cat", type=0, rarity=3, sex='Male')
-    Cats.objects.create(name="Catoplane", type=3, rarity=4, sex='Male')
-    Cats.objects.create(name="LionFlower", type=2, rarity=4, sex='Female')
+    Cats.objects.create(name="Box Cat", type=1, rarity=0)
+    Cats.objects.create(name="Grizzly Cat", type=4, rarity=2)
+    Cats.objects.create(name="Spider Cat", type=0, rarity=2)
+    Cats.objects.create(name="Top Cat", type=4, rarity=3)
+    Cats.objects.create(name="Bull Cat", type=0, rarity=3)
+    Cats.objects.create(name="Catoplane", type=3, rarity=4)
+    Cats.objects.create(name="LionFlower", type=2, rarity=4)
 
 
 

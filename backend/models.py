@@ -129,7 +129,6 @@ class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, null=False, unique=True)
-    sex = models.CharField(max_length=10, null=False)
     type = models.IntegerField(choices = TYPE_CHOICES, null=False)   
     rarity = models.IntegerField(choices = RARITY_CHOICES, null=False) 
 
@@ -144,6 +143,9 @@ class Wildcat(models.Model):
     # rand_val generated in function above, limits can be changed
     start_health = models.IntegerField(null=False, default=rand_val)
     is_huntable = models.BooleanField(null=False, default=False)
+    sex = models.CharField(max_length=10, null=False)
+
+
 
 class HuntableCats(models.Model):
     player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player1")
@@ -159,3 +161,5 @@ class Catdex(models.Model):
     # this could be changed to a DecimalField which is preferable at a later stage
     level = models.FloatField(null=False, default=1)
     health = models.IntegerField(null=False)
+    sex = models.CharField(max_length=10, null=False)
+

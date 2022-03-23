@@ -40,7 +40,8 @@ class CatchingCats(APIView):
             if not wildcat:
                 return Response({'error':'Wilcat with id ' + id + ' does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health)
+                
+                Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
                 wildcat.delete()
                 return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
     """
@@ -98,13 +99,10 @@ class GetOwnedCats(GenericAPIView):
                     'level':catDexIns.level, 
                     'health':catDexIns.health,
                     'name':catIns.name,
-                    'sex':catIns.sex,
                     'type':catIns.type,
                     'rarity':catIns.rarity})  
                 
         return response.Response({'data':res}, status=status.HTTP_200_OK)
-
-
 
 
 class RegisterAPIView(GenericAPIView):
