@@ -143,14 +143,10 @@ class Wildcat(models.Model):
     # rand_val generated in function above, limits can be changed
     start_health = models.IntegerField(null=False, default=rand_val)
     is_huntable = models.BooleanField(null=False, default=False)
-    sex = models.CharField(max_length=10, null=False)
-
-
-
-class HuntableCats(models.Model):
     player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player1")
     player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player2")
-    wildcat_id = models.ForeignKey(Wildcat,on_delete=models.CASCADE, null=False)
+    sex = models.CharField(max_length=10, null=False)
+
 
 
 class Catdex(models.Model):

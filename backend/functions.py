@@ -39,12 +39,13 @@ def get_free_players():
     rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
     rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
     # create a wildcat instance from this
-    
 
-    HuntableCats.objects.create(
-        player_1=player1, 
-        player_2=player2,
-        wildcat_id=Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat))
+    if random.randint(0,1) == 0:
+            tmp = 'Male'
+    else:
+        tmp = 'Female'
+    
+    Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2,)
 
 
 
