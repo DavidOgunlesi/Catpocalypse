@@ -17,6 +17,38 @@ lon_RANGE = 0.00367
 # distance range is 0.0033700
 
 
+def get_free_players():
+    qs = CustomUser.objects.filter(is_available = True)
+
+    if len(qs) >= 2:
+        x = random.randint(0,len(qs))
+        player1 = qs[x]
+        qs.remove(player1)
+        x = random.randint(0,len(qs))
+        player2 = qs[x]
+        qs.remove(player2)
+
+    player1.is_available = False
+    player2.is_available = False
+    player1.save()
+    player2.save()
+
+    # get a random cat from the Cats table
+    rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
+    # get a random latitude and longitude within the approximate campus range
+    rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
+    rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
+    # create a wildcat instance from this
+    
+
+    HuntableCats.objects.create(
+        player_1=player1, 
+        player_2=player2,
+        wildcat_id=Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat))
+
+
+
+
 def capacity_check():
     """
         This function will check the number of cats on the map and will trigger the gat_generation function if necessary
@@ -45,17 +77,24 @@ def cat_generation(num):
     # make_test_cats() # create some cats (REMOVE THIS)
     for i in range(num):
         # get a random cat from the Cats table
-        rand_cat = Cats.objects.order_by('?').first() # May be a more efficient way to do this
+        rand_cat = Cats.objects.order_by('?').first()
         # get a random latitude and longitude within the approximate campus range
         rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
         rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
+        # get sex
+        if random.randint(0,1) == 0:
+            tmp = 'Male'
+        else:
+            tmp = 'Female'
+
         # create a wildcat instance from this
-        Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat)
+        Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat, sex=tmp)
 
 
 
 #when i deal with sending/recieving cats, i will call capacity check. then capacity check can return 
 # true or false depending on whether cat generation was needed. if true, then i can send the updated cats back to frontend
+# HI
     
 def add_cats(apps, schema_editor):
     '''

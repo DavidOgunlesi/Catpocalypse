@@ -1,30 +1,109 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from rest_framework import generics
-from rest_framework.generics import GenericAPIView
-from rest_framework import response, status
-from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser, Wildcat
-from .utils import Util
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+import re
 import jwt
 from django.conf import settings
+from django.contrib.auth import authenticate
+from django.contrib.sites.shortcuts import get_current_site
+from django.http import Http404, JsonResponse
+from django.shortcuts import render
+from django.urls import reverse
+from rest_framework import generics, response, status
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import APIView
+
 from . import functions
-
 # Import Models here (if necessary)
-from .models import CustomUser
-
+from .models import Catdex, CustomUser, Wildcat, Cats
 # Import Serializers here
-from .serializers import CatSerializer, LoginSerializer, RegisterSerializer
-
+from .serializers import CatIDSerializer, CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
+from .utils import Util
 
 # Create your api views here. 
 #class CustomUserView(generics.CreateAPIView):
     #queryset = CustomUser.objects.all()
     #serializer_class = CustomerUserSerializer
+
+
+class CatchingCats(APIView):
+    def post(self, request):
+
+        if not self.request.session.exists(self.request.session.session_key):
+            return Response({'error':'No user exists'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username)[0]
+
+            id = request.POST["wildcat_id"]
+            wildcat = Wildcat.objects.filter(wildcat_id=id).first()
+        
+            if not wildcat:
+                return Response({'error':'Wilcat with id ' + id + ' does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                
+                Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
+                wildcat.delete()
+                return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+    """
+    def post(self, request):
+
+        for wildcat in Wildcat.objects.all():
+            if wildcat.wildcat_id == int(request.data['wildcat_id']):
+                found_wildcat = wildcat
+                found_health = wildcat.start_health
+                cat = wildcat.cat_id
+        
+        for user in CustomUser.objects.all():
+            if user.username == str(self.request.session.get('username')):
+                found_user = user
+        
+        Catdex.objects.create(cat_id = cat, user_id = found_user, health=found_health)
+        found_wildcat.delete()
+
+        return Response({}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    """
+
+
+
+class GetAllCats(GenericAPIView):
+
+    serializer_class = CatIDSerializer
+    queryset = Cats.objects.all()
+
+    def get(self, request):
+        serializer = self.serializer_class()
+        cats = Cats.objects.all()
+
+
+        # if wildcats exist in the database, send wildcats
+        serializer = CatIDSerializer(cats, many=True)
+        return Response(serializer.data)
+
+class GetOwnedCats(GenericAPIView):
+
+    def get(self, request):
+
+        queryset = Catdex.objects.all()
+        res = []
+
+        for user in CustomUser.objects.all():
+                if user.username == str(self.request.session.get('username')):
+                    found_user = user
+
+        for catDexIns in queryset:
+            if catDexIns.user_id == found_user:
+                catIns = catDexIns.cat_id
+                res.append({
+                    'cat_id':catIns.cat_id,
+                    'level':catDexIns.level, 
+                    'health':catDexIns.health,
+                    'name':catIns.name,
+                    'type':catIns.type,
+                    'rarity':catIns.rarity})  
+                
+        return response.Response({'data':res}, status=status.HTTP_200_OK)
+
 
 class RegisterAPIView(GenericAPIView):
 
@@ -85,6 +164,9 @@ class LoginAPIView(GenericAPIView):
             if not user.is_verified:
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
+                # user is available to play hunt the cat
+                user.is_available = True
+                user.save()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):
@@ -99,6 +181,7 @@ class LoginAPIView(GenericAPIView):
                         'username':self.request.session.get('username')
                     }
                     return JsonResponse(data, status=status.HTTP_200_OK)
+                
         return response.Response({'message':"Invalid credentials, try again"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutAPIView(GenericAPIView):
@@ -109,6 +192,10 @@ class LogoutAPIView(GenericAPIView):
             # if current user does not have an active session, do nothing
             return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
         else:
+            username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username)[0]
+            user.is_available = False
+            user.save()
             # if current user does have ana active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
@@ -144,10 +231,24 @@ class GetCats(GenericAPIView):
         else:
             # first generate wildcats, then send wildcats
             functions.capacity_check()
-            
-            serializer = CatSerializer(wildcats, many=True)
+            new_wildcats = Wildcat.objects.all()
+            serializer = CatSerializer(new_wildcats, many=True)
             return Response(serializer.data)
 
+class WildcatDetail(APIView):
+    """
+    Return data for a wildcat given a wildcat id
+    """
+    def get_object(self, pk):
+        try:
+            return Wildcat.objects.get(pk=pk)
+        except Wildcat.DoesNotExist:
+            raise Http404
+    
+    def get(self, request, pk, format=None):
+        wildcat = self.get_object(pk)
+        serializer = CatSerializer(wildcat)
+        return Response(serializer.data)
 
 '''
 class UserLoggedIn(APIView):
