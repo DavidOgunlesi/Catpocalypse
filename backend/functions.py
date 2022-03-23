@@ -34,7 +34,7 @@ def get_free_players():
     player2.save()
 
     # get a random cat from the Cats table
-    rand_cat = Cats.objects.order_by('?').first()
+    rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
     # get a random latitude and longitude within the approximate campus range
     rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
     rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)

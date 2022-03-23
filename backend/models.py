@@ -146,8 +146,8 @@ class Wildcat(models.Model):
     is_huntable = models.BooleanField(null=False, default=False)
 
 class HuntableCats(models.Model):
-    player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
-    player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player1")
+    player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False, related_name="player2")
     wildcat_id = models.ForeignKey(Wildcat,on_delete=models.CASCADE, null=False)
 
 
