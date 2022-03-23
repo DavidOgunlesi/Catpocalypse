@@ -79,7 +79,7 @@ export default function Catdex(props){
             catdexEntry.push(
                 <Grid item xs={3} align="center">
                     <IconButton onClick={_ => loadOwnedCats(cats[i].id, ownedCats)}>
-                    <img height={setImageHeight(cats[i].id)} src={loadCatImage(cats[i].id, ownedCats)} align="center"/>
+                    <img height={setImageHeight(cats[i].id)} src={loadCatImage(cats[i].id, ownedCats)} onError={handleOnError} align="center"/>
                     </IconButton>
                 </Grid>
             )
@@ -121,6 +121,10 @@ export default function Catdex(props){
             height = 65;
         }
         return height;
+    }
+
+    const handleOnError = (e) => {
+        e.target.src = '/static/images/cats/undefined.png'; 
     }
 
     //renders each Catdex entry as a grid item
