@@ -199,6 +199,7 @@ function Map(gps){
 						markerType="cat"
 						size={120}
 						id={cat.cat_id}
+						wildCatId={cat.wildcat_id}
 					/>
 				);
 			}
@@ -557,7 +558,7 @@ function Map(gps){
 	 * MAIN MAP HTML
 	 */
 	 const onCatClick = (key, childProps) => {
-		setCurrentCatch(childProps.id)
+		setCurrentCatch(childProps.wildCatId)
 	  }
 	return (
 		<div>
