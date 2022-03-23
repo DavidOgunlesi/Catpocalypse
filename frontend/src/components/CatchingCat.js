@@ -14,6 +14,7 @@ import { useSpring, animated } from 'react-spring';
 import HookImg from '/static/images/hooks.png';
 import ModalWindow from "./dynamic/ModalWindow";
 import {getRandomRange, getIntRandomRange} from '/src/util/math.js';
+import LoadingScreen from "./static/LoadingScreen";
 
 function Catnip(){
     return (
@@ -35,13 +36,14 @@ function Catnip(){
  * @returns gets activated when the user clicks on a cat on the map and displays the cat which needs to be caught
  */ 
 export default function CatchingCat({
-     catId = 1,
+     catId: wildCatId = 1,
      callback=null
  }){
      const [showCatnip, setShowCatnip] = useState(false);
      const [hookAnimState, setHookAnimState] = useState(-1)
      const [failHookAnimState, setFailHookAnimState] = useState(-1)
      const [successModal, setSuccessModal] = useState(false)
+     const [wildCatData, setWildCatData] = useState(null);
      /**
       * 
       */
@@ -155,13 +157,38 @@ export default function CatchingCat({
         }
     }
 
+    const getWildCatData = () =>{
+        fetch(`/api/wildcat/${wildCatId}`)
+		.then(response => response.json())
+		.then(data => {setWildCatData(data); console.log(data);})
+    }
+
+    const collectCat = () =>{
+        console.log("Hello")
+		const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                wildcat_id: wildCatId
+            }),
+        };
+		fetch('/api/send-cats', requestOptions)
+		.then(response => response.json())
+		.then(data => console.log(data))
+  	}
+
     var randomBounceTime = getRandomRange(0.3,1);
     var catAnimStyling = {
         animation: `bounce ${randomBounceTime}s infinite alternate`,
         webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
     }
-    var catData = getCatData();
-    
+
+    console.log(wildCatData == null)
+    if (wildCatData == null){
+        console.log("Getting data " + wildCatId)
+        getWildCatData()
+        return (<LoadingScreen/>);
+    } 
      return (
         <div style={{
              ...chooseGradient(), 
@@ -173,7 +200,10 @@ export default function CatchingCat({
 				content="You caught a cat!" 
                 open={true}
 				openState={successModal}
-				onClick={_=>{ closeWindow()}}
+				onClick={_=>{ 
+                    collectCat();
+                    closeWindow();
+                }}
 				buttonText="Continue"
 				/>
             <div 
@@ -201,10 +231,10 @@ export default function CatchingCat({
                         transform: "skew(-20deg)"
                     }}
                         >
-                        {catData.name} HP: {catData.health}/{catData.maxHealth}
+                        {wildCatData.name} HP: {wildCatData.start_health}
                     </Typography>
                     <Slider
-                    defaultValue={(catData.health/catData.maxHealth) * 100}
+                    defaultValue={(wildCatData.health/wildCatData.maxHealth) * 100}
                     valueLabelDisplay="auto"
                     color="#9EE6C9"
                     disabled
@@ -216,7 +246,7 @@ export default function CatchingCat({
             </div>
             <div>
                 <div className="center">
-                    <img src={loadCatImageFromId(catId)} width={200}
+                    <img src={loadCatImageFromId(wildCatData.cat_id)} width={200}
                     style={{
                         ...catAnimStyling,
                         display: hookAnimState < 1 ? "block" : "none"
@@ -332,7 +362,7 @@ export default function CatchingCat({
                 <animated.img 
                 y="200px"
                 anchor = "bottom middle"
-                src={loadCatImageFromId(catId)} 
+                src={loadCatImageFromId(wildCatId)} 
                 width={120}
                 style={{
                     ...hookAnim,
