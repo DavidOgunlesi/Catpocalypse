@@ -47,6 +47,9 @@ var map, maps = null;
  * @returns the map when loading the map view page
  */
 function Map(gps){
+	/**
+	 * Variables which are assigned and cannot be changed
+	 */
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 	const [showMapMenu, setMapMenu] = useState(false);
@@ -62,11 +65,18 @@ function Map(gps){
 		lastHeading = map.getHeading();
 	};
 
+	/**
+	 * 
+	 * A fixed variable which shows the type of drag feature present
+	 */
 	const onDrag = ({ down, xy: [mx, my], delta: [dmx, dmy] }) => {
 		var mouseDelta =  mx - mouseX;
 		map.setHeading(lastHeading -  mouseDelta/10);
 	};
 
+	/**
+	 * Another type of drag feature present
+	 */
 	const drag2 = useGesture(
 		{
 		  onDrag: onDrag,
@@ -74,6 +84,9 @@ function Map(gps){
 		}
 	  );
 
+	/**
+	 * Variable where the Player GPS Data is null
+	 */
   	var playerGPSData = {
 		lat: null, 
 		lng: null,
