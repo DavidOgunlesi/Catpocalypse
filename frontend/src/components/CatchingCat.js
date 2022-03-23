@@ -5,7 +5,7 @@
  * The imports which are required for the CatchingCat.js page to run which includes packages from React and other files which exist.
  */
 import React, { useState } from "react";
-import {Typography, IconButton, Button, Slider, Grid} from "@material-ui core";
+import {Typography, IconButton, Button, Slider, Grid} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 import MissingCat from '/static/images/cats/undefined.png';
@@ -15,6 +15,56 @@ import HookImg from '/static/images/hooks.png';
 import ModalWindow from "./dynamic/ModalWindow";
 import {getRandomRange, getIntRandomRange} from '/src/util/math.js';
 import LoadingScreen from "./static/LoadingScreen";
+
+import ShrubLeft from "/static/images/catchingCats/shrubLeft.png";
+import ShrubRight from "/static/images/catchingCats/shrubRight.png";
+import ShrubCenter from "/static/images/catchingCats/shrubCenter.png";
+import GameIcon from "./GameIcon";
+
+
+/**
+     * Variable which returns a specific cat from the map to continue the process of catching.
+     */
+function loadCatImageFromId(id){
+    return `/static/images/cats/${id}.png`
+} 
+
+function FallingLeaves(){
+    return (
+        <div class="container">
+            <div class="loader">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    );
+}
 
 /**
  * Function which returns the catnips when rendered
@@ -33,6 +83,167 @@ function Catnip(){
         </button>
     );
 }
+
+function CatLabel({wildCatData, hookAnimState}){
+    return(
+        <div 
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                textAlign: "center"
+            }}>
+                <div
+                style={{
+                position: "absolute",
+                backgroundColor: "rgba(1,1,1,0.4)",
+                transform: "skew(20deg)",
+                borderRadius: 10,
+                zIndex: 10000,
+                width: "50%",
+                height: "50px",
+                top: "25%",
+                display: hookAnimState < 1 ? "block" : "none"
+                }}
+                >
+                    <Typography variant="h5" component="h5" style={{
+                        color: "white",
+                        transform: "skew(-20deg)"
+                    }}
+                        >
+                        {wildCatData.name} HP: {wildCatData.start_health}
+                    </Typography>
+                    <Slider
+                    defaultValue={(wildCatData.health/wildCatData.maxHealth) * 100}
+                    valueLabelDisplay="auto"
+                    color="#9EE6C9"
+                    disabled
+                    style={{
+                        transform: "skew(-20deg)"
+                    }}
+                    />
+                </div>
+            </div>
+    );
+}
+function Cat({wildCatData, hookAnimState}){
+    var randomBounceTime = getRandomRange(0.3,1);
+    var catAnimStyling = {
+        animation: `bounce ${randomBounceTime}s infinite alternate`,
+        webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
+    }
+    return (
+        <div>
+            <div className="center">
+                <img src={loadCatImageFromId(wildCatData.cat_id)} width={200}
+                style={{
+                    ...catAnimStyling,
+                    display: hookAnimState < 1 ? "block" : "none"
+                }}
+                />
+            </div>
+        </div>
+    );
+}
+
+function ShrubBackground(){
+    return (
+        <div>
+             <div
+            style={{
+                backgroundImage: `url("${ShrubLeft}")`,
+                backgroundSize: "30%",
+                position: "absolute",
+                width: '100%',
+                height: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                opacity: 0.7,
+                backgroundBlendMode: "multiply",
+                backgroundPosition: "right bottom"
+            }}
+            />
+            <div
+            style={{
+                backgroundImage: `url("${ShrubRight}")`,
+                backgroundSize: "30%",
+                position: "absolute",
+                width: '100%',
+                height: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                opacity: 0.7,
+                backgroundBlendMode: "multiply",
+                backgroundPosition: "left bottom"
+            }}
+            />
+            <div
+            style={{
+                backgroundImage: `url("${ShrubCenter}")`,
+                backgroundSize: "100%",
+                position: "absolute",
+                width: '100%',
+                height: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundAttachment: "fixed",
+                opacity: 0.4,
+                backgroundBlendMode: "multiply",
+                backgroundPosition: "center"
+            }}/>
+        </div>
+    );
+}
+
+    /**
+     * Renders the background of the CatchignCat.js
+     * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
+     */
+    const chooseGradient = () =>{
+        
+        const dayTimeGradient ={
+            background: "rgb(66,75,28)",
+            background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
+            
+        }
+        const nightTimeGradient ={
+            background: "rgb(16,43,19)",
+            background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
+        }
+        const duskGradient = {
+            background: "rgb(8,29,10)",
+            background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
+        }
+        const dawnGradient = {
+            background: "rgb(19,48,16)",
+            background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
+        }
+        var gradient = dayTimeGradient;
+        /**
+         * checks the current date
+         */
+        const d = new Date();
+
+        /**
+         * checks the current time from the hour
+         */
+        let hour = d.getHours();
+        /**
+         * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
+         */
+        if (hour >= 20 || hour < 5){
+            gradient = nightTimeGradient;
+        }
+        if (hour >= 5 && hour < 6){
+            gradient = dawnGradient;
+        }
+        if (hour >= 6 && hour < 19){
+            gradient = dayTimeGradient;
+        }
+        if (hour >= 19 && hour < 20){
+            gradient = duskGradient;
+        }
+        return (gradient);
+    } 
 
 /**
  * The main function for CatchingCat.js
@@ -101,70 +312,6 @@ export default function CatchingCat({
         },
         delay: 0,
       })
-    /**
-     * Renders the background of the CatchignCat.js
-     * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
-     */
-    const chooseGradient = () =>{
-        
-        const dayTimeGradient ={
-            background: "rgb(66,75,28)",
-            background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
-            
-        }
-        const nightTimeGradient ={
-            background: "rgb(16,43,19)",
-            background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
-        }
-        const duskGradient = {
-            background: "rgb(8,29,10)",
-            background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
-        }
-        const dawnGradient = {
-            background: "rgb(19,48,16)",
-            background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
-        }
-        var gradient = dayTimeGradient;
-        /**
-         * checks the current date
-         */
-        const d = new Date();
-
-        /**
-         * checks the current time from the hour
-         */
-        let hour = d.getHours();
-        /**
-         * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
-         */
-        if (hour >= 20 || hour < 5){
-            gradient = nightTimeGradient;
-        }
-        if (hour >= 5 && hour < 6){
-            gradient = dawnGradient;
-        }
-        if (hour >= 6 && hour < 19){
-            gradient = dayTimeGradient;
-        }
-        if (hour >= 19 && hour < 20){
-            gradient = duskGradient;
-        }
-        return (gradient);
-    }
-
-    /**
-     * Variable which returns a specific cat from the map to continue the process of catching.
-     */
-    const loadCatImageFromId = (id) =>{
-        return `/static/images/cats/${id}.png`
-    }  
-     /**
-      * Returns the cat which needs to be caught
-      */
-
-    const getCatData = () =>{
-        return ({name: "Wild Cat", health: 10, maxHealth: 20})
-    }
 
     /**
      Variable which will close the window
@@ -188,7 +335,6 @@ export default function CatchingCat({
      * The API call from backend
      */
     const collectCat = () =>{
-        console.log("Hello")
 		const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -196,24 +342,30 @@ export default function CatchingCat({
                 wildcat_id: wildCatId
             }),
         };
-        console.log(requestOptions.body)
+        
 		fetch('/api/send-cats', requestOptions)
 		.then(response => response.json())
 		.then(data => console.log(data))
   	}
 
-    var randomBounceTime = getRandomRange(0.3,1);
-    var catAnimStyling = {
-        animation: `bounce ${randomBounceTime}s infinite alternate`,
-        webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
-    }
-
-    console.log(wildCatData == null)
     if (wildCatData == null){
         console.log("Getting data " + wildCatId)
         getWildCatData()
         return (<LoadingScreen/>);
     }
+
+    const tryCatch = () =>{
+        if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
+            return;
+        }
+        var catchChance = 20
+        if (getIntRandomRange(0,100) < catchChance){
+            setHookAnimState(0);
+        }else{
+            setFailHookAnimState(0);
+        }
+    }
+
     /**
      * Returns a modal window once the cat has been successfully caught, a sliding window for the Catnips, radio buttons for catching. 
      */
@@ -223,7 +375,9 @@ export default function CatchingCat({
              width: "100%",
              height: "100%"
         }}>
-            <ModalWindow 
+            <FallingLeaves/>
+            <ShrubBackground/>
+                <ModalWindow 
 				title="CATCHA!" 
 				content="You caught a cat!" 
                 open={true}
@@ -234,54 +388,8 @@ export default function CatchingCat({
                 }}
 				buttonText="Continue"
 				/>
-            <div 
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center"
-            }}>
-                <div
-                style={{
-                position: "absolute",
-                backgroundColor: "rgba(1,1,1,0.4)",
-                transform: "skew(20deg)",
-                borderRadius: 10,
-                zIndex: 10000,
-                width: "50%",
-                height: "50px",
-                top: "25%",
-                display: hookAnimState < 1 ? "block" : "none"
-                }}
-                >
-                    <Typography variant="h5" component="h5" style={{
-                        color: "white",
-                        transform: "skew(-20deg)"
-                    }}
-                        >
-                        {wildCatData.name} HP: {wildCatData.start_health}
-                    </Typography>
-                    <Slider
-                    defaultValue={(wildCatData.health/wildCatData.maxHealth) * 100}
-                    valueLabelDisplay="auto"
-                    color="#9EE6C9"
-                    disabled
-                    style={{
-                        transform: "skew(-20deg)"
-                    }}
-                    />
-                </div>
-            </div>
-            <div>
-                <div className="center">
-                    <img src={loadCatImageFromId(wildCatData.cat_id)} width={200}
-                    style={{
-                        ...catAnimStyling,
-                        display: hookAnimState < 1 ? "block" : "none"
-                    }}
-                    />
-                </div>
-            </div>
+                <CatLabel wildCatData={wildCatData} hookAnimState={hookAnimState}/>
+                <Cat wildCatData={wildCatData} hookAnimState={hookAnimState}/>
                 <SlideHorizontalWindow
                 open={showCatnip}
                 callback={() => setShowCatnip(false)}
@@ -355,19 +463,9 @@ export default function CatchingCat({
                             background: "rgba(255, 255, 255, 0.5)" 
                         }}
                         fullWidth={true}
-                        onClick={() => {
-                            if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
-                                return;
-                            }
-                            var catchChance = 20
-                            if (getIntRandomRange(0,100) < catchChance){
-                                setHookAnimState(0);
-                            }else{
-                                setFailHookAnimState(0);
-                            }
-                        }}
+                        onClick={() => tryCatch()}
                         >
-                            <img src={MissingCat} style={{padding: "3px"}}width={120}/>
+                            <GameIcon src="fishingRod" height={100} width={100}/>
                             
                         </IconButton>
                     </div>
@@ -390,7 +488,7 @@ export default function CatchingCat({
                 <animated.img 
                 y="200px"
                 anchor = "bottom middle"
-                src={loadCatImageFromId(wildCatId)} 
+                src={loadCatImageFromId(wildCatData.cat_id)} 
                 width={120}
                 style={{
                     ...hookAnim,

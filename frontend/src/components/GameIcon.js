@@ -6,12 +6,12 @@ import React from "react";
 import { Icon } from "@material-ui/core";
 
 export default function GameIcon({
-    src=""
+    src="",
+    height=25,
+    width=25
 }){
     return (
-        <Icon>
-            <img src={`/static/icons/${src}.svg`} height={25} width={25}/>
-        </Icon>
+            <img src={`/static/icons/${src}.svg`} height={height} width={width}/>
     );
     
 }
