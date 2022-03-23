@@ -298,6 +298,9 @@ export default function CatchingCat({
                         }}
                         fullWidth={true}
                         onClick={() => {
+                            if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
+                                return;
+                            }
                             var catchChance = 20
                             if (getIntRandomRange(0,100) < catchChance){
                                 setHookAnimState(0);
