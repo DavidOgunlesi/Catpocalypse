@@ -551,7 +551,11 @@ function Map(gps){
 		);
 	}
 	if(currentCatch != null){
-		return (<CatchingCat callback={() => setCurrentCatch(null)} catId={currentCatch}/>);
+		return (<CatchingCat callback={() => {
+			setCurrentCatch(null);
+			window.location.reload();
+		}
+		} catId={currentCatch}/>);
 	}
 
 	/**

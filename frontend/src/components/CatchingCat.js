@@ -16,6 +16,10 @@ import ModalWindow from "./dynamic/ModalWindow";
 import {getRandomRange, getIntRandomRange} from '/src/util/math.js';
 import LoadingScreen from "./static/LoadingScreen";
 
+/**
+ * Function which returns the catnips when rendered
+ * @returns images of the catnips which need to be used
+ */
 function Catnip(){
     return (
         <button 
@@ -46,7 +50,7 @@ export default function CatchingCat({
      const [successModal, setSuccessModal] = useState(false)
      const [wildCatData, setWildCatData] = useState(null);
      /**
-      * 
+      * Animation of the hook which comes down from the top of the screen after satisfying certian conditions
       */
      const hookAnim = useSpring({
         from: {
@@ -83,6 +87,9 @@ export default function CatchingCat({
         },
       })
 
+      /**
+       * Returns animation of the cat going up to the screen when caught.
+       */
       const catAnim = useSpring({
         from: {
             top: "50%",
@@ -95,7 +102,7 @@ export default function CatchingCat({
         delay: 0,
       })
     /**
-     * 
+     * Renders the background of the CatchignCat.js
      * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
      */
     const chooseGradient = () =>{
@@ -118,8 +125,15 @@ export default function CatchingCat({
             background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
         }
         var gradient = dayTimeGradient;
-        const d = new Date(); //checks the current date
-        let hour = d.getHours(); // checks the current time from the hour
+        /**
+         * checks the current date
+         */
+        const d = new Date();
+
+        /**
+         * checks the current time from the hour
+         */
+        let hour = d.getHours();
         /**
          * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
          */
@@ -152,18 +166,27 @@ export default function CatchingCat({
         return ({name: "Wild Cat", health: 10, maxHealth: 20})
     }
 
+    /**
+     Variable which will close the window
+     */
     const closeWindow = () => {
         if (callback!=null){
             callback();
         }
     }
 
+    /**
+     * The API call from the backend to return the cats
+     */
     const getWildCatData = () =>{
         fetch(`/api/wildcat/${wildCatId}`)
 		.then(response => response.json())
 		.then(data => {setWildCatData(data); console.log(data);})
     }
 
+    /**
+     * The API call from backend
+     */
     const collectCat = () =>{
         console.log("Hello")
 		const requestOptions = {
@@ -190,7 +213,10 @@ export default function CatchingCat({
         console.log("Getting data " + wildCatId)
         getWildCatData()
         return (<LoadingScreen/>);
-    } 
+    }
+    /**
+     * Returns a modal window once the cat has been successfully caught, a sliding window for the Catnips, radio buttons for catching. 
+     */
      return (
         <div style={{
              ...chooseGradient(), 
