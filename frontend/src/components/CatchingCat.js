@@ -21,6 +21,9 @@ import ShrubRight from "/static/images/catchingCats/shrubRight.png";
 import ShrubCenter from "/static/images/catchingCats/shrubCenter.png";
 import GameIcon from "./GameIcon";
 
+import WeakCatnip from "/static/images/catchingCats/catnip/weak.png";
+import StrongCatnip from "/static/images/catchingCats/catnip/strong.png";
+import JourneymanCatnip from "/static/images/catchingCats/catnip/journeyman.png";
 
 /**
      * Variable which returns a specific cat from the map to continue the process of catching.
@@ -70,7 +73,21 @@ function FallingLeaves(){
  * Function which returns the catnips when rendered
  * @returns images of the catnips which need to be used
  */
-function Catnip(){
+function Catnip({type}){
+    var img = MissingCat
+    switch (type) {
+        case "Weak":
+            img = WeakCatnip;
+            break;
+        case "Strong":
+            img = StrongCatnip;
+            break;
+        case "Journeyman":
+            img = JourneymanCatnip
+            break;
+        default:
+            break;
+    }
     return (
         <button 
             style={{
@@ -79,7 +96,15 @@ function Catnip(){
             borderRadius: 500,
             }}
             >
-            <img src={MissingCat} style={{padding: "13px"}} height="100%"/>
+            <Typography 
+            variant="h6" component="h6"
+            style={{
+                backgroundColor: "#000",
+                borderRadius: 50,
+                color: "#FFF"
+            }}
+            >{type}</Typography>
+            <img src={img} style={{padding: "13px"}} height="100%"/>
         </button>
     );
 }
@@ -194,56 +219,56 @@ function ShrubBackground(){
     );
 }
 
-    /**
-     * Renders the background of the CatchignCat.js
-     * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
-     */
-    const chooseGradient = () =>{
+/**
+ * Renders the background of the CatchignCat.js
+ * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
+ */
+const chooseGradient = () =>{
+    
+    const dayTimeGradient ={
+        background: "rgb(66,75,28)",
+        background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
         
-        const dayTimeGradient ={
-            background: "rgb(66,75,28)",
-            background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
-            
-        }
-        const nightTimeGradient ={
-            background: "rgb(16,43,19)",
-            background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
-        }
-        const duskGradient = {
-            background: "rgb(8,29,10)",
-            background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
-        }
-        const dawnGradient = {
-            background: "rgb(19,48,16)",
-            background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
-        }
-        var gradient = dayTimeGradient;
-        /**
-         * checks the current date
-         */
-        const d = new Date();
+    }
+    const nightTimeGradient ={
+        background: "rgb(16,43,19)",
+        background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
+    }
+    const duskGradient = {
+        background: "rgb(8,29,10)",
+        background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
+    }
+    const dawnGradient = {
+        background: "rgb(19,48,16)",
+        background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
+    }
+    var gradient = dayTimeGradient;
+    /**
+     * checks the current date
+     */
+    const d = new Date();
 
-        /**
-         * checks the current time from the hour
-         */
-        let hour = d.getHours();
-        /**
-         * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
-         */
-        if (hour >= 20 || hour < 5){
-            gradient = nightTimeGradient;
-        }
-        if (hour >= 5 && hour < 6){
-            gradient = dawnGradient;
-        }
-        if (hour >= 6 && hour < 19){
-            gradient = dayTimeGradient;
-        }
-        if (hour >= 19 && hour < 20){
-            gradient = duskGradient;
-        }
-        return (gradient);
-    } 
+    /**
+     * checks the current time from the hour
+     */
+    let hour = d.getHours();
+    /**
+     * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
+     */
+    if (hour >= 20 || hour < 5){
+        gradient = nightTimeGradient;
+    }
+    if (hour >= 5 && hour < 6){
+        gradient = dawnGradient;
+    }
+    if (hour >= 6 && hour < 19){
+        gradient = dayTimeGradient;
+    }
+    if (hour >= 19 && hour < 20){
+        gradient = duskGradient;
+    }
+    return (gradient);
+} 
 
 /**
  * The main function for CatchingCat.js
@@ -296,21 +321,6 @@ export default function CatchingCat({
         onRest: () => {
             setFailHookAnimState(failHookAnimState+1);
         },
-      })
-
-      /**
-       * Returns animation of the cat going up to the screen when caught.
-       */
-      const catAnim = useSpring({
-        from: {
-            top: "50%",
-            
-        },
-        to: {
-            top: "0%",
-            
-        },
-        delay: 0,
       })
 
     /**
@@ -396,13 +406,13 @@ export default function CatchingCat({
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Weak"/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Strong"/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Journeyman"/>
                         </Grid>
                     </Grid> 
                 </SlideHorizontalWindow>

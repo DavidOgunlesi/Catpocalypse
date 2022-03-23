@@ -40,6 +40,7 @@ export default function SlideHorizontalWindow({
                 margin: "0px 25px 0px 25px",
                 overflow: "auto",
                 overflowY: "hidden",
+                overflowX: "hidden",
                 backgroundColor: backgroundColor
             }}
             >
