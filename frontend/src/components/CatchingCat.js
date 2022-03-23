@@ -5,10 +5,26 @@
  * The imports which are required for the CatchingCat.js page to run which includes packages from React and other files which exist.
  */
 import React, { useState } from "react";
-import {Typography, IconButton, Slider} from "@material-ui/core";
+import {Typography, IconButton, Button, Slider, Grid} from "@material-ui/core";
 import OverlayUI from "./dynamic/OverlayUI";
 import ArrowBackRounded from '@material-ui/icons/ArrowBackRounded';
 import {getRandomRange} from '/src/util/math.js';
+import MissingCat from '/static/images/cats/undefined.png';
+import SlideHorizontalWindow from "./dynamic/SlideHorizontalWindow";
+
+function Catnip(){
+    return (
+        <button 
+            style={{
+            height: "100px",
+            width: "100px",
+            borderRadius: 500,
+            }}
+            >
+            <img src={MissingCat} style={{padding: "13px"}} height="100%"/>
+        </button>
+    );
+}
 
 /**
  * The main function for CatchingCat.js
@@ -16,9 +32,10 @@ import {getRandomRange} from '/src/util/math.js';
  * @returns gets activated when the user clicks on a cat on the map and displays the cat which needs to be caught
  */ 
 export default function CatchingCat({
-     catId = null,
+     catId = 1,
      callback=null
  }){
+     const [showCatnip, setShowCatnip] = useState(false);
 
     /**
      * 
@@ -110,7 +127,7 @@ export default function CatchingCat({
                 transform: "skew(20deg)",
                 borderRadius: 10,
                 zIndex: 10000,
-                width: "30%",
+                width: "50%",
                 height: "50px",
                 top: "25%"
                 }}
@@ -136,6 +153,23 @@ export default function CatchingCat({
             <div className="center">
             <img src={loadCatImageFromId(catId)} width={200} style={catAnimStyling}/>
             </div>
+                <SlideHorizontalWindow
+                open={showCatnip}
+                callback={() => setShowCatnip(false)}
+                >
+                    <Grid container spacing={2}>
+                        <Grid item xs={4} alignItems="center">
+                            <Catnip/>
+                        </Grid>
+                        <Grid item xs={4} alignItems="center">
+                            <Catnip/>
+                        </Grid>
+                        <Grid item xs={4} alignItems="center">
+                            <Catnip/>
+                        </Grid>
+                    </Grid> 
+                </SlideHorizontalWindow>
+
             <OverlayUI>
                 <IconButton
                 variant="h4"
@@ -152,7 +186,26 @@ export default function CatchingCat({
                     <ArrowBackRounded style = {{color:'white'}}/>
                     <Typography variant="h4" component="h4" style={{color: "white"}}>Back</Typography>
                 </IconButton>
-
+                <div
+                x="20px"
+                y="20px"
+                anchor = "bottom right"
+                >
+                    <IconButton
+                    variant="contained"
+                    size="large" 
+                    style={{ 
+                        borderRadius: 500, 
+                        background: "rgba(255, 255, 255, 0.5)" 
+                    }}
+                    fullWidth={true}
+                    onClick={() => setShowCatnip(true)}
+                    >
+                        <img src={MissingCat} style={{padding: "3px"}}width={40}/>
+                        
+                    </IconButton>
+                    
+                </div>
             </OverlayUI>
         </div>
      );
