@@ -56,6 +56,7 @@ function Map(gps){
 	const [currentSubMenu, setSubMenu] = useState("none");
 	const [currentCatch, setCurrentCatch] = useState(null);
 	const [mapLoaded, setMapLoaded] = useState(false);
+	const [shownWarning, setshownWarning] = useState(false);
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
@@ -487,6 +488,20 @@ function Map(gps){
 			return(<LoadingScreen/>);
 		}
 	}
+
+	const showWarningModal = () => {
+		if (!shownWarning){
+			setshownWarning(true);
+			return (
+				<ModalWindow 
+				title="Be aware of your surroundings" 
+				content="Ensure you are observant of your environment around campus as you play Catpocalypse." 
+				open={true}
+				imageSrc = {warningCat}
+				/> 
+			);
+		}
+	}
   /**
    * Conditional Views
    */
@@ -553,12 +568,7 @@ function Map(gps){
 			{renderOverlayUI()}
 			{renderTransparentBackground()}
 			{renderSettingsButton()}
-			<ModalWindow 
-			title="Be aware of your surroundings" 
-			content="Ensure you are observant of your environment around campus as you play Catpocalypse" 
-			open={true}
-			imageSrc = {warningCat}
-			/> 
+			{showWarningModal()}
 			<GoogleMapReact
 			onChildClick={(key, childProps) => onCatClick(key, childProps)}
 			bootstrapURLKeys={{ key: key }}
