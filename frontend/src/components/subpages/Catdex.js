@@ -13,14 +13,26 @@ export default function Catdex(props){
     const [catdexEntries, setCatdexEntries] = useState([]);
 
     /**
-    * Redirects the player to a page showing each tamed cat owned of a particular cat in the catdex, 
-    * does nothing if the cat has not been obtained yet.
-    * @param {integer} param0 == the id for the particular cat in the Catdex.
-    * @param {JSON} param1 == the list of cats the user owns.
-    * @returns ?
-    */
+     * Redirects the player to a page showing each tamed cat owned of a particular cat in the catdex, 
+     * does nothing if the cat has not been obtained yet.
+     * @param {integer} param0 == the id for the particular cat in the Catdex.
+     * @param {JSON} param1 == the list of cats the user owns.
+     * @returns ?
+     */
     function loadOwnedCats(id, ownedCats) {
-        console.log(id, ownedCats);
+        console.log("ID: " + id);
+        console.log(ownedCats);
+        var ownedCatsForId = [];
+        const isFound = ownedCats.some(ownedCat => {
+            if (ownedCat.id === id) {
+                ownedCatsForId.push(ownedCat);
+            }
+        })
+        if (ownedCatsForId.length == 0) {
+            //do nothing!
+        } else {
+            console.log("redirect to CatdexEntry(ownedCatsForId)!")
+        }
     }
 
     /**
@@ -29,7 +41,6 @@ export default function Catdex(props){
     async function renderCatdex(){
         var cats = [];
         var ownedCats = [];
-        console.log("Starting api call");
         try {
             //Creates a JSON object to fetch all cats in the Catdex 
 		    await fetch('/api/get-all-cats')
@@ -59,7 +70,7 @@ export default function Catdex(props){
         for (let i = 0; i < cats.length; i++) {
             catdexEntry.push(
                 <Grid item xs={3} align="center">
-                    <img width={100} src={loadCatImage(cats[i].id, ownedCats)} onclick={() => {loadOwnedCats(cats[i].id, ownedCats)}}/>
+                    <img width={100} src={loadCatImage(cats[i].id, ownedCats)} onClick={loadOwnedCats} id={cats[i].id} ownedCats={ownedCats}/>
                 </Grid>
             )
         }
@@ -74,16 +85,10 @@ export default function Catdex(props){
      * @returns The path to the image displayed for the particular cat in the Catdex.
      */
     function loadCatImage(id, ownedCats){
-        console.log("loading image");
         var imagePath = '/static/images/cats/undefined.png'; 
-        console.log("Id: " + id);
-        console.log("OwnedCats: " + ownedCats);
-        console.log(ownedCats);
         const isFound = ownedCats.some(ownedCat => {
-            console.log("ownedCat: " + ownedCat.id);
             if (ownedCat.id === id) {
                 imagePath = `/static/images/cats/${id}.png`;
-                console.log(imagePath);
                 return;
             }
         })
