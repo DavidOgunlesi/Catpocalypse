@@ -1,5 +1,5 @@
 /**
- * Renders the Map Page of this 
+ * Renders the Map Page of Catpocalypse using Google Map API which allows the player to continue the game
  */
 /**
  * The imports which are required for this page to run which includes packages from React and other files which exist.
@@ -497,6 +497,9 @@ function Map(gps){
 			</Background>
 		);
 	}
+	/**
+	 * Ensures that the location has been turned on, if not an error message is returned
+	 */
 	if(!gpsEnabled){
 		return(
 			<Background 
@@ -566,27 +569,33 @@ function Map(gps){
     
 }
 
-//Wrap Map component with geolocated so we can get gps information
+/**
+ * Wrap Map component with geolocated so we can get gps information
+ */
+
 export default geolocated({
 	positionOptions: {
 		enableHighAccuracy: true,
 	},
-	//determines how much time (in miliseconds) we give the 
-	//user to make the decision whether to allow to share 
-	//their location or not
+	/**
+	 * determines how much time (in miliseconds) we give the 
+	 * user to make the decision whether to allow to share 
+	 * their location or not
+	 */
+	
 	userDecisionTimeout: 15000,
 	watchPosition: true,
 })(Map);
 
-/*
-map: your google.maps.Map object
 
-endPosition: desired location to pan to, google.maps.LatLng
-
-n_intervals: number of pan intervals, the more the smoother the transition but the less performant
-
-T_msec: the total time interval for the slow pan to complete (milliseconds)
-*/
+/**
+ * Provided by Flaudre on StackOverFlow (https://stackoverflow.com/questions/9335150/slow-down-google-panto-function)
+ * @param {*} map  - your google.maps.Map object
+ * @param {*} endPosition - desired location to pan to, google.maps.LatLng
+ * @param {*} n_intervals - number of pan intervals, the more the smoother the transition but the less performant
+ * @param {*} T_msec - : the total time interval for the slow pan to complete (milliseconds)
+ * @returns makes slow pan steps from point to point around a map
+ */
 var slowPanTo = function(map, endPosition, n_intervals, T_msec) {
 	var f_timeout, getStep, i, j, lat_array, lat_delta, lat_step, lng_array, lng_delta, lng_step, pan, ref, startPosition;
 	getStep = function(delta) {
