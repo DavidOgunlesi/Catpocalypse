@@ -124,6 +124,5 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
-        migrations.RunPython(functions.add_cats)
         migrations.RunPython(functions.load_data)
     ]
