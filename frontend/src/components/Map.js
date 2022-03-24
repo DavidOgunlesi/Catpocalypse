@@ -63,6 +63,7 @@ function Map(gps){
 	const [currentCatch, setCurrentCatch] = useState(null);
 	const [mapLoaded, setMapLoaded] = useState(false);
 	const [shownWarning, setshownWarning] = useState(false);
+	const [currentHuntTheCat, setCurrentHuntTheCat] = useState(null)
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
@@ -138,6 +139,7 @@ function Map(gps){
 		map = _map;
 		maps = _maps;
 		map.setTilt(75);
+		setMapLoaded(true);
 	};
 
 	/*
@@ -207,6 +209,14 @@ function Map(gps){
 		.then(data => {
 			for(var i = 0; i < data.length; i++) {
 				var cat = data[i];
+				console.log(cat)
+				var thisIsHuntTheCat = cat.is_huntable
+				if (currentHuntTheCat == null && thisIsHuntTheCat){
+					setCurrentHuntTheCat({
+						lat: cat.latitude,
+						lng: cat.longitude
+					})
+				}
 				cats.push(
 					<MapMarker
 						lat={cat.latitude}
@@ -215,6 +225,7 @@ function Map(gps){
 						size={120}
 						id={cat.cat_id}
 						wildCatId={cat.wildcat_id}
+						invisible={false}
 					/>
 				);
 			}
@@ -255,7 +266,22 @@ function Map(gps){
 	const renderOverlayUI = () => {
 		return (
 			<div>
+				{/*<div 
+				anchor="top left"
+				className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": "50%"}}>
+				Hot
+				</div>*/}
 			<OverlayUI>
+				<div
+				x="15px"
+				y="100px"
+				anchor="top right"
+				>
+					<div 
+					className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": "50%"}}>
+					Hot
+					</div>
+				</div>
 				<div  x="55%" y="50%" sortingLayer={1000}>
 					<img src={PlayerMarker} width={50} style={{
 						position:"absolute",
@@ -266,6 +292,8 @@ function Map(gps){
 						margin: "auto"
 					}}/>
 				</div>
+				
+
 				
 				<div 
 				x="-100px"
@@ -577,7 +605,9 @@ function Map(gps){
 	 * MAIN MAP HTML
 	 */
 	 const onCatClick = (key, childProps) => {
-		setCurrentCatch(childProps.wildCatId)
+		if(!childProps.invisible){
+			setCurrentCatch(childProps.wildCatId)
+		}
 	  }
 	return (
 		<div>
