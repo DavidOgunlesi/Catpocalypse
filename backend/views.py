@@ -14,7 +14,7 @@ from rest_framework.decorators import APIView
 
 from . import functions
 # Import Models here (if necessary)
-from .models import Catdex, CustomUser, Wildcat, Cats
+from .models import Catdex, CustomUser, ActivePlayer, Wildcat, Cats
 # Import Serializers here
 from .serializers import CatIDSerializer, CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
 from .utils import Util
@@ -174,6 +174,8 @@ class LoginAPIView(GenericAPIView):
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 # user is available to play hunt the cat
+                ActivePlayer.objects.create(user=user)
+                functions.begin_hunt_the_cat()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):
@@ -200,6 +202,10 @@ class LogoutAPIView(GenericAPIView):
             return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
         else:
             username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username).first()
+            # user is no longer available for hunt the cat
+            active_user = ActivePlayer.objects.filter(user=user)
+            active_user.delete()
             # if current user does have ana active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
