@@ -47,7 +47,7 @@ class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wildcat
         # all the fields we want to include in the output/serialization
-        fields = ('wildcat_id','cat_id','latitude','longitude','start_health', 'sex')
+        fields = ('wildcat_id','cat_id','latitude','longitude','start_health', 'sex','is_huntable', 'player_1','player_2')
     
 
 class CatdexSerializer(serializers.ModelSerializer):

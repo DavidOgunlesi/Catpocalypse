@@ -139,6 +139,10 @@ class Moves(models.Model):
     move_name = models.CharField(max_length=20, null=False, unique=True)
     power = models.IntegerField(null=False, default=1)
 
+
+class ActivePlayer(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
 class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
@@ -168,8 +172,8 @@ class Wildcat(models.Model):
     is_huntable = models.BooleanField(null=False, default=False)
     # FALSE = ANY PLAYER CAN VIEW AND CATCH
     # TRUE = ONLY SPECIFIED PLAYERS CAN VIEW AND CATCH
-    player_1 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="player1")
-    player_2 = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name="player2")
+    player_1 = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, related_name="player1")
+    player_2 = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, related_name="player2")
     sex = models.CharField(max_length=10, null=False)
 
 
@@ -178,7 +182,7 @@ class Catdex(models.Model):
     catdex_id = models.AutoField(primary_key=True)
     cat_id = models.ForeignKey(Cats,on_delete=models.CASCADE, null=False)
     # user_id relies on the above import of django.conf.settings
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=False)
     # this could be changed to a DecimalField which is preferable at a later stage
     level = models.FloatField(null=False, default=1)
     health = models.IntegerField(null=False)

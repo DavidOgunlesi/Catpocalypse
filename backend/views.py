@@ -16,6 +16,7 @@ from rest_framework.decorators import APIView
 from . import functions
 # Import Models here (if necessary)
 from .models import Catdex, CustomUser, Matchmaking, Wildcat, Cats
+from .models import Catdex, CustomUser, ActivePlayer, Wildcat, Cats
 # Import Serializers here
 from .serializers import CatIDSerializer, CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
 from .utils import Util
@@ -46,21 +47,21 @@ class CatchingCats(APIView):
             id = request.data.get("wildcat_id")
             wildcat = Wildcat.objects.filter(wildcat_id=id).first()
 
-            if wildcat.is_huntable:
-                if user.user_id == wildcat.player_1 or user.user_id == wildcat.player_2:
-                    Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
-                    wildcat.delete()
-                    return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
-                else:
-                    return Response({'message':'User is not allowed to catch this cat'}, status=status.HTTP_201_CREATED)
-
-
             if not wildcat:
                 return Response({'error':'Wildcat does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
-                wildcat.delete()
-                return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+                if wildcat.is_huntable:
+                    if user == wildcat.player_1 or user == wildcat.player_2:
+                        catdex = Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
+                        wildcat.delete()
+                        return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+                    else:
+                        return Response({'message':'User is not allowed to catch this cat'}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    catdex = Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
+                    wildcat.delete()
+                    return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
+
     """
     def post(self, request):
 
@@ -182,6 +183,8 @@ class LoginAPIView(GenericAPIView):
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 # user is available to play hunt the cat
+                ActivePlayer.objects.create(user=user)
+                functions.begin_hunt_the_cat()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):
@@ -208,6 +211,10 @@ class LogoutAPIView(GenericAPIView):
             return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
         else:
             username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username).first()
+            # user is no longer available for hunt the cat
+            active_user = ActivePlayer.objects.filter(user=user)
+            active_user.delete()
             # if current user does have ana active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
@@ -220,8 +227,11 @@ class IsLoggedInAPIView(GenericAPIView):
         if not self.request.session.exists(self.request.session.session_key):
             return response.Response({'message':"Not logged in"}, status=status.HTTP_400_BAD_REQUEST)
         else:
+            username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username).first()
             data = {
-                'username':self.request.session.get('username')
+                'username':self.request.session.get('username'),
+                'user_id':user.id
             }
             return JsonResponse(data, status=status.HTTP_200_OK) 
 

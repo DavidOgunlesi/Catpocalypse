@@ -17,29 +17,30 @@ lon_RANGE = 0.00367
 # distance range is 0.0033700
 
 
-def get_free_players():
-    qs = CustomUser.objects.filter(is_available = True)
-    print("here")
-    print(len(qs))
+def begin_hunt_the_cat():
+    active_players = ActivePlayer.objects.all()
+    if len(active_players) >= 2:
+        active_player_1 = active_players[0]
+        player_1 = active_player_1.user
+        active_player_2 = active_players[1]
+        player_2 = active_player_2.user
 
-    if len(qs) >= 2:
-        x = random.randint(0,len(qs)-1)
-        player1 = qs[x]
-        player1.is_available = False
-        player1.save()
-        qs = CustomUser.objects.filter(is_available = True)
-        x = random.randint(0,len(qs)-1)
-        player2 = qs[x]
-        player2.is_available = False
-        player2.save()
-
-
-        # get a random cat from the Cats table
-        rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
-        # get a random latitude and longitude within the approximate campus range
+        # create a wildcat
+        rand_cat = Cats.objects.order_by('?').first()
         rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
         rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
-        # create a wildcat instance from this
+        if random.randint(0,1) == 0:
+            tmp = 'Male'
+        else:
+            tmp = 'Female'
+        hunt_the_cat_wildcat = Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon ,cat_id = rand_cat, sex=tmp,
+                                                            is_huntable = True, player_1=player_1, player_2=player_2)
+        
+
+        # players are now in an active game and no longer available
+        active_player_1.delete()
+        active_player_2.delete()
+
 
         if random.randint(0,1) == 0:
                 tmp = 'Male'

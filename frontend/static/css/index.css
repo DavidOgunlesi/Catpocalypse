@@ -437,3 +437,40 @@ Falling Leaves
 	-webkit-transform: translate(150px, 800px) rotateZ(360deg);
   }
 }
+/*
+------------------------------------
+Circular meter
+------------------------------------
+*/
+.circular_meter {
+    font-size: 3em;
+    width: 60px;
+    height: 60px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position:relative;
+    z-index:10000;
+  }
+  
+  .circular_meter{
+    /*content: "%";*/
+    font-size:  20px;
+  }
+  
+  .circular_meter::before {
+    content: "";
+    position: absolute;
+    z-index:-1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding:10px;
+    background:
+      linear-gradient(#f3f3f3, #f3f3f3) content-box, /* this background will be shown if mask is no supported */
+      conic-gradient(transparent calc(var(--p3) - 2%)  0, black calc(var(--p3) - 2%) 0, black calc(var(--p3) + 2%) 0, transparent 0),
+      conic-gradient(#3498db 0 var(--p1),red calc(var(--p1) + 0.5%) calc(var(--p1) + var(--p2)),grey 0);
+  }
