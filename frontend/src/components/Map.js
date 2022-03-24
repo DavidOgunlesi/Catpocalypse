@@ -18,7 +18,6 @@ import GameIcon from "./GameIcon";
 import { CircleMenu, CircleMenuItem, TooltipPlacement } from "react-circular-menu";
 import Battle from "./subpages/Battle";
 import Catdex from "./subpages/Catdex";
-import CatPlayerInventory from "./subpages/CatPlayerInventory";
 import Catsino from "./subpages/Catsino";
 import Friends from "./subpages/Friends";
 import Shop from "./subpages/Shop";
@@ -362,12 +361,6 @@ function Map(gps){
 				color = "#FFF";
 				txtcolor = "#000";
 				fillBox = true;
-				break;
-			case "catinv":
-				page = (<CatPlayerInventory/>);
-				title = "Cats";
-				color = "#FFF";
-				txtcolor = "#000";
 				break;
 			case "battle":
 				page = (<Battle/>);
