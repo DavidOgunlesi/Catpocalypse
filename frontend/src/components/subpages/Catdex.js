@@ -158,7 +158,7 @@ export default function Catdex(props){
             fillBox = {true}
         />
         <div>
-        <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">
+        <Grid container spacing={2} style={{padding:20, paddingTop:0, margin:0}} justifyContent="center" alignItems="center">
             {catdexEntries}
         </Grid>
         </div>
