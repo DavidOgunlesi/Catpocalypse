@@ -14,8 +14,12 @@ import PlayerMapMarker from "./MapMarkers/PlayerMapMarker";
 export default function MapMarker({
     markerType="",
     size=50,
-    id=null
+    id=null,
+    invisible=false
 }){
+    if(invisible){
+        return null;
+    }
     switch (markerType) {
         case "cat":
             return(<CatMapMarker size={size} id={id}/>);
