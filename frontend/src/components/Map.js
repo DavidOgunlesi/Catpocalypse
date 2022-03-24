@@ -30,6 +30,7 @@ import Friends from "./subpages/Friends";
 import Shop from "./subpages/Shop";
 import CatchingCat from "./CatchingCat";
 import LoadingScreen from "./static/LoadingScreen";
+import {useNavigate } from "react-router-dom";
 
 /**
  * Variables which cannot be reassigned. This includes the API key, ID and the fixed location of the center of campus as decided by the team of Catpocalypse
@@ -56,6 +57,7 @@ function Map(gps){
 	/**
 	 * Variables which are assigned and cannot be changed
 	 */
+	const navigate = useNavigate();
 	const [gpsEnabled, setGpsEnabled] = useState(gps.isGeolocationEnabled);
 	const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 	const [showMapMenu, setMapMenu] = useState(false);
@@ -388,7 +390,7 @@ function Map(gps){
 						<GameIcon src="cats"/>
 					</CircleMenuItem>
 					<CircleMenuItem 
-					onClick={() => setSubMenu("battle")}
+					onClick={() => navigate("/battle")}
 					tooltip="Battle" 
 					tooltipPlacement={TooltipPlacement.Top}
 					>
@@ -524,12 +526,6 @@ function Map(gps){
 				title = "Cats";
 				color = "#FFF";
 				txtcolor = "#000";
-				break;
-			case "battle":
-				page = (<Battle/>);
-				color = "#FFF";
-				txtcolor = "#000";
-				fillBox = true;
 				break;
 			case "friends":
 				page = (<Friends/>);

@@ -21,6 +21,7 @@ import GoogleLogin from 'react-google-login';
  */
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 import CatchingCat from "./CatchingCat";
+import Battle from "./subpages/Battle";
 
 /**
  * Sets a fixed theme for the App
@@ -120,6 +121,7 @@ export default function App(){
                         <Route path="/register" element={redirectIfLoggedIn(<RegisterPage/>)}/>
                         <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
+                        <Route path="/battle" element={<Battle/>}/>
                         <Route path="/dev/map" element={<Map/>}/>
                         <Route path="/dev/cat" element={<CatchingCat/>}/>
                     </Routes>

@@ -10,6 +10,7 @@ urlpatterns = [
     path('verify/<str:token>',index),
     path('dev/map',index),
     path('dev/cat',index),
+    path('battle',index),
     # path('create', index),
     # path('room/<str:roomCode>', index),d
     
