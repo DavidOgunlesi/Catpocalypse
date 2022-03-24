@@ -12,6 +12,7 @@ class CatIDSerializer(serializers.ModelSerializer):
 
 
 # Define Serializers here
+
 class RegisterSerializer(serializers.ModelSerializer):
 
     # password should not be sent to front end at all
@@ -46,17 +47,13 @@ class CatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wildcat
         # all the fields we want to include in the output/serialization
-        fields = ('wildcat_id','cat_id','latitude','longitude','start_health')
+        fields = ('wildcat_id','cat_id','latitude','longitude','start_health', 'sex','is_huntable', 'player_1','player_2')
     
 
 class CatdexSerializer(serializers.ModelSerializer):
     class Meta:
         model = Catdex
         fields = ['cat_id','user_id','level','health']
-
-
-
-
 
 
 

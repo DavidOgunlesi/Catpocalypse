@@ -1,17 +1,17 @@
 /**
- * A set template used to check if the page is working or not.
- * Imports React from the React Package
+ * Loads an icon with a given name from an icon resource folder
+ * Imports React and Icon from the Material-UI from the React Package
  */
 import React from "react";
 import { Icon } from "@material-ui/core";
 
 export default function GameIcon({
-    src=""
+    src="",
+    height=25,
+    width=25
 }){
     return (
-        <Icon>
-            <img src={`/static/icons/${src}.svg`} height={25} width={25}/>
-        </Icon>
+            <img src={`/static/icons/${src}.svg`} height={height} width={width}/>
     );
     
 }

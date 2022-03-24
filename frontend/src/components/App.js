@@ -21,6 +21,7 @@ import Catdex from "./subpages/Catdex";
  * Imports the background music from the media folder
  */
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
+import CatchingCat from "./CatchingCat";
 
 
 /**
@@ -123,6 +124,7 @@ export default function App(){
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/dev/map" element={<Map/>}/>
                         <Route path="/dev/catdex" element={<Catdex/>}/>
+                        <Route path="/dev/cat" element={<CatchingCat/>}/>
                     </Routes>
                 </Router>
             </MuiThemeProvider>
