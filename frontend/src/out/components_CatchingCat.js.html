@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/CatchingCat.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/CatchingCat.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Catching Cats page is used to allow players to catch cats from the map view
  */
 /**
@@ -36,38 +64,38 @@ function loadCatImageFromId(id){
  */
 function FallingLeaves(){
     return (
-        <div class="container">
-            <div class="loader">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
+        &lt;div class="container">
+            &lt;div class="loader">
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+                &lt;span>&lt;/span>
+            &lt;/div>
+        &lt;/div>
     );
 }
 
@@ -112,7 +140,7 @@ function Catnip({
             break;
     }
     return (
-        <button 
+        &lt;button 
             style={{
             height: "100px",
             width: "100px",
@@ -123,7 +151,7 @@ function Catnip({
                 setShowCatnipCallback(false);
             }}
             >
-            <Button
+            &lt;Button
             variant="contained"
             disabled
             style={{
@@ -133,9 +161,9 @@ function Catnip({
                 borderRadius: 50,
                 color: "#FFF"
             }}
-            >{type} x{catNipUsesNum}</Button>
-            <img src={img} style={{padding: "13px"}} height="100%"/>
-        </button>
+            >{type} x{catNipUsesNum}&lt;/Button>
+            &lt;img src={img} style={{padding: "13px"}} height="100%"/>
+        &lt;/button>
     );
 }
 
@@ -145,14 +173,14 @@ function Catnip({
  */
 function CatLabel({wildCatData, hookAnimState}){
     return(
-        <div 
+        &lt;div 
             style={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 textAlign: "center"
             }}>
-                <div
+                &lt;div
                 style={{
                 position: "absolute",
                 backgroundColor: "rgba(1,1,1,0.4)",
@@ -162,17 +190,17 @@ function CatLabel({wildCatData, hookAnimState}){
                 width: "50%",
                 height: "50px",
                 top: "25%",
-                display: hookAnimState < 1 ? "block" : "none"
+                display: hookAnimState &lt; 1 ? "block" : "none"
                 }}
                 >
-                    <Typography variant="h5" component="h5" style={{
+                    &lt;Typography variant="h5" component="h5" style={{
                         color: "white",
                         transform: "skew(-20deg)"
                     }}
                         >
-                        {wildCatData.cat_name} HP: {wildCatData.start_health} {wildCatData.sex == "male" ? <GameIcon src="male"/> : <GameIcon src="female"/>}
-                    </Typography>
-                    <Slider
+                        {wildCatData.cat_name} HP: {wildCatData.start_health} {wildCatData.sex == "male" ? &lt;GameIcon src="male"/> : &lt;GameIcon src="female"/>}
+                    &lt;/Typography>
+                    &lt;Slider
                     defaultValue={(wildCatData.health/wildCatData.maxHealth) * 100}
                     valueLabelDisplay="auto"
                     color="#9EE6C9"
@@ -181,8 +209,8 @@ function CatLabel({wildCatData, hookAnimState}){
                         transform: "skew(-20deg)"
                     }}
                     />
-                </div>
-            </div>
+                &lt;/div>
+            &lt;/div>
     );
 }
 /**
@@ -196,16 +224,16 @@ function Cat({wildCatData, hookAnimState}){
         webkitAnimation: `bounce ${randomBounceTime}s infinite alternate`
     }
     return (
-        <div>
-            <div className="center">
-                <img src={loadCatImageFromId(wildCatData.cat_id)} width={200}
+        &lt;div>
+            &lt;div className="center">
+                &lt;img src={loadCatImageFromId(wildCatData.cat_id)} width={200}
                 style={{
                     ...catAnimStyling,
-                    display: hookAnimState < 1 ? "block" : "none"
+                    display: hookAnimState &lt; 1 ? "block" : "none"
                 }}
                 />
-            </div>
-        </div>
+            &lt;/div>
+        &lt;/div>
     );
 }
 
@@ -215,8 +243,8 @@ function Cat({wildCatData, hookAnimState}){
  */
 function ShrubBackground(){
     return (
-        <div>
-             <div
+        &lt;div>
+             &lt;div
             style={{
                 backgroundImage: `url("${ShrubLeft}")`,
                 backgroundSize: "30%",
@@ -230,7 +258,7 @@ function ShrubBackground(){
                 backgroundPosition: "right bottom"
             }}
             />
-            <div
+            &lt;div
             style={{
                 backgroundImage: `url("${ShrubRight}")`,
                 backgroundSize: "30%",
@@ -244,7 +272,7 @@ function ShrubBackground(){
                 backgroundPosition: "left bottom"
             }}
             />
-            <div
+            &lt;div
             style={{
                 backgroundImage: `url("${ShrubCenter}")`,
                 backgroundSize: "100%",
@@ -257,7 +285,7 @@ function ShrubBackground(){
                 backgroundBlendMode: "multiply",
                 backgroundPosition: "center"
             }}/>
-        </div>
+        &lt;/div>
     );
 }
 
@@ -297,16 +325,16 @@ const chooseGradient = () =>{
     /**
      * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
      */
-    if (hour >= 20 || hour < 5){
+    if (hour >= 20 || hour &lt; 5){
         gradient = nightTimeGradient;
     }
-    if (hour >= 5 && hour < 6){
+    if (hour >= 5 &amp;&amp; hour &lt; 6){
         gradient = dawnGradient;
     }
-    if (hour >= 6 && hour < 19){
+    if (hour >= 6 &amp;&amp; hour &lt; 19){
         gradient = dayTimeGradient;
     }
-    if (hour >= 19 && hour < 20){
+    if (hour >= 19 &amp;&amp; hour &lt; 20){
         gradient = duskGradient;
     }
     return (gradient);
@@ -341,7 +369,7 @@ export default function CatchingCat({
             
         },
         reverse: hookAnimState == 1,
-        pause: hookAnimState == 2 || hookAnimState < 0,
+        pause: hookAnimState == 2 || hookAnimState &lt; 0,
         delay: 0,
         onRest: () => {
             setHookAnimState(hookAnimState+1);
@@ -359,7 +387,7 @@ export default function CatchingCat({
             
         },
         reverse: failHookAnimState == 1,
-        pause: failHookAnimState == 2 || failHookAnimState< 0,
+        pause: failHookAnimState == 2 || failHookAnimState&lt; 0,
         delay: 0,
         onRest: () => {
             setFailHookAnimState(failHookAnimState+1);
@@ -405,7 +433,7 @@ export default function CatchingCat({
         console.log("Getting data " + wildCatId)
         getWildCatData()
         console.log(wildCatData)
-        return (<LoadingScreen/>);
+        return (&lt;LoadingScreen/>);
     }
 
     /**
@@ -432,7 +460,7 @@ export default function CatchingCat({
                 catchChance = 80
                 break
         }
-        if (getIntRandomRange(0,100) < catchChance){
+        if (getIntRandomRange(0,100) &lt; catchChance){
             setHookAnimState(0);
         }else{
             setFailHookAnimState(0);
@@ -460,14 +488,14 @@ export default function CatchingCat({
      */
      console.log(`current catnip: ${showCatnip}`);
      return (
-        <div style={{
+        &lt;div style={{
              ...chooseGradient(), 
              width: "100%",
              height: "100%"
         }}>
-            <FallingLeaves/>
-            <ShrubBackground/>
-                <ModalWindow 
+            &lt;FallingLeaves/>
+            &lt;ShrubBackground/>
+                &lt;ModalWindow 
 				title="CATCHA!" 
 				content="You caught a cat!" 
                 open={true}
@@ -478,31 +506,31 @@ export default function CatchingCat({
                 }}
 				buttonText="Continue"
 				/>
-                <CatLabel wildCatData={wildCatData} hookAnimState={hookAnimState}/>
-                <Cat wildCatData={wildCatData} hookAnimState={hookAnimState}/>
-                <SlideHorizontalWindow
+                &lt;CatLabel wildCatData={wildCatData} hookAnimState={hookAnimState}/>
+                &lt;Cat wildCatData={wildCatData} hookAnimState={hookAnimState}/>
+                &lt;SlideHorizontalWindow
                 open={showCatnip}
                 callback={() => {
                     setShowCatnip(false);
                 }}
                 >
-                    <Grid container spacing={2}>
-                        <Grid item xs={4} alignItems="center">
-                            <Catnip type="Weak" catNipUses={catNipUses}  setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
-                        </Grid>
-                        <Grid item xs={4} alignItems="center">
-                            <Catnip type="Apprentice" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
-                        </Grid>
-                        <Grid item xs={4} alignItems="center">
-                            <Catnip type="Journeyman" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
-                        </Grid>
-                    </Grid> 
-                </SlideHorizontalWindow>
+                    &lt;Grid container spacing={2}>
+                        &lt;Grid item xs={4} alignItems="center">
+                            &lt;Catnip type="Weak" catNipUses={catNipUses}  setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
+                        &lt;/Grid>
+                        &lt;Grid item xs={4} alignItems="center">
+                            &lt;Catnip type="Apprentice" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
+                        &lt;/Grid>
+                        &lt;Grid item xs={4} alignItems="center">
+                            &lt;Catnip type="Journeyman" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
+                        &lt;/Grid>
+                    &lt;/Grid> 
+                &lt;/SlideHorizontalWindow>
 
-            <OverlayUI>
-                <IconButton
+            &lt;OverlayUI>
+                &lt;IconButton
                 style={{
-                    display: hookAnimState < 1 ? "block" : "none"
+                    display: hookAnimState &lt; 1 ? "block" : "none"
                 }}
                 variant="h4"
                 x="0px"
@@ -513,18 +541,18 @@ export default function CatchingCat({
                     closeWindow();
                 }}
                 >
-                    <ArrowBackRounded style = {{color:'white'}}/>
-                    <Typography variant="h4" component="h4" style={{color: "white"}}>Back</Typography>
-                </IconButton>
-                <div
+                    &lt;ArrowBackRounded style = {{color:'white'}}/>
+                    &lt;Typography variant="h4" component="h4" style={{color: "white"}}>Back&lt;/Typography>
+                &lt;/IconButton>
+                &lt;div
                 x="20px"
                 y="20px"
                 anchor = "bottom right"
                 style={{
-                    display: hookAnimState < 1 ? "block" : "none"
+                    display: hookAnimState &lt; 1 ? "block" : "none"
                 }}
                 >
-                    <IconButton
+                    &lt;IconButton
                     variant="contained"
                     size="large" 
                     style={{ 
@@ -537,7 +565,7 @@ export default function CatchingCat({
                         //console.log(`Setting catnip on Click: ${showCatnip}`);
                     }}
                     >
-                        <Button
+                        &lt;Button
                         variant="contained"
                         disabled
                         style={{
@@ -548,21 +576,21 @@ export default function CatchingCat({
                             color: "#FFF"
                         }}
                         >x{renderUses()}
-                        </Button>
-                        <img src={getCatnipImg(selectedCatnip)} style={{padding: "3px"}}width={40}/>
+                        &lt;/Button>
+                        &lt;img src={getCatnipImg(selectedCatnip)} style={{padding: "3px"}}width={40}/>
                         
-                    </IconButton>
+                    &lt;/IconButton>
                     
-                </div>
-                <div
+                &lt;/div>
+                &lt;div
                 y="100px"
                 anchor = "bottom middle"
                 style={{
-                    display: hookAnimState < 1 ? "block" : "none"
+                    display: hookAnimState &lt; 1 ? "block" : "none"
                 }}
                 >
-                    <div className="center">
-                        <IconButton
+                    &lt;div className="center">
+                        &lt;IconButton
                         variant="contained"
                         size="large" 
                         style={{ 
@@ -582,7 +610,7 @@ export default function CatchingCat({
                                 default:
                                     break;
                             }
-                            if(currentUse <= 0){
+                            if(currentUse &lt;= 0){
                                 return;
                             }
                             tryCatch();
@@ -593,27 +621,27 @@ export default function CatchingCat({
                             });
                         }}
                         >
-                            <GameIcon src="fishingRod" height={100} width={100}/>
+                            &lt;GameIcon src="fishingRod" height={100} width={100}/>
                             
-                        </IconButton>
-                    </div>
+                        &lt;/IconButton>
+                    &lt;/div>
                     
-                </div>
-                <animated.img 
+                &lt;/div>
+                &lt;animated.img 
                 y="200px"
                 anchor = "bottom middle"
                 src={HookImg} 
                 width={200}
                 style={hookAnim}
                 /> 
-                <animated.img 
+                &lt;animated.img 
                 y="200px"
                 anchor = "bottom middle"
                 src={HookImg} 
                 width={200}
                 style={failhookAnim}
                 /> 
-                <animated.img 
+                &lt;animated.img 
                 y="200px"
                 anchor = "bottom middle"
                 src={loadCatImageFromId(wildCatData.cat_id)} 
@@ -623,8 +651,31 @@ export default function CatchingCat({
                     display: hookAnimState == 1 ? "block" : "none"
                 }}
                 />        
-            </OverlayUI>
-        </div>
+            &lt;/OverlayUI>
+        &lt;/div>
      );
      
  }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appDiv">appDiv</a></li><li><a href="global.html#Cat">Cat</a></li><li><a href="global.html#CatLabel">CatLabel</a></li><li><a href="global.html#Catnip">Catnip</a></li><li><a href="global.html#chooseGradient">chooseGradient</a></li><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#defaultLocation">defaultLocation</a></li><li><a href="global.html#East">East</a></li><li><a href="global.html#FallingLeaves">FallingLeaves</a></li><li><a href="global.html#getCatnipImg">getCatnipImg</a></li><li><a href="global.html#getIntRandomRange">getIntRandomRange</a></li><li><a href="global.html#getRandomRange">getRandomRange</a></li><li><a href="global.html#key">key</a></li><li><a href="global.html#lib">lib</a></li><li><a href="global.html#loadCatImageFromId">loadCatImageFromId</a></li><li><a href="global.html#Map">Map</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#NorthEast">NorthEast</a></li><li><a href="global.html#NorthWest">NorthWest</a></li><li><a href="global.html#ShrubBackground">ShrubBackground</a></li><li><a href="global.html#slowPanTo">slowPanTo</a></li><li><a href="global.html#South">South</a></li><li><a href="global.html#SouthEast">SouthEast</a></li><li><a href="global.html#SouthWest">SouthWest</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li><li><a href="global.html#userDecisionTimeout">userDecisionTimeout</a></li><li><a href="global.html#West">West</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 24 2022 10:58:00 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

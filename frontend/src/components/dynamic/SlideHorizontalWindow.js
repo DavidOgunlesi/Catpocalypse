@@ -20,6 +20,9 @@ export default function SlideHorizontalWindow({
     backgroundColor="",
     children
 }){
+    /**
+     * Constant variable which sets states which cannot be reassigned
+     */
     const [state, setState] = useState(0)
     var styleClass = "blurLeftSlider";
     if (open) {
@@ -30,7 +33,9 @@ export default function SlideHorizontalWindow({
     }else{
         closeWindow();
     }
-    
+    /**
+     * Function which closes window
+     */
     function closeWindow(){
         if (state!=0){
             setState(0);

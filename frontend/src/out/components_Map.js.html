@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Map.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Map.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * Renders the Map Page of Catpocalypse using Google Map API which allows the player to continue the game
  */
 /**
@@ -37,9 +65,9 @@ import LoadingScreen from "./static/LoadingScreen";
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
 /**
- * The key from the Google Maps API and also one of their libraries which includes the "&libraries=geometry" URL parameter.
+ * The key from the Google Maps API and also one of their libraries which includes the "&amp;libraries=geometry" URL parameter.
  */
-const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta&libraries=geometry";
+const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&amp;map_id=64f4173bca5b9f91&amp;v=beta&amp;libraries=geometry";
 /**
  * The default location which has been to the center of the University of Exeter
  */
@@ -121,19 +149,17 @@ function Map(gps){
 			refeshGPSData();
 			hideBadElements();
 			if(map != null){
-				if(currentHuntTheCat != null){
-					var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
-					var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
-					//var pos2 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
-					//console.log(maps)
-					var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-					console.log("Distance " + distance + " m")
-					setDistanceToHuntTheCat(distance);
-					if(distance < 50){
-						setHuntCatVisible(true);
-					}else{
-						setHuntCatVisible(false);
-					}
+				var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
+				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
+				//var pos2 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
+				//console.log(maps)
+				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+				console.log("Distance " + distance + " m")
+				setDistanceToHuntTheCat(distance);
+				if(distance &lt; 50){
+					setHuntCatVisible(true);
+				}else{
+					setHuntCatVisible(false);
 				}
 			}
 		}, 1000);
@@ -183,7 +209,7 @@ function Map(gps){
 	*/
 	const hideBadElements = () =>{
 		var collection = document.getElementsByClassName("sc-dkPtRN kZbNWb");
-		for (let index = 0; index < collection.length; index++) {
+		for (let index = 0; index &lt; collection.length; index++) {
 			const element = collection.item(index);
 			element.style.display = "none";
 			element.style.visibility = "hidden";
@@ -241,10 +267,10 @@ function Map(gps){
 		fetch('/api/get-cats')
 		.then(response => response.json())
 		.then(data => {
-			for(var i = 0; i < data.length; i++) {
+			for(var i = 0; i &lt; data.length; i++) {
 				var cat = data[i];
-				var thisIsHuntTheCat = cat.is_huntable && (cat.player_1 == userDetails.user_id || cat.player_2 == userDetails.user_id )
-				if (currentHuntTheCat == null && thisIsHuntTheCat){
+				var thisIsHuntTheCat = cat.is_huntable &amp;&amp; (cat.player_1 == userDetails.user_id || cat.player_2 == userDetails.user_id )
+				if (currentHuntTheCat == null &amp;&amp; thisIsHuntTheCat){
 					setCurrentHuntTheCat({
 						lat: cat.latitude,
 						lng: cat.longitude
@@ -255,14 +281,14 @@ function Map(gps){
 					})
 				}
 				cats.push(
-					<MapMarker
+					&lt;MapMarker
 						lat={cat.latitude}
 						lng={cat.longitude}
 						markerType="cat"
 						size={120}
 						id={cat.cat_id}
 						wildCatId={cat.wildcat_id}
-						invisible={thisIsHuntTheCat && !huntCatVisible}
+						invisible={thisIsHuntTheCat &amp;&amp; !huntCatVisible}
 					/>
 				);
 			}
@@ -276,7 +302,7 @@ function Map(gps){
 	 */
 	  const renderTransparentBackground = () =>{
 		return (
-			<div 
+			&lt;div 
 				style={{
 						position: "absolute",
 						width: "100%",
@@ -290,7 +316,7 @@ function Map(gps){
 						backgroundImage: "radial-gradient(circle at bottom right, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0))"
 					}}
 			>
-			</div>
+			&lt;/div>
 		);
 		
 	}
@@ -311,10 +337,10 @@ function Map(gps){
 				text = "Hot"
 			}
 			return(
-				<div 
+				&lt;div 
 				className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": `${meterPercentage}%`}}>
 				{text}
-				</div>
+				&lt;/div>
 			);
 		}
 	}
@@ -326,18 +352,18 @@ function Map(gps){
 	 */
 	const renderOverlayUI = () => {
 		return (
-			<div>
-			<OverlayUI>
-				<div
+			&lt;div>
+			&lt;OverlayUI>
+				&lt;div
 				x="15px"
 				y="100px"
 				anchor="top right"
 				>
 					{renderMeter()}
-				</div>
+				&lt;/div>
 			);
-				<div  x="55%" y="50%" sortingLayer={1000}>
-					<img src={PlayerMarker} width={50} style={{
+				&lt;div  x="55%" y="50%" sortingLayer={1000}>
+					&lt;img src={PlayerMarker} width={50} style={{
 						position:"absolute",
 						top: 0,
 						left: 0,
@@ -345,30 +371,30 @@ function Map(gps){
 						bottom: 0,
 						margin: "auto"
 					}}/>
-				</div>
+				&lt;/div>
 				
 
 				
-				<div 
+				&lt;div 
 				x="-100px"
 				y="-100px"
 				anchor="bottom right"
 				sortingLayer= {20010}
 				>
-					<CircleMenu
+					&lt;CircleMenu
 					startAngle={200}
 					rotationAngle={70}
 					itemSize={4}
 					radius={10}
 					menuToggleElement={
-						<IconButton
+						&lt;IconButton
 							size="large"
 							color = 'primary' 
 							variant="text"
 							disableElevation={true}
 						>
-						<img src={MenuButtonImg} width={200}/>
-						</IconButton>
+						&lt;img src={MenuButtonImg} width={200}/>
+						&lt;/IconButton>
 					}
 					onMenuToggle={(menuActive)=>{
 						setMapMenu(menuActive);
@@ -382,54 +408,54 @@ function Map(gps){
 					 */
 					rotationAngleInclusive={true}
 					>
-					<CircleMenuItem
+					&lt;CircleMenuItem
 					onClick={() => setSubMenu("catdex")}
 					tooltip="Catdex"
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="catdex"/>
-					</CircleMenuItem>
-					<CircleMenuItem 
+						&lt;GameIcon src="catdex"/>
+					&lt;/CircleMenuItem>
+					&lt;CircleMenuItem 
 					onClick={() => setSubMenu("cats")}
 					tooltip="Cats" 
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="cats"/>
-					</CircleMenuItem>
-					<CircleMenuItem 
+						&lt;GameIcon src="cats"/>
+					&lt;/CircleMenuItem>
+					&lt;CircleMenuItem 
 					onClick={() => setSubMenu("battle")}
 					tooltip="Battle" 
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="battle"/>
-					</CircleMenuItem>
-					</CircleMenu>
-					</div>
-			</OverlayUI>
-			<OverlayUI>
-				<div 
+						&lt;GameIcon src="battle"/>
+					&lt;/CircleMenuItem>
+					&lt;/CircleMenu>
+					&lt;/div>
+			&lt;/OverlayUI>
+			&lt;OverlayUI>
+				&lt;div 
 				x="-100px"
 				y="-100px"
 				anchor="bottom right"
 				sortingLayer= {20000}
 				>
-					<CircleMenu
+					&lt;CircleMenu
 					startAngle={200}
 					rotationAngle={70}
 					itemSize={4}
 					radius={20}
 					menuToggleElement={
-						<div>
-						<IconButton
+						&lt;div>
+						&lt;IconButton
 							size="large"
 							color = 'primary' 
 							variant="text"
 							disableElevation={true}
 							ref={inputRef}
 						>
-						<img src={MenuButtonImg} width={200}/>
-						</IconButton>
-						</div>
+						&lt;img src={MenuButtonImg} width={200}/>
+						&lt;/IconButton>
+						&lt;/div>
 					}
 					/**
 					 * rotationAngleInclusive (default true)
@@ -439,21 +465,21 @@ function Map(gps){
 					 */
 					rotationAngleInclusive={true}
 					>
-					<CircleMenuItem
+					&lt;CircleMenuItem
 					onClick={() => setSubMenu("friends")}
 					tooltip="Friends"
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="friends"/>
-					</CircleMenuItem>
-					<CircleMenuItem 
+						&lt;GameIcon src="friends"/>
+					&lt;/CircleMenuItem>
+					&lt;CircleMenuItem 
 					onClick={() => setSubMenu("shop")}
 					tooltip="Shop"
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="shop"/>
-					</CircleMenuItem>
-					<CircleMenuItem 
+						&lt;GameIcon src="shop"/>
+					&lt;/CircleMenuItem>
+					&lt;CircleMenuItem 
 					onClick={() => {
 						setSubMenu("catsino");
 						console.log(currentSubMenu);
@@ -461,13 +487,13 @@ function Map(gps){
 					tooltip="Catsino"
 					tooltipPlacement={TooltipPlacement.Top}
 					>
-						<GameIcon src="catsino"/>
-					</CircleMenuItem>
-					</CircleMenu>
+						&lt;GameIcon src="catsino"/>
+					&lt;/CircleMenuItem>
+					&lt;/CircleMenu>
 					
-					</div>
-			</OverlayUI>
-			</div>
+					&lt;/div>
+			&lt;/OverlayUI>
+			&lt;/div>
 		);
 	}
 
@@ -477,13 +503,13 @@ function Map(gps){
 	 */
 	const renderSettingsButton = () =>{
 		return (
-			<div
+			&lt;div
 			style={{
 				display: showMapMenu ? "block" : "none"
 			}}
 			>
-			<OverlayUI>
-				<IconButton 
+			&lt;OverlayUI>
+				&lt;IconButton 
 					x="0px"
 					y="140px"
 					anchor="top right"
@@ -494,15 +520,15 @@ function Map(gps){
 					style={{ borderRadius: 50 }}
 					onClick={() => setSubMenu("settings")}
 				>
-				<div>
-					<Typography variant="h4" component="h4" style={{color:'white'}}>Settings</Typography>
-				</div>
-				<div>
-					<SettingsIcon style={{color:'white'}}/>
-				</div>
-				</IconButton>
-			</OverlayUI>
-			</div>
+				&lt;div>
+					&lt;Typography variant="h4" component="h4" style={{color:'white'}}>Settings&lt;/Typography>
+				&lt;/div>
+				&lt;div>
+					&lt;SettingsIcon style={{color:'white'}}/>
+				&lt;/div>
+				&lt;/IconButton>
+			&lt;/OverlayUI>
+			&lt;/div>
 		);
 	}
 
@@ -511,49 +537,49 @@ function Map(gps){
 	 * @returns Submenus such as CatDex, CatSino, Battle, Friends and Cats
 	 */
 	const renderSubMenus = () => {
-		var page = (<SettingsPage/>)
+		var page = (&lt;SettingsPage/>)
 		var title = ""
 		var txtcolor = ""
 		var color = ""
 		var fillBox = false;
 		switch (currentSubMenu) {
 			case "settings":
-				page = (<SettingsPage/>);
+				page = (&lt;SettingsPage/>);
 				title = "Settings";
 				txtcolor = "#FFF";
 				break;
 			case "catdex":
-				page = (<Catdex/>);
+				page = (&lt;Catdex/>);
 				title = "Catdex";
 				color = "#FFF";
 				txtcolor = "#000";
 				break;
 			case "catinv":
-				page = (<CatPlayerInventory/>);
+				page = (&lt;CatPlayerInventory/>);
 				title = "Cats";
 				color = "#FFF";
 				txtcolor = "#000";
 				break;
 			case "battle":
-				page = (<Battle/>);
+				page = (&lt;Battle/>);
 				color = "#FFF";
 				txtcolor = "#000";
 				fillBox = true;
 				break;
 			case "friends":
-				page = (<Friends/>);
+				page = (&lt;Friends/>);
 				title = "Friends";
 				color = "#FFF";
 				txtcolor = "#000";
 				break;
 			case "shop":
-				page = (<Shop/>);
+				page = (&lt;Shop/>);
 				title = "Shop";
 				color = "#FFF";
 				txtcolor = "#000";
 				break;
 			case "catsino":
-				page = (<Catsino/>);
+				page = (&lt;Catsino/>);
 				title = "Catsino";
 				color = "#FFF";
 				txtcolor = "#000";
@@ -562,8 +588,8 @@ function Map(gps){
 				break;
 			}
 		return (
-			<div>
-				<SlideUpWindow
+			&lt;div>
+				&lt;SlideUpWindow
 				open={currentSubMenu != "none"}
 				title={title}
 				callback={() => setSubMenu("none")}
@@ -573,7 +599,7 @@ function Map(gps){
 				backgroundColor = {color}
 				fillBox = {fillBox}
 				/>
-				</div>
+				&lt;/div>
 		);
 	}
 
@@ -583,7 +609,7 @@ function Map(gps){
 	 */
 	const renderLoadingScreen=() =>{
 		if (!mapLoaded){
-			return(<LoadingScreen/>);
+			return(&lt;LoadingScreen/>);
 		}
 	}
 
@@ -592,14 +618,14 @@ function Map(gps){
 	 * @returns A warning modal window for users to be aware of their surroundings to avoid any injuries
 	 */
 	const showWarningModal = () => {
-		if (shownWarning == false){
+		if (!shownWarning){
+			setshownWarning(true);
 			return (
-				<ModalWindow 
+				&lt;ModalWindow 
 				title="Be aware of your surroundings" 
 				content="Ensure you are observant of your environment around campus as you play Catpocalypse." 
 				open={true}
 				imageSrc = {warningCat}
-				onClick={_ => setshownWarning(true)}
 				/> 
 			);
 		}
@@ -609,7 +635,7 @@ function Map(gps){
    */
 	if(!isOnline){
 		return(
-			<Background 
+			&lt;Background 
 			gradient={false} 
 			primaryCol="#FEEAC2" 
 			outlineCol="#FFC992" 
@@ -617,14 +643,14 @@ function Map(gps){
 			skew={-32}
 			backgroundCol="#FFF59D"
 			>
-				<ModalWindow 
+				&lt;ModalWindow 
 				title="Cannot Connect To Server" 
 				content="You have lost connection to the server. Please check your internet connection." 
 				open={true}
 				onClick={_=>{ window.location.reload();}}
 				buttonText="Refresh"
 				/>
-			</Background>
+			&lt;/Background>
 		);
 	}
 	/**
@@ -632,7 +658,7 @@ function Map(gps){
 	 */
 	if(!gpsEnabled){
 		return(
-			<Background 
+			&lt;Background 
 			gradient={false} 
 			primaryCol="#FEEAC2" 
 			outlineCol="#FFC992" 
@@ -640,7 +666,7 @@ function Map(gps){
 			skew={-32}
 			backgroundCol="#FFF59D"
 			>
-				<ModalWindow 
+				&lt;ModalWindow 
 				title="Location Not Enabled :(" 
 				content="Ensure you have turned on location in your respective device browser settings." 
 				open={true}
@@ -648,11 +674,11 @@ function Map(gps){
 				onClick={_=>{ window.location.reload();}}
 				buttonText="Refresh"
 				/>
-			</Background>
+			&lt;/Background>
 		);
 	}
 	if(currentCatch != null){
-		return (<CatchingCat callback={() => {
+		return (&lt;CatchingCat callback={() => {
 			setCurrentCatch(null);
 			window.location.reload();
 		}
@@ -668,16 +694,16 @@ function Map(gps){
 		}
 	  }
 	return (
-		<div>
+		&lt;div>
 			{renderLoadingScreen()}
 			{renderSubMenus()}
-			<div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
-			<HorizontalCompass mapObj={map}/>
+			&lt;div style={{ height: '100vh', width: '100%', touchAction: "none" }} {...drag2()} >
+			&lt;HorizontalCompass mapObj={map}/>
 			{renderOverlayUI()}
 			{renderTransparentBackground()}
 			{renderSettingsButton()}
 			{showWarningModal()}
-			<GoogleMapReact
+			&lt;GoogleMapReact
 			onChildClick={(key, childProps) => onCatClick(key, childProps)}
 			bootstrapURLKeys={{ key: key }}
 			defaultCenter={defaultLocation}
@@ -693,9 +719,9 @@ function Map(gps){
 			onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
 			>
 			{renderCats()}
-			</GoogleMapReact>
-			</div>
-		</div>
+			&lt;/GoogleMapReact>
+			&lt;/div>
+		&lt;/div>
 	);
     
 }
@@ -739,7 +765,7 @@ var slowPanTo = function(map, endPosition, n_intervals, T_msec) {
 	lng_step = getStep(lng_delta);
 	lat_array = [];
 	lng_array = [];
-	for (i = j = 1, ref = n_intervals; j <= ref; i = j += +1) {
+	for (i = j = 1, ref = n_intervals; j &lt;= ref; i = j += +1) {
 		lat_array.push(map.getCenter().lat() + i * lat_step);
 		lng_array.push(map.getCenter().lng() + i * lng_step);
 	}
@@ -747,7 +773,7 @@ var slowPanTo = function(map, endPosition, n_intervals, T_msec) {
 		return parseFloat(T_msec) / n_intervals;
 	};
 	pan = function(i) {
-	if (i < lat_array.length) {
+	if (i &lt; lat_array.length) {
 		return setTimeout(function() {
 			map.panTo(new google.maps.LatLng({
 				lat: lat_array[i],
@@ -758,4 +784,26 @@ var slowPanTo = function(map, endPosition, n_intervals, T_msec) {
 	}
 	};
 	return pan(0);
-};
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appDiv">appDiv</a></li><li><a href="global.html#Cat">Cat</a></li><li><a href="global.html#CatLabel">CatLabel</a></li><li><a href="global.html#Catnip">Catnip</a></li><li><a href="global.html#chooseGradient">chooseGradient</a></li><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#defaultLocation">defaultLocation</a></li><li><a href="global.html#East">East</a></li><li><a href="global.html#FallingLeaves">FallingLeaves</a></li><li><a href="global.html#getCatnipImg">getCatnipImg</a></li><li><a href="global.html#getIntRandomRange">getIntRandomRange</a></li><li><a href="global.html#getRandomRange">getRandomRange</a></li><li><a href="global.html#key">key</a></li><li><a href="global.html#lib">lib</a></li><li><a href="global.html#loadCatImageFromId">loadCatImageFromId</a></li><li><a href="global.html#Map">Map</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#NorthEast">NorthEast</a></li><li><a href="global.html#NorthWest">NorthWest</a></li><li><a href="global.html#ShrubBackground">ShrubBackground</a></li><li><a href="global.html#slowPanTo">slowPanTo</a></li><li><a href="global.html#South">South</a></li><li><a href="global.html#SouthEast">SouthEast</a></li><li><a href="global.html#SouthWest">SouthWest</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li><li><a href="global.html#userDecisionTimeout">userDecisionTimeout</a></li><li><a href="global.html#West">West</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 24 2022 10:58:00 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -17,6 +17,10 @@ export default function MapMarker({
     id=null,
     invisible=false
 }){
+    /**
+     * Checks if the cat is invisible, if invisible, there will be no display of the cat on the map
+     * If it is visible, the cat will be displayed on the map.
+     */
     if(invisible){
         return null;
     }
