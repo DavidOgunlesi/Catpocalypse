@@ -46,7 +46,6 @@ class CatchingCats(APIView):
                 else:
                     return Response({'message':'User is not allowed to catch this cat'}, status=status.HTTP_201_CREATED)
 
-
             if not wildcat:
                 return Response({'error':'Wildcat does not exist'}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -218,8 +217,11 @@ class IsLoggedInAPIView(GenericAPIView):
         if not self.request.session.exists(self.request.session.session_key):
             return response.Response({'message':"Not logged in"}, status=status.HTTP_400_BAD_REQUEST)
         else:
+            username = self.request.session.get('username')
+            user = CustomUser.objects.filter(username=username).first()
             data = {
-                'username':self.request.session.get('username')
+                'username':self.request.session.get('username'),
+                'user_id':user.id
             }
             return JsonResponse(data, status=status.HTTP_200_OK) 
 
