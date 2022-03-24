@@ -15,6 +15,7 @@ export default function Catdex(props){
     const [catdexEntries, setCatdexEntries] = useState([]);
     const [openCatProfile, setCatProfile] = useState(null);
     const [catProfileId, setCatProfileId] = useState(null);
+    var catImagePath = '/static/images/cats/undefined.png';
 
     /**
      * Redirects the player to a page showing each tamed cat owned of a particular cat in the catdex, 
@@ -79,10 +80,11 @@ export default function Catdex(props){
         //Displays the image for each cat in the Catdex
         var catdexEntry = [];
         for (let i = 0; i < cats.length; i++) {
+            catImagePath = loadCatImage(cats[i].id, ownedCats);
             catdexEntry.push(
                 <Grid item xs={3} align="center">
                     <IconButton onClick={_ => loadOwnedCats(cats[i].id, ownedCats)}>
-                    <img height={setImageHeight(cats[i].id)} src={loadCatImage(cats[i].id, ownedCats)} onError={handleOnError} align="center"/>
+                    <img src={catImagePath} height={setImageHeight(cats[i].id)} onError={handleOnError} align="center"/>
                     </IconButton>
                 </Grid>
             )
@@ -98,14 +100,15 @@ export default function Catdex(props){
      * @returns The path to the image displayed for the particular cat in the Catdex.
      */
     function loadCatImage(id, ownedCats){
-        var imagePath = '/static/images/cats/undefined.png'; 
+        catImagePath = '/static/images/cats/undefined.png';
         const isFound = ownedCats.some(ownedCat => {
             if (ownedCat.id === id) {
-                imagePath = `/static/images/cats/${id}.png`;
-                return;
+                console.log("found id " + id);
+                catImagePath = `/static/images/cats/${id}.png`;
+                console.log(catImagePath);
             }
         })
-        return imagePath;
+        return catImagePath;
     }
 
     /**
@@ -117,7 +120,7 @@ export default function Catdex(props){
      */
     function setImageHeight(id){
         var height;
-        if (id == 4 || id == 24) {
+        if ((id == 4 || id == 24) && (catImagePath != '/static/images/cats/undefined.png')) {
             height = 40;
         } else {
             height = 65;
@@ -126,8 +129,9 @@ export default function Catdex(props){
     }
 
     const handleOnError = (e) => {
-        e.target.src = '/static/images/cats/undefined.png'; 
-    }
+        e.target.src='/static/images/cats/undefined.png';
+        e.target.height=65;
+    };
 
     //renders each Catdex entry as a grid item
     if (catdexEntries.length == 0){
