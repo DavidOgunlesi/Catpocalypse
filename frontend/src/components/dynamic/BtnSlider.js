@@ -7,9 +7,9 @@ import rightArrow from "/static/icons/right-arrow.svg";
 import {IconButton, Icon} from '@material-ui/core';
 
 export default function BtnSlider({ direction, moveSlide }) {
-  console.log(direction, moveSlide);
+  //console.log(direction, moveSlide);
   function renderArrow() {
-      console.log(direction === "next" ? <rightArrow/> : <leftArrow/>);
+      //console.log(direction === "next" ? <rightArrow/> : <leftArrow/>);
       return(direction === "next" ? <rightArrow/> : <leftArrow/>);
   }
   return (
