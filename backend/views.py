@@ -355,8 +355,7 @@ class GetMatch(GenericAPIView): #THIS NEEDS DOING!!!!!!!!!!!!
         for match in queryset:
             client_ip = request.META['REMOTE_ADDR']
             if match.user_id.username != username:
-                print(client_ip)
-                return response.Response({'message':"FOUND MATCH"}, status=status.HTTP_200_OK)
+                return response.Response({'message':"FOUND MATCH", 'ip':client_ip}, status=status.HTTP_200_OK)
         return response.Response({'message':"User does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
 
         
