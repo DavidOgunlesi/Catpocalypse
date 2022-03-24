@@ -42,11 +42,20 @@ export default function MainMenu(){
         setMusicEnabled(manageModalState(isMusicPlaying()));
     })
 
+    /**
+     * 
+     * Returns if the Google Login is successful
+     */
     function responseGoogleSuccess(response) {
         console.log("SUCCESS");
         console.log(response);
         console.log(response.profileObj);
     }
+
+    /**
+     * 
+     * Returns if the Google Login has failed
+     */
     function responseGoogleFailure(response) {
         console.log("FAIL");
         console.log(response);
@@ -188,14 +197,17 @@ export default function MainMenu(){
 
     /**
      * This function allows the user to select if they want the music to play in the background while Catpocalypse is running.
-     * This option will be asked in a pop up window with Catpocalypse's colour palette in the background.
+     *  The option will be asked in a pop up window with Catpocalypse's colour palette in the background.
      * If the user selects yes, the music will start playing, however if the user selects no, then no music will be played throughout.
      */
     function enableAudio(){
         console.log("trying to play");
         document.getElementById('soundtrack').play();
     }
-
+    /**
+     * 
+     * @returns Will check if the music is playing and will print to the console if there is any audio playing
+     */
     function isMusicPlaying(){
         console.log("g");
         var audio = document.getElementById('soundtrack');
@@ -211,6 +223,10 @@ export default function MainMenu(){
         return true;
     }
 
+    /**
+     * 
+     * @returns A Modal window which asks the user if they want audio to play during the game
+     */
     function renderModal(){
         if (!musicEnabled) {
             return (
@@ -224,6 +240,9 @@ export default function MainMenu(){
         return null;
     }
 
+    /**
+     * Style on the modal window which will be returned for the renderModal() function
+     */
     return (
         <Background 
         gradient={false} 

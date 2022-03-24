@@ -1,5 +1,6 @@
 /**
- * Whenever the player opens the app after loggining in, there will be a set loading page with an art design of the cats in Catpocalypse.
+ * Whenever the player opens the app after loggining in, there will be a set loading page 
+ * with an art design of the cats in Catpocalypse.
  */
 
 /**

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dynamic/HorizontalCompass.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dynamic/HorizontalCompass.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The Horizontal Compass sets the compass on top of the Map view while playing Capolcalypse.
+ * It informs the user of the current direction they are in.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React.
+ */
+import { Box, Typography } from "@material-ui/core";
+import React,{useState, useEffect} from "react";
+import { useSpring, animated } from 'react-spring'
+
+/**
+ * Main function for the HorizontalCompass.js which shows the player the current direction they are in the compass - cardinal and ordinal directions.
+ * @param {*} param0 
+ * @returns The Compass Letter
+ */
+function CompassLetter({coordinate, children, fontVariant}) {
+    // console.log(window.innerWidth/50)
+    var absPixelPos = (90 + coordinate)*(window.innerWidth/50);
+
+    const props = useSpring({
+        to: {
+            left: `${absPixelPos}px`, 
+            position: 'absolute',
+            
+        },
+        delay: 0,
+      })
+      //console.log(coordinate)
+    return(
+            &lt;animated.div style={props}>
+                &lt;Typography 
+                style={{
+                    padding: "10px",
+                    display: `${ coordinate &lt; 90 &amp;&amp; coordinate > -90 ? "block" : "none"}`,
+                    fontWeight: 600
+                }} 
+                variant={fontVariant} 
+                component={fontVariant}
+                >
+                    {children}
+                &lt;/Typography>
+            &lt;/animated.div>
+    );
+}
+  /**
+   * Variable to show the North direction
+   */
+  const North = ({coordinate}) => {
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h3"> N &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the North East direction
+   */
+  const NorthEast = ({coordinate}) => {
+    coordinate += 45;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h4"> NE &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the East direction
+   */
+  const East = ({coordinate}) => {
+    coordinate += 90;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h3"> E &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the SouthEast direction
+   */
+  const SouthEast = ({coordinate}) => {
+    coordinate += 135;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h4"> SE &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the South direction
+   */
+  const South = ({coordinate}) => {
+    coordinate += 180;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h3"> S &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the SouthWest direction
+   */
+  const SouthWest = ({coordinate}) => {
+    coordinate += 225;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h4"> SW &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the West direction
+   */
+  const West = ({coordinate}) => {
+    coordinate += 270;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h3"> W &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+
+  /**
+   * Variable to show the North West direction
+   */
+  const NorthWest = ({coordinate}) => {
+    coordinate += 315;
+    return (
+        &lt;div>
+            &lt;CompassLetter coordinate={coordinate % 360} fontVariant="h4"> NW &lt;/CompassLetter>
+        &lt;/div>
+    );
+  };
+  /**
+   * Sets the style of the compass which is a transparent horizontal box and is centered as well.
+   */
+  const style = {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    pointerEvents: 'none',
+    background: 'transparent',
+    textAlign: 'center',
+    zIndex: 10000
+  };
+
+/**
+ * 
+ * @returns The box showing the direction the user is currently in.
+ */
+export default function HorizontalCompass({
+    mapObj = null
+}){
+    const [coordinate, setCoordinate] = useState(0);
+    //Run refresh every second
+	useEffect(() => {
+		var timerID = setInterval(() =>  {
+            if (mapObj != null){
+                // console.log(`h:${mapObj.heading}`)
+                if (coordinate >= 0){
+                    setCoordinate(-mapObj.heading)
+                }else {
+                    setCoordinate(-360-mapObj.heading)
+                }
+            }
+        }, 1000);
+		return () => clearInterval(timerID);
+	});
+    return (
+        &lt;Box sx={style}>
+                &lt;North coordinate={coordinate} />
+                &lt;NorthEast coordinate={coordinate} />
+                &lt;East coordinate={coordinate} />
+                &lt;SouthEast coordinate={coordinate} />
+                &lt;South coordinate={coordinate} />
+                &lt;SouthWest coordinate={coordinate} />
+                &lt;West coordinate={coordinate} />
+                &lt;NorthWest coordinate={coordinate} />
+                &lt;div
+                    style={{
+                        position: 'relative',
+                        top:"80px",
+                        height: "5px",
+                        width: '80%',
+                        background: "black",
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        webkitMaskImage: "linear-gradient(to right, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 90%)",
+
+                    }}
+
+                >&lt;/div>
+          
+        &lt;/Box>
+      );
+    
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appDiv">appDiv</a></li><li><a href="global.html#Cat">Cat</a></li><li><a href="global.html#CatLabel">CatLabel</a></li><li><a href="global.html#Catnip">Catnip</a></li><li><a href="global.html#chooseGradient">chooseGradient</a></li><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#defaultLocation">defaultLocation</a></li><li><a href="global.html#East">East</a></li><li><a href="global.html#FallingLeaves">FallingLeaves</a></li><li><a href="global.html#getCatnipImg">getCatnipImg</a></li><li><a href="global.html#getIntRandomRange">getIntRandomRange</a></li><li><a href="global.html#getRandomRange">getRandomRange</a></li><li><a href="global.html#key">key</a></li><li><a href="global.html#lib">lib</a></li><li><a href="global.html#loadCatImageFromId">loadCatImageFromId</a></li><li><a href="global.html#Map">Map</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#NorthEast">NorthEast</a></li><li><a href="global.html#NorthWest">NorthWest</a></li><li><a href="global.html#ShrubBackground">ShrubBackground</a></li><li><a href="global.html#slowPanTo">slowPanTo</a></li><li><a href="global.html#South">South</a></li><li><a href="global.html#SouthEast">SouthEast</a></li><li><a href="global.html#SouthWest">SouthWest</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li><li><a href="global.html#userDecisionTimeout">userDecisionTimeout</a></li><li><a href="global.html#West">West</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 24 2022 10:58:00 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

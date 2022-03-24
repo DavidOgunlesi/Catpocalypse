@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/dynamic/OverlayUI.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/dynamic/OverlayUI.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Overlay UI component handles overlaying UI on the main map screen. I can be passed
+ * child components which get rendered at a given x and y.
+ */
+
+/**
+ * The imports which are required for this page to run which includes packages from React.
+ */
+import { Box, Grid, Typography } from "@material-ui/core";
+import React,{useState} from "react";
+import { makeStyles } from "@material-ui/core";
+
+  /**
+   * Styling for UI
+   */
+  const style = {
+	position: 'absolute',
+	width: '100%',
+	height: '100%',
+	//pointerEvents: 'none',
+	background: 'transparent',
+	textAlign: 'center'
+  };
+
+  const useDefStyles = makeStyles((theme) => ({
+	small: {
+	  '&amp; svg': {
+		fontSize: 25
+	  }
+	},
+	medium: {
+	  '&amp; svg': {
+		fontSize: 50
+	  }
+	},
+	large: {
+	  '&amp; svg': {
+		fontSize: 75
+	  }
+	},
+	huge: {
+	  '&amp; svg': {
+		fontSize: 100
+	  }
+	}
+  }));
+
+/**
+ * Put elements on a child using absolute coordinates when displayed on the screen.
+ */
+export default function OverlayUI({
+	children
+}){
+	const defClasses = useDefStyles();
+
+	const childrenWithProps = React.Children.map(children, child => {
+		// Checking isValidElement is the safe way and avoids a typescript
+		// error too.
+		if (React.isValidElement(child)) {
+		  var childrenStyle = {}
+		  if (child.props.anchor == "top left"){
+				childrenStyle = {
+					position: 'absolute',
+					top: child.props.y,
+					left: child.props.x,
+					zIndex: child.props.sortingLayer
+				}
+		  	}else if (child.props.anchor == "top right"){
+				childrenStyle = {
+					position: 'absolute',
+					top: child.props.y,
+					right: child.props.x,
+					zIndex: child.props.sortingLayer
+				}
+			}else if (child.props.anchor == "top middle"){
+				childrenStyle = {
+					position: 'absolute',
+					top: child.props.y,
+					left: child.props.x,
+					zIndex: child.props.sortingLayer
+				}
+			} else if (child.props.anchor == "top bottom"){
+				childrenStyle = {
+					position: 'absolute',
+					left: child.props.x,
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
+			}else if (child.props.anchor == "bottom right"){
+				childrenStyle = {
+					position: 'absolute',
+					right: child.props.x,
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
+			}else if (child.props.anchor == "bottom left"){
+				childrenStyle = {
+					position: 'absolute',
+					left: child.props.x,
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
+			}else if (child.props.anchor == "bottom middle"){
+				childrenStyle = {
+					position: 'absolute',
+					left: "50%",
+					bottom: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
+			}else{
+				childrenStyle = {
+					position: 'absolute',
+					right: child.props.x,
+					top: child.props.y,
+					zIndex: child.props.sortingLayer
+				}
+			}
+		  
+			// Make custom style class to resize icon if applicable
+			var useStyles = makeStyles((_) => ({
+				size: {
+					'&amp; svg': {
+					fontSize: child.props.overrideSize
+					}
+				}
+			}));
+			var classes = useStyles();
+			var sizeClass = classes.size
+			switch (child.props.size) {
+				case "small":
+					sizeClass = defClasses.small
+					break;
+				case "medium":
+					sizeClass = defClasses.medium
+					break;
+				case "large":
+					sizeClass = defClasses.large
+					break;
+				case "huge":
+					sizeClass = defClasses.huge
+					break;
+				default:
+					break;
+			}
+			return React.cloneElement(child, { className: sizeClass, style: {...childrenStyle,...child.props.style} });
+		}
+		return child;
+	  });
+
+	return (
+		&lt;Box sx={style}>
+			{childrenWithProps}
+		&lt;/Box>
+	  );
+	
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appDiv">appDiv</a></li><li><a href="global.html#Cat">Cat</a></li><li><a href="global.html#CatLabel">CatLabel</a></li><li><a href="global.html#Catnip">Catnip</a></li><li><a href="global.html#chooseGradient">chooseGradient</a></li><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#defaultLocation">defaultLocation</a></li><li><a href="global.html#East">East</a></li><li><a href="global.html#FallingLeaves">FallingLeaves</a></li><li><a href="global.html#getCatnipImg">getCatnipImg</a></li><li><a href="global.html#getIntRandomRange">getIntRandomRange</a></li><li><a href="global.html#getRandomRange">getRandomRange</a></li><li><a href="global.html#key">key</a></li><li><a href="global.html#lib">lib</a></li><li><a href="global.html#loadCatImageFromId">loadCatImageFromId</a></li><li><a href="global.html#Map">Map</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#NorthEast">NorthEast</a></li><li><a href="global.html#NorthWest">NorthWest</a></li><li><a href="global.html#ShrubBackground">ShrubBackground</a></li><li><a href="global.html#slowPanTo">slowPanTo</a></li><li><a href="global.html#South">South</a></li><li><a href="global.html#SouthEast">SouthEast</a></li><li><a href="global.html#SouthWest">SouthWest</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li><li><a href="global.html#userDecisionTimeout">userDecisionTimeout</a></li><li><a href="global.html#West">West</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 24 2022 10:58:00 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
