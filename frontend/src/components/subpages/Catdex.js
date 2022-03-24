@@ -120,7 +120,7 @@ export default function Catdex(props){
      */
     function setImageHeight(id){
         var height;
-        if ((id == 4 || id == 24) && (catImagePath != '/static/images/cats/undefined.png')) {
+        if ((id == 4 || id == 17 || id == 24) && (catImagePath != '/static/images/cats/undefined.png')) {
             height = 40;
         } else {
             height = 65;
@@ -160,26 +160,6 @@ export default function Catdex(props){
         <div>
         <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">
             {catdexEntries}
-            <Grid item xs={3} align="center">
-                <IconButton>
-                <img height={65} src={MissingCat}/>
-                </IconButton>
-            </Grid>
-            <Grid item xs={3} align="center">
-                <IconButton>
-                <img height={65} src={MissingCat}/>
-                </IconButton>
-            </Grid>
-            <Grid item xs={3} align="center">
-                <IconButton>
-                <img height={65} src={MissingCat}/>
-                </IconButton>
-            </Grid>
-            <Grid item xs={3} align="center">
-                <IconButton>
-                <img height={65} src={MissingCat}/>
-                </IconButton>
-            </Grid>
         </Grid>
         </div>
         </Background>
