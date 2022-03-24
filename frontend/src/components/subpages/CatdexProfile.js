@@ -1,15 +1,21 @@
-/**
- * A set template used to check if the page is working or not.
- * Imports React from the React Package
- */
- import React from "react";
- import {Button, Grid, Typography, InputAdornment, Item, IconButton} from "@material-ui/core";
- import Box from '@material-ui/core/Box';
- import MissingCat from "/static/images/cats/undefined.png";
+import React from "react";
+import {Grid, Typography} from "@material-ui/core";
+import Box from '@material-ui/core/Box';
+import Male from '/static/icons/male.svg';
+import Female from '/static/icons/female.svg'
 
- export default function CatdexProfile({cat}){
+/**
+ * Main Function of CatdexProfile.js
+ * Displays the profile component for a player owned cat.
+ * @returns The profile page displaying the cat obtained by the player.
+ */
+export default function CatdexProfile({cat}){
     console.log(cat.id);
     
+    /**
+     * Sets the size of the cat image in the profile.
+     * @return The width of the image to be used in the grid item.
+     */    
     function setImageSize() {
         switch(cat.id) {
             case 1:
@@ -67,17 +73,18 @@
         }
     }
 
+    /**
+     * Sets the gender to be displayed on the cat's profile.
+     * @return The icon containing the gender for this cat.
+     */  
     function setGender() {
         if (cat.sex == 'male') {
-            return '/static/icons/male.svg';
+            return Male;
         } else {
-            return '/static/icons/female.svg';
+            return Female;
         }
     }
 
-    /**
-     * Returns Hello World!
-     */
     return (
         <div  style = {{opacity:1}}>
         <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">

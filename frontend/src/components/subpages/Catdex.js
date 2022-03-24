@@ -1,9 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {render} from "react-dom";
-import {isMobile} from 'react-device-detect';
-import {Button, Grid, Typography, InputAdornment, Item, IconButton} from "@material-ui/core";
+import React, {useState} from "react";
+import {Grid, IconButton} from "@material-ui/core";
 import Background from "../static/Background";
-import MissingCat from "/static/images/cats/undefined.png";
 import SlideUpWindow from "../dynamic/SlideUpWindow";
 import CatdexEntry from "./CatdexEntry";
 
@@ -18,24 +15,19 @@ export default function Catdex(props){
     var catImagePath = '/static/images/cats/undefined.png';
 
     /**
-     * Redirects the player to a page showing each tamed cat owned of a particular cat in the catdex, 
-     * does nothing if the cat has not been obtained yet.
+     * Specifies all player owned cats that belong to a given id in the Catdex.
      * @param {integer} param0 == the id for the particular cat in the Catdex.
      * @param {JSON} param1 == the list of cats the user owns.
-     * @returns ?
      */
     const loadOwnedCats = (id, ownedCats) => {
         var ownedCatsOfThisId = ownedCats.filter(function(cat){
             return cat.id == id;
         });
-        for (let i = 0; i < ownedCatsOfThisId.length; i++) {
-            //console.log(ownedCatsOfThisId[i]);
-        }
         if (ownedCatsOfThisId.length > 0) {
             setCatProfileId(id);
             setCatProfile(ownedCatsOfThisId);
         } else {
-            //console.log("Not discovered yet!");
+            //Cat not discovered yet!
         }
     }
     
@@ -112,11 +104,9 @@ export default function Catdex(props){
     }
 
     /**
-     * Sets the image path for the particular catId if it has been obtained,
-     * else it sets the path to the missing cat image.
+     * Sets the height for the particular Catdex image.
      * @param {integer} param0 == the id for the particular cat being displayed in the Catdex.
-     * @param {JSON} param1 == the list of cats the user owns.
-     * @returns The path to the image displayed for the particular cat in the Catdex.
+     * @returns The height for the particular image being displayed in the Catdex.
      */
     function setImageHeight(id){
         var height;
@@ -128,6 +118,9 @@ export default function Catdex(props){
         return height;
     }
 
+    /**
+     * Displays the missing cat image if there is an error loading the correct image for the Catdex entry.
+     */
     const handleOnError = (e) => {
         e.target.src='/static/images/cats/undefined.png';
         e.target.height=65;
