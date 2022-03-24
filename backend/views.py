@@ -181,9 +181,6 @@ class LoginAPIView(GenericAPIView):
                 return response.Response({'message':"Please verify email"}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 # user is available to play hunt the cat
-                user.is_available = True
-                user.save()
-                functions.get_free_players()
                 # log them in
                 # check if current user has an active session
                 if not self.request.session.exists(self.request.session.session_key):
@@ -210,10 +207,7 @@ class LogoutAPIView(GenericAPIView):
             return response.Response({'message':"Already Logged out"}, status=status.HTTP_200_OK)
         else:
             username = self.request.session.get('username')
-            user = CustomUser.objects.filter(username=username)[0]
-            user.is_available = False
-            user.save()
-            # if current user does have an active session, delete current session data and session cookie
+            # if current user does have ana active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
 

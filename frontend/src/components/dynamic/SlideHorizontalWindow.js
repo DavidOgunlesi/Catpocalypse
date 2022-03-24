@@ -5,7 +5,7 @@
 /**
  * The imports which are required for this page to run which includes packages from React and other files which exist.
  */
-import React from "react";
+import React, { useState } from "react";
 import {Modal, Box, Typography, Button, Grid} from "@material-ui/core";
 
 
@@ -20,16 +20,25 @@ export default function SlideHorizontalWindow({
     backgroundColor="",
     children
 }){
+    const [state, setState] = useState(0)
     var styleClass = "blurLeftSlider";
     if (open) {
-        $(`.${styleClass}`).toggleClass('close');
+        if(state!=1){
+            $(`.${styleClass}`).toggleClass('close');
+            setState(1);
+        }
+    }else{
+        closeWindow();
     }
     
     function closeWindow(){
-        if (callback!=null){
-            callback();
+        if (state!=0){
+            setState(0);
+            $(`.${styleClass}`).toggleClass('close');
+            if (callback!=null){
+                callback();
+            }
         }
-        $(`.${styleClass}`).toggleClass('close');
     }
     
     return (
@@ -40,6 +49,7 @@ export default function SlideHorizontalWindow({
                 margin: "0px 25px 0px 25px",
                 overflow: "auto",
                 overflowY: "hidden",
+                overflowX: "hidden",
                 backgroundColor: backgroundColor
             }}
             >
@@ -66,7 +76,12 @@ export default function SlideHorizontalWindow({
                     }}
                 disableElevation={true}
                 fullWidth={true}
-                onClick={closeWindow}
+                onClick={() => {
+                    if (callback != null){
+                        callback();
+                    }
+                    
+                }}
                 >
                     Back
                 </Button>

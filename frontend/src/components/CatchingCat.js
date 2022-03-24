@@ -21,7 +21,9 @@ import ShrubRight from "/static/images/catchingCats/shrubRight.png";
 import ShrubCenter from "/static/images/catchingCats/shrubCenter.png";
 import GameIcon from "./GameIcon";
 
-
+import WeakCatnip from "/static/images/catchingCats/catnip/weak.png";
+import ApprenticeCatnip from "/static/images/catchingCats/catnip/strong.png";
+import JourneymanCatnip from "/static/images/catchingCats/catnip/journeyman.png";
 /**
      * Variable which returns a specific cat from the map to continue the process of catching.
      */
@@ -66,11 +68,42 @@ function FallingLeaves(){
     );
 }
 
+function getCatnipImg(type){
+    switch (type) {
+        case "Weak":
+            return WeakCatnip;
+        case "Apprentice":
+            return ApprenticeCatnip;
+        case "Journeyman":
+            return JourneymanCatnip;
+    }
+}
+
 /**
  * Function which returns the catnips when rendered
  * @returns images of the catnips which need to be used
  */
-function Catnip(){
+function Catnip({
+    type,
+    catNipUses = {weak: 30, apprentice: 10, journeyman: 5},
+    setSelectedCatnipCallback,
+    setShowCatnipCallback
+}){
+    var img = getCatnipImg(type);
+    var catNipUsesNum = catNipUses.weak
+    switch (type) {
+        case "Weak":
+            catNipUsesNum = catNipUses.weak
+            break;
+        case "Apprentice":
+            catNipUsesNum = catNipUses.apprentice
+            break;
+        case "Journeyman":
+            catNipUsesNum = catNipUses.journeyman
+            break;
+        default:
+            break;
+    }
     return (
         <button 
             style={{
@@ -78,8 +111,23 @@ function Catnip(){
             width: "100px",
             borderRadius: 500,
             }}
+            onClick={_ => {
+                setSelectedCatnipCallback(type);
+                setShowCatnipCallback(false);
+            }}
             >
-            <img src={MissingCat} style={{padding: "13px"}} height="100%"/>
+            <Button
+            variant="contained"
+            disabled
+            style={{
+                position: "absolute",
+                bottom: "0px",
+                backgroundColor: "#000",
+                borderRadius: 50,
+                color: "#FFF"
+            }}
+            >{type} x{catNipUsesNum}</Button>
+            <img src={img} style={{padding: "13px"}} height="100%"/>
         </button>
     );
 }
@@ -111,7 +159,7 @@ function CatLabel({wildCatData, hookAnimState}){
                         transform: "skew(-20deg)"
                     }}
                         >
-                        {wildCatData.name} HP: {wildCatData.start_health}
+                        {wildCatData.cat_name} HP: {wildCatData.start_health} {wildCatData.sex == "male" ? <GameIcon src="male"/> : <GameIcon src="female"/>}
                     </Typography>
                     <Slider
                     defaultValue={(wildCatData.health/wildCatData.maxHealth) * 100}
@@ -194,56 +242,56 @@ function ShrubBackground(){
     );
 }
 
-    /**
-     * Renders the background of the CatchignCat.js
-     * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
-     */
-    const chooseGradient = () =>{
+/**
+ * Renders the background of the CatchignCat.js
+ * @returns background depending on the time during the 24 hour period, i.e day, night, dawn and dusk.
+ */
+const chooseGradient = () =>{
+    
+    const dayTimeGradient ={
+        background: "rgb(66,75,28)",
+        background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
         
-        const dayTimeGradient ={
-            background: "rgb(66,75,28)",
-            background: "linear-gradient(0deg, rgba(66,75,28,1) 0%, rgba(125,214,55,1) 53%, rgba(131,223,242,1) 63%, rgba(45,217,251,1) 100%)"  
-            
-        }
-        const nightTimeGradient ={
-            background: "rgb(16,43,19)",
-            background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
-        }
-        const duskGradient = {
-            background: "rgb(8,29,10)",
-            background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
-        }
-        const dawnGradient = {
-            background: "rgb(19,48,16)",
-            background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
-        }
-        var gradient = dayTimeGradient;
-        /**
-         * checks the current date
-         */
-        const d = new Date();
+    }
+    const nightTimeGradient ={
+        background: "rgb(16,43,19)",
+        background: "linear-gradient(0deg, rgba(16,43,19,1) 0%, rgba(52,149,91,1) 53%, rgba(54,64,173,1) 63%, rgba(15,100,201,1) 100%)"
+    }
+    const duskGradient = {
+        background: "rgb(8,29,10)",
+        background: "linear-gradient(0deg, rgba(8,29,10,1) 0%, rgba(15,84,44,1) 53%, rgba(168,96,48,1) 63%, rgba(34,65,94,1) 100%)"
+    }
+    const dawnGradient = {
+        background: "rgb(19,48,16)",
+        background: "linear-gradient(0deg, rgba(19,48,16,1) 0%, rgba(45,110,75,1) 53%, rgba(219,141,126,1) 63%, rgba(109,136,170,1) 100%)",
+    }
+    var gradient = dayTimeGradient;
+    /**
+     * checks the current date
+     */
+    const d = new Date();
 
-        /**
-         * checks the current time from the hour
-         */
-        let hour = d.getHours();
-        /**
-         * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
-         */
-        if (hour >= 20 || hour < 5){
-            gradient = nightTimeGradient;
-        }
-        if (hour >= 5 && hour < 6){
-            gradient = dawnGradient;
-        }
-        if (hour >= 6 && hour < 19){
-            gradient = dayTimeGradient;
-        }
-        if (hour >= 19 && hour < 20){
-            gradient = duskGradient;
-        }
-        return (gradient);
-    } 
+    /**
+     * checks the current time from the hour
+     */
+    let hour = d.getHours();
+    /**
+     * the timings set by Catpocalypse members of when day, night,dawn and dusk is defined
+     */
+    if (hour >= 20 || hour < 5){
+        gradient = nightTimeGradient;
+    }
+    if (hour >= 5 && hour < 6){
+        gradient = dawnGradient;
+    }
+    if (hour >= 6 && hour < 19){
+        gradient = dayTimeGradient;
+    }
+    if (hour >= 19 && hour < 20){
+        gradient = duskGradient;
+    }
+    return (gradient);
+} 
 
 /**
  * The main function for CatchingCat.js
@@ -254,12 +302,13 @@ export default function CatchingCat({
      catId: wildCatId = 1,
      callback=null
  }){
-     console.log(wildCatId)
      const [showCatnip, setShowCatnip] = useState(false);
      const [hookAnimState, setHookAnimState] = useState(-1)
      const [failHookAnimState, setFailHookAnimState] = useState(-1)
      const [successModal, setSuccessModal] = useState(false)
      const [wildCatData, setWildCatData] = useState(null);
+     const [catNipUses, setCatNipUses] = useState({weak: 30, apprentice: 10, journeyman: 5});
+     const [selectedCatnip, setSelectedCatnip] = useState("Weak")
      /**
       * Animation of the hook which comes down from the top of the screen after satisfying certian conditions
       */
@@ -296,21 +345,6 @@ export default function CatchingCat({
         onRest: () => {
             setFailHookAnimState(failHookAnimState+1);
         },
-      })
-
-      /**
-       * Returns animation of the cat going up to the screen when caught.
-       */
-      const catAnim = useSpring({
-        from: {
-            top: "50%",
-            
-        },
-        to: {
-            top: "0%",
-            
-        },
-        delay: 0,
       })
 
     /**
@@ -351,14 +385,30 @@ export default function CatchingCat({
     if (wildCatData == null){
         console.log("Getting data " + wildCatId)
         getWildCatData()
+        console.log(wildCatData)
         return (<LoadingScreen/>);
     }
 
     const tryCatch = () =>{
+        setShowCatnip(false);
         if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
             return;
         }
         var catchChance = 20
+        switch(selectedCatnip){
+
+        }
+        switch (selectedCatnip) {
+            case "Weak":
+                catchChance = 20
+                break;
+            case "Apprentice":
+                catchChance = 40
+                break;
+            case "Journeyman":
+                catchChance = 80
+                break
+        }
         if (getIntRandomRange(0,100) < catchChance){
             setHookAnimState(0);
         }else{
@@ -366,9 +416,22 @@ export default function CatchingCat({
         }
     }
 
+    const renderUses = () =>{
+        switch (selectedCatnip) {
+            case "Weak":
+                return catNipUses.weak;
+            case "Apprentice":
+                return catNipUses.apprentice;
+            case "Journeyman":
+                return catNipUses.journeyman;
+            default:
+                break;
+        }
+    }
     /**
      * Returns a modal window once the cat has been successfully caught, a sliding window for the Catnips, radio buttons for catching. 
      */
+     console.log(`current catnip: ${showCatnip}`);
      return (
         <div style={{
              ...chooseGradient(), 
@@ -392,17 +455,19 @@ export default function CatchingCat({
                 <Cat wildCatData={wildCatData} hookAnimState={hookAnimState}/>
                 <SlideHorizontalWindow
                 open={showCatnip}
-                callback={() => setShowCatnip(false)}
+                callback={() => {
+                    setShowCatnip(false);
+                }}
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Weak" catNipUses={catNipUses}  setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Apprentice" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip/>
+                            <Catnip type="Journeyman" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                     </Grid> 
                 </SlideHorizontalWindow>
@@ -440,9 +505,24 @@ export default function CatchingCat({
                         background: "rgba(255, 255, 255, 0.5)" 
                     }}
                     fullWidth={true}
-                    onClick={() => setShowCatnip(true)}
+                    onClick={() => {
+                        setShowCatnip(true);
+                        //console.log(`Setting catnip on Click: ${showCatnip}`);
+                    }}
                     >
-                        <img src={MissingCat} style={{padding: "3px"}}width={40}/>
+                        <Button
+                        variant="contained"
+                        disabled
+                        style={{
+                            position: "absolute",
+                            bottom: "0px",
+                            backgroundColor: "#000",
+                            borderRadius: 50,
+                            color: "#FFF"
+                        }}
+                        >x{renderUses()}
+                        </Button>
+                        <img src={getCatnipImg(selectedCatnip)} style={{padding: "3px"}}width={40}/>
                         
                     </IconButton>
                     
@@ -463,7 +543,28 @@ export default function CatchingCat({
                             background: "rgba(255, 255, 255, 0.5)" 
                         }}
                         fullWidth={true}
-                        onClick={() => tryCatch()}
+                        onClick={() => {
+                            var currentUse = 0
+                            switch (selectedCatnip) {
+                                case "Weak":
+                                    currentUse = catNipUses.weak;
+                                case "Apprentice":
+                                    currentUse =catNipUses.apprentice;
+                                case "Journeyman":
+                                    currentUse =catNipUses.journeyman;
+                                default:
+                                    break;
+                            }
+                            if(currentUse <= 0){
+                                return;
+                            }
+                            tryCatch();
+                            setCatNipUses({
+                                weak: selectedCatnip == "Weak" ? catNipUses.weak-1 : catNipUses.weak,
+                                apprentice: selectedCatnip == "Apprentice" ? catNipUses.weak-1 : catNipUses.apprentice,
+                                journeyman: selectedCatnip == "Journeyman" ? catNipUses.journeyman-1 : catNipUses.journeyman
+                            });
+                        }}
                         >
                             <GameIcon src="fishingRod" height={100} width={100}/>
                             
