@@ -258,7 +258,12 @@ class WildcatDetail(APIView):
     def get(self, request, pk, format=None):
         wildcat = self.get_object(pk)
         serializer = CatSerializer(wildcat)
-        return Response(serializer.data)
+
+        name = wildcat.cat_id.name
+        data = serializer.data
+        data['cat_name'] = name
+
+        return Response(data)
 
 '''
 class UserLoggedIn(APIView):
