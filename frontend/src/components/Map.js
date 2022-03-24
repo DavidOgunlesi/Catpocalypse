@@ -108,8 +108,10 @@ function Map(gps){
 
 	/**
 	 * Runs refresh every second with this function
-	 * It also checks and refresh whenever the map is not null, it will find t
-	 * he distance between player position and hunt the cat position
+	 * It also checks and refresh whenever the map is not null, it will find 
+	 * the distance between player position and hunt the cat position
+	 * Invisible cats will spawn if the player is within 50 meters of the cat available
+	 * and would be able to catch it
 	 */
 	useEffect(() => {
 		if(userDetails == null){
