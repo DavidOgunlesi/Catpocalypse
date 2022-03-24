@@ -119,17 +119,19 @@ function Map(gps){
 			refeshGPSData();
 			hideBadElements();
 			if(map != null){
-				var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
-				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
-				//var pos2 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
-				//console.log(maps)
-				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-				console.log("Distance " + distance + " m")
-				setDistanceToHuntTheCat(distance);
-				if(distance < 50){
-					setHuntCatVisible(true);
-				}else{
-					setHuntCatVisible(false);
+				if(currentHuntTheCat != null){
+					var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
+					var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
+					//var pos2 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
+					//console.log(maps)
+					var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+					console.log("Distance " + distance + " m")
+					setDistanceToHuntTheCat(distance);
+					if(distance < 50){
+						setHuntCatVisible(true);
+					}else{
+						setHuntCatVisible(false);
+					}
 				}
 			}
 		}, 1000);
@@ -579,14 +581,14 @@ function Map(gps){
 	}
 
 	const showWarningModal = () => {
-		if (!shownWarning){
-			setshownWarning(true);
+		if (shownWarning == false){
 			return (
 				<ModalWindow 
 				title="Be aware of your surroundings" 
 				content="Ensure you are observant of your environment around campus as you play Catpocalypse." 
 				open={true}
 				imageSrc = {warningCat}
+				onClick={_ => setshownWarning(true)}
 				/> 
 			);
 		}
