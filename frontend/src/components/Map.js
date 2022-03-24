@@ -293,6 +293,11 @@ function Map(gps){
 		
 	}
 
+	/**
+	 * Checks the distance of an invisible cat from the user's location and calculates the proximity percentage
+	 * If it is under 50%, it will return "Cold"
+	 * Otherwise, it is greater than 50%, the text returned would be "Hot"
+	 */
 	const renderMeter = () => {
 		if(currentHuntTheCat == null){
 			return (null);
@@ -580,6 +585,10 @@ function Map(gps){
 		}
 	}
 
+	/**
+	 * 
+	 * @returns A warning modal window for users to be aware of their surroundings to avoid any injuries
+	 */
 	const showWarningModal = () => {
 		if (!shownWarning){
 			setshownWarning(true);
