@@ -98,6 +98,13 @@ export default function CatdexProfile({cat}){
             <Grid item xs={2} align="center">
                 <img src={setGender()}/>
             </Grid>
+            <Box width="100%"/>
+            <Grid item xs={12}>
+                <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Level: {cat.level}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Rarity: {cat.rarity}</Typography>
+            </Grid>
         </Grid>
         </div>
     );    
