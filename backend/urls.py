@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import GetOwnedCats, RegisterAPIView, CatchingCats, GetAllCats, WildcatDetail, StartMatchmaking
-from .views import LoginAPIView, getFiveCatDex, EndMatchmaking, GetMatch, LevelUp
+from .views import LoginAPIView, getAllCatDex, EndMatchmaking, GetMatch, LevelUp
 from .views import IsLoggedInAPIView
 from .views import VerifyEmail
 from .views import GetCats
@@ -31,7 +31,7 @@ urlpatterns = [
     path('end-matchmaking', EndMatchmaking.as_view()),
     path('get-match', GetMatch.as_view()),
     path('level-up', LevelUp.as_view()),
-    path('get-5-catdex', getFiveCatDex.as_view()),
+    path('get-catdex', getAllCatDex.as_view()),
     
     #path('', include(router.urls)),
     #path('api_url', ExampleAPIListView.as_view()),

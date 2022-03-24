@@ -284,7 +284,7 @@ class StartMatchmaking(GenericAPIView):
 
     def get(self, request):
         username = self.request.session.get('username')
-        queryset = Matchmaking.objects.all()
+        queryset = CustomUser.objects.all()
         found = False
         for user in queryset:
             if user.username == username:
@@ -301,10 +301,13 @@ class EndMatchmaking(GenericAPIView):
     def get(self, request):
         username = self.request.session.get('username')
         queryset = Matchmaking.objects.all()
-        for user in queryset:
-            if user.username == username:
-                user.delete()
-                return response.Response({'message':"Ended Matchmaking for that user"}, status=status.HTTP_200_OK)
+        found = False
+        for match in queryset:
+            if str(match.user_id) == username:
+                found = True
+                match.delete()
+        if found:
+            return response.Response({'message':"Ended Matchmaking for that user"}, status=status.HTTP_200_OK)
         return response.Response({'message':"user does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
             
 class LevelUp(GenericAPIView):
@@ -314,14 +317,15 @@ class LevelUp(GenericAPIView):
     a function takes this flat xp number and converts it into levels
     '''
     def post(self, request):
-        xp = request.data.get('xp', None)
+        xp = request.data.get('xp')
         username = self.request.session.get('username')
         user = CustomUser.objects.filter(username=username)[0]
-        user.xp = user.xp + xp
+        user.xp = int(user.xp) + int(xp)
         user.save()
+        return response.Response({'message':"Added XP"}, status=status.HTTP_200_OK)
 
 
-class getAllCatDex(GenericAPIView):
+class getAllCatDex(GenericAPIView): #NEEDS TO BE UPDATED TO RETURN MOVES FOR THE CATS BELONGING TO THE CATDEX
     '''
     WITH MOVES
     '''
