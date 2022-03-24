@@ -25,12 +25,15 @@ import WeakCatnip from "/static/images/catchingCats/catnip/weak.png";
 import ApprenticeCatnip from "/static/images/catchingCats/catnip/strong.png";
 import JourneymanCatnip from "/static/images/catchingCats/catnip/journeyman.png";
 /**
-     * Variable which returns a specific cat from the map to continue the process of catching.
-     */
+* Variable which returns a specific cat from the map to continue the process of catching.
+*/
 function loadCatImageFromId(id){
     return `/static/images/cats/${id}.png`
 } 
-
+/**
+ * Animated function which returns effects on the background of the page
+ * @returns falling leaves on the display screen for catching cats
+ */
 function FallingLeaves(){
     return (
         <div class="container">
@@ -68,6 +71,10 @@ function FallingLeaves(){
     );
 }
 
+/**
+ * 
+ * @returns catnip image depending on the type of Catnip present - either weak, apprentice or journeyman
+ */
 function getCatnipImg(type){
     switch (type) {
         case "Weak":
@@ -132,6 +139,10 @@ function Catnip({
     );
 }
 
+/**
+ * 
+ * @returns the cat label consisting the cat name and HP on top of the cat when the cat is displayed on the catching cats screen
+ */
 function CatLabel({wildCatData, hookAnimState}){
     return(
         <div 
@@ -174,6 +185,10 @@ function CatLabel({wildCatData, hookAnimState}){
             </div>
     );
 }
+/**
+ * 
+ * @returns Cat with a bouncing effect while catching
+ */
 function Cat({wildCatData, hookAnimState}){
     var randomBounceTime = getRandomRange(0.3,1);
     var catAnimStyling = {
@@ -194,6 +209,10 @@ function Cat({wildCatData, hookAnimState}){
     );
 }
 
+/**
+ * 
+ * @returns shurbs on the background on the left, right and center to make the display screen more aesthetic and realistic
+ */
 function ShrubBackground(){
     return (
         <div>
@@ -366,7 +385,7 @@ export default function CatchingCat({
     }
 
     /**
-     * The API call from backend
+     * The API call from backend which allows the catching of cats to occur
      */
     const collectCat = () =>{
 		const requestOptions = {
@@ -389,6 +408,10 @@ export default function CatchingCat({
         return (<LoadingScreen/>);
     }
 
+    /**
+     * 
+     * @returns Different types of Catnips gives the different probabilities of the cat being caught.
+     */
     const tryCatch = () =>{
         setShowCatnip(false);
         if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
@@ -416,6 +439,10 @@ export default function CatchingCat({
         }
     }
 
+    /**
+     * 
+     * @returns Renders use depending on the type of catnip available
+     */
     const renderUses = () =>{
         switch (selectedCatnip) {
             case "Weak":
