@@ -4,6 +4,8 @@ import {isMobile} from 'react-device-detect';
 import {Button, Grid, Typography, InputAdornment, Item, IconButton} from "@material-ui/core";
 import Background from "../static/Background";
 import MissingCat from "/static/images/cats/undefined.png";
+import SlideUpWindow from "../dynamic/SlideUpWindow";
+import CatdexEntry from "./CatdexEntry";
 
 /**
  * Main Function of Catdex.js
@@ -11,6 +13,8 @@ import MissingCat from "/static/images/cats/undefined.png";
  */
 export default function Catdex(props){
     const [catdexEntries, setCatdexEntries] = useState([]);
+    const [openCatProfile, setCatProfile] = useState(null);
+    const [catProfileId, setCatProfileId] = useState(null);
 
     /**
      * Redirects the player to a page showing each tamed cat owned of a particular cat in the catdex, 
@@ -24,17 +28,16 @@ export default function Catdex(props){
             return cat.id == id;
         });
         for (let i = 0; i < ownedCatsOfThisId.length; i++) {
-            console.log(ownedCatsOfThisId[i]);
+            //console.log(ownedCatsOfThisId[i]);
         }
         if (ownedCatsOfThisId.length > 0) {
-            //swipe up component thing
-            //swipe right component thing for each element, (use onDrag?)
+            setCatProfileId(id);
+            setCatProfile(ownedCatsOfThisId);
         } else {
-            console.log("Not discovered yet!");
+            //console.log("Not discovered yet!");
         }
     }
     
-
     /**
      * Displays the image for each cat in the Catdex, displaying the missing cat if not yet obtained.
      */
@@ -43,7 +46,7 @@ export default function Catdex(props){
         var ownedCats = [];
         try {
             //Creates a JSON object to fetch all cats in the Catdex 
-		    await fetch('/api/get-all-cats')
+            await fetch('/api/get-all-cats')
             .then(response => response.json())
             .then(data => {
                 for(var i = 0; i < data.length; i++) {
@@ -71,8 +74,8 @@ export default function Catdex(props){
             })
         } catch(e) {
             throw e;
-        }        
-        
+        }   
+
         //Displays the image for each cat in the Catdex
         var catdexEntry = [];
         for (let i = 0; i < cats.length; i++) {
@@ -115,7 +118,6 @@ export default function Catdex(props){
     function setImageHeight(id){
         var height;
         if (id == 4 || id == 24) {
-            console.log("ID: " + id)
             height = 40;
         } else {
             height = 65;
@@ -141,6 +143,16 @@ export default function Catdex(props){
         skew={-32}
         backgroundCol="#B8FCF3"
         >
+        <SlideUpWindow
+            open={openCatProfile != null}
+            callback={() => {
+                setCatProfile(null); 
+                setCatProfileId(null);
+            }}
+            blur={false}
+            content={<CatdexEntry id = {catProfileId} ownedCats={openCatProfile}/>}
+            fillBox = {true}
+        />
         <div>
         <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">
             {catdexEntries}
