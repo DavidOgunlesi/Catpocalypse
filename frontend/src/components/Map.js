@@ -113,7 +113,7 @@ function Map(gps){
 			refeshGPSData();
 			hideBadElements();
 			if(map != null){
-				var pos1 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
+				var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
 				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
 				//console.log(maps)
 				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
@@ -258,6 +258,19 @@ function Map(gps){
 		
 	}
 
+	const renderMeter = () => {
+		if(currentCatch == null){
+			return (null);
+		}else{
+			return(
+				<div 
+				className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": "50%"}}>
+				Hot
+				</div>
+			);
+		}
+	}
+
 	/**
 	 * 
 	 * @returns Creates a button in the map page which redirects the user to further options 
@@ -277,10 +290,7 @@ function Map(gps){
 				y="100px"
 				anchor="top right"
 				>
-					<div 
-					className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": "50%"}}>
-					Hot
-					</div>
+					{renderMeter()}
 				</div>
 				<div  x="55%" y="50%" sortingLayer={1000}>
 					<img src={PlayerMarker} width={50} style={{
