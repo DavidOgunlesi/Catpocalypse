@@ -36,7 +36,7 @@ import LoadingScreen from "./static/LoadingScreen";
  */
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
-const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
+const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta&libraries=geometry";
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
 var map, maps = null;
@@ -103,6 +103,13 @@ function Map(gps){
 		var timerID = setInterval(() =>  {
 			refeshGPSData();
 			hideBadElements();
+			if(map != null){
+				var pos1 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
+				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
+				console.log(maps)
+				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+				console.log("Distance" + distance )
+			}
 		}, 1000);
 		var loadTimerID = setInterval(() =>  {
 			if (map != null){
