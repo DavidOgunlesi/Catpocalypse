@@ -85,6 +85,51 @@ export default function CatdexProfile({cat}){
         }
     }
 
+    /**
+     * Sets the rarity level to be displayed on the cat's profile.
+     * @return A string containing the rarity of this cat.
+     */ 
+        function setRarity() {
+        switch (cat.type) {
+            case 1:
+                return 'Normal';
+            case 2:
+                return 'Rare';
+            case 3:
+                return 'Super Rare';
+            case 4:
+                return 'Exotic';
+            case 5:
+                return 'Legendary';
+            case 6:
+                return 'Cat God';
+            default:
+                return 'Undefined'
+        }
+    }
+
+    /**
+     * Sets the type to be displayed on the cat's profile.
+     * @return A string containing the type of this cat.
+     */ 
+    function setType() {
+        switch (cat.type) {
+            case 0:
+                return 'Rock';
+            case 1:
+                return 'Paper';
+            case 2:
+                return 'Fire';
+            case 3:
+                return 'Water';
+            case 4:
+                return 'Sharp';
+            default:
+                return 'Undefined'
+        }
+    }
+
+
     return (
         <div  style = {{opacity:1}}>
         <Grid container spacing={2} style={{padding:20}} justifyContent="center" alignItems="center">
@@ -103,7 +148,10 @@ export default function CatdexProfile({cat}){
                 <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Level: {cat.level}</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Rarity: {cat.rarity}</Typography>
+                <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Rarity: {setRarity()}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography style={{color:'black', padding:20}} variant='h4' component='h4'>Type: {setType()}</Typography>
             </Grid>
         </Grid>
         </div>
