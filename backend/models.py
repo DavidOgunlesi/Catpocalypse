@@ -77,9 +77,6 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-
-
-
 # Custom Django user model
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
@@ -95,6 +92,7 @@ class CustomUser(AbstractBaseUser):
     is_available = models.BooleanField(default=False)
     # additional fields
     is_verified = models.BooleanField(default=False)
+    xp = models.IntegerField(default=0)
 
     # set to what you want user to log in with
     USERNAME_FIELD = 'email'
@@ -125,12 +123,37 @@ class ExampleModel(models.Model):
     votes_to_skip = models.IntegerField(null=False, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+'''
+cat can have a set list of moves
+need a model for every unique moves
+and give cats 4 of these
+moves have
+    - damage type
+    - move name
+    - power (if +ve is attack, if -vs is defense)
+    - moves should be added to cats
+'''
+
+class Moves(models.Model):
+    damage_type = models.IntegerField(choices = TYPE_CHOICES, null=False) 
+    move_name = models.CharField(max_length=20, null=False, unique=True)
+    power = models.IntegerField(null=False, default=1)
+
 class Cats(models.Model):
     # define fields for the Cats table in the database
     cat_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20, null=False, unique=True)
     type = models.IntegerField(choices = TYPE_CHOICES, null=False)   
-    rarity = models.IntegerField(choices = RARITY_CHOICES, null=False) 
+    rarity = models.IntegerField(choices = RARITY_CHOICES, null=False)
+    m1 = models.ForeignKey(Moves, null=False, related_name="move1", on_delete=models.CASCADE)
+    m2 = models.ForeignKey(Moves, null=False, related_name="move2", on_delete=models.CASCADE)
+    m3 = models.ForeignKey(Moves, null=False, related_name="move3", on_delete=models.CASCADE)
+    m4 = models.ForeignKey(Moves, null=False, related_name="move4", on_delete=models.CASCADE)
+
+
+class Matchmaking(models.Model):
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=False)
 
 
 class Wildcat(models.Model):

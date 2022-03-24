@@ -14,7 +14,7 @@ from rest_framework.decorators import APIView
 
 from . import functions
 # Import Models here (if necessary)
-from .models import Catdex, CustomUser, Wildcat, Cats
+from .models import Catdex, CustomUser, Matchmaking, Wildcat, Cats
 # Import Serializers here
 from .serializers import CatIDSerializer, CatSerializer, CatdexSerializer, LoginSerializer, RegisterSerializer
 from .utils import Util
@@ -25,6 +25,13 @@ from .utils import Util
     #serializer_class = CustomerUserSerializer
 
 
+
+'''
+WHEN THE CAT IS SUCCESSFULLY CAUGHT 
+LEVEL UP THE PLAYER 
+RETURN PLAYERS CURRENT LEVEL AND XP GAIN
+THERE IS XP WITHIN A LEVEL
+'''
 class CatchingCats(APIView):
 
     def post(self, request):
@@ -264,6 +271,87 @@ class WildcatDetail(APIView):
         data['cat_name'] = name
 
         return Response(data)
+
+
+'''
+cat can have a set list of moves
+need a model for every unique moves
+and give cats 4 of these
+moves have
+    - damage type
+    - move name
+    - power (if +ve is attack, if -vs is defense)
+    - moves should be added to cats
+'''
+
+
+class StartMatchmaking(GenericAPIView):
+    # If a player is not in the matchmaking table, then it adds them to it
+
+    def get(self, request):
+        username = self.request.session.get('username')
+        queryset = Matchmaking.objects.all()
+        found = False
+        for user in queryset:
+            if user.username == username:
+                found = True
+        if found:
+            Matchmaking.objects.create(user_id = user)
+            return response.Response({'message':"Started Matchmaking for that user"}, status=status.HTTP_200_OK)
+        return response.Response({'message':"User does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EndMatchmaking(GenericAPIView):
+     # If a player is in the mathmaking table, then it removes them from it
+
+    def get(self, request):
+        username = self.request.session.get('username')
+        queryset = Matchmaking.objects.all()
+        for user in queryset:
+            if user.username == username:
+                user.delete()
+                return response.Response({'message':"Ended Matchmaking for that user"}, status=status.HTTP_200_OK)
+        return response.Response({'message':"user does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
+            
+class LevelUp(GenericAPIView):
+    '''
+    pass in an amount of xp and depending on this amount, will add this xp to the players xp, adn calculate a level based on this
+    xp starts at 0, this be added 
+    a function takes this flat xp number and converts it into levels
+    '''
+    def post(self, request):
+        xp = request.data.get('xp', None)
+        username = self.request.session.get('username')
+        user = CustomUser.objects.filter(username=username)[0]
+        user.xp = user.xp + xp
+        user.save()
+
+
+class getAllCatDex(GenericAPIView):
+    '''
+    WITH MOVES
+    '''
+    def get(self, request):
+        username = self.request.session.get('username')
+        user = CustomUser.objects.filter(username=username)[0]
+        queryset = Catdex.objects.filter(user_id=user.user_id)
+
+        return Response(queryset)
+
+
+class GetMatch(GenericAPIView): #THIS NEEDS DOING!!!!!!!!!!!!
+    '''
+    pair the player in the current session WITH another player FROM the matchmaking table
+    IF we find this player;
+        return the other players IP
+    ELSE
+        return some BAD THING
+        return response.Response({'message':""}, status=status.HTTP_400_BAD_REQUEST)
+
+    it also needs to return SOMETHING ELSE - A RANDOM CAT FROM THE PLAYERS INVENTORY
+    '''
+    pass
+
 
 '''
 class UserLoggedIn(APIView):

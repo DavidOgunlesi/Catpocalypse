@@ -19,6 +19,8 @@ lon_RANGE = 0.00367
 
 def get_free_players():
     qs = CustomUser.objects.filter(is_available = True)
+    print("here")
+    print(len(qs))
 
     if len(qs) >= 2:
         x = random.randint(0,len(qs)-1)
@@ -31,20 +33,20 @@ def get_free_players():
         player2.is_available = False
         player2.save()
 
-    # get a random cat from the Cats table
-    rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
-    # get a random latitude and longitude within the approximate campus range
-    rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
-    rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
-    # create a wildcat instance from this
 
-    if random.randint(0,1) == 0:
-            tmp = 'Male'
-    else:
-        tmp = 'Female'
-    
-    Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2)
-    print("YAY HUNTABLE WILDCAT CREATED")
+        # get a random cat from the Cats table
+        rand_cat = Cats.objects.filter(rarity__gte=4).order_by('?').first() 
+        # get a random latitude and longitude within the approximate campus range
+        rand_lat = random.uniform(CNTR_lat-lat_RANGE,CNTR_lat+lat_RANGE)
+        rand_lon = random.uniform(CNTR_lon-lon_RANGE,CNTR_lon+lon_RANGE)
+        # create a wildcat instance from this
+
+        if random.randint(0,1) == 0:
+                tmp = 'Male'
+        else:
+            tmp = 'Female'
+        
+        Wildcat.objects.create(latitude=rand_lat, longitude=rand_lon , is_huntable=True, cat_id = rand_cat, sex=tmp, player_1=player1, player_2=player2)
 
 
 
@@ -95,7 +97,7 @@ def cat_generation(num):
 # true or false depending on whether cat generation was needed. if true, then i can send the updated cats back to frontend
 # HI
     
-def add_cats(apps, schema_editor):
+def load_data(apps, schema_editor):
     '''
     TYPE_CHOICES = (
     (0, 'Rock'),
@@ -114,46 +116,76 @@ def add_cats(apps, schema_editor):
         (6, 'Cat God')
     )
     '''
+
+    Moves = apps.get_model('backend', 'Moves')
+    m1 = Moves.objects.create(move_name = 'Golem Volley', damage_type = 0, power = 43) #1
+    m2 = Moves.objects.create(move_name = 'Oak Crush', damage_type = 0, power = 42) #2
+    m3 = Moves.objects.create(move_name = 'Skeletal Claw Jolt', damage_type = 4, power = 54) #3
+    m4 = Moves.objects.create(move_name = 'Diamond Whip', damage_type = 0, power = 76) #4
+    m5 = Moves.objects.create(move_name = 'Venom Fists', damage_type = 3, power = 65) #5
+    m6 = Moves.objects.create(move_name = 'Echo', damage_type = 1, power = 32) #6
+    m7 = Moves.objects.create(move_name = 'Cloud Slash', damage_type = 3, power = 48) #7
+    m8=Moves.objects.create(move_name = 'Shadow Charge', damage_type = 1, power = 78) #8
+    m9=Moves.objects.create(move_name = 'Droplet Dive', damage_type = 3, power = 69) #9
+    m10=Moves.objects.create(move_name = 'Puny Stealth Shot', damage_type = 4, power = 21) #10
+    m11=Moves.objects.create(move_name = 'Quick Puppet', damage_type = 1, power = 27) #11
+    m12=Moves.objects.create(move_name = 'Fading Fist', damage_type = 3, power = 47) #12
+    m13=Moves.objects.create(move_name = 'Body Bolt', damage_type = 2, power = 55) #13
+    m14=Moves.objects.create(move_name = 'Dual Crescent Fist', damage_type = 2, power = 73) #14
+    m15=Moves.objects.create(move_name = 'Stampede', damage_type = 1, power = 68) #15
+    m16=Moves.objects.create(move_name = 'Swarm', damage_type = 4, power = 60) #16
+    m17=Moves.objects.create(move_name = 'Evaporate', damage_type = 2, power = 80) #17
+    m18=Moves.objects.create(move_name = 'Kill', damage_type = 4, power = 82) #18
+    m19=Moves.objects.create(move_name = 'Terminate', damage_type = 4, power = 93) #19
+
+    m20=Moves.objects.create(move_name = 'Repair', damage_type = 0, power = -30) #20
+    m21=Moves.objects.create(move_name = 'Curse', damage_type = 2, power = -24) #21
+    m22=Moves.objects.create(move_name = 'Siphon Funds', damage_type = 4, power = -10) #22
+    m23=Moves.objects.create(move_name = 'Matrix Dodge', damage_type = 1, power = -40) #23
+    m24=Moves.objects.create(move_name = 'Guarding Pound', damage_type = 3, power = -37) #24
+
+
+
     Cats = apps.get_model('backend', 'Cats')
-    Cats.objects.create(name="Normal Cat", type=1, rarity=1) #1
-    Cats.objects.create(name="Rock Cat", type=0, rarity=1) #2
-    Cats.objects.create(name="Flame Cat", type=2, rarity=1) #3
-    Cats.objects.create(name="Aqua Cat", type=3, rarity=1) #4
+    Cats.objects.create(name="Normal Cat", type=1, rarity=1, m1=m1, m2=m2, m3=m24, m4=m10) #1
+    Cats.objects.create(name="Rock Cat", type=0, rarity=1, m1=m1, m2=m3, m3=m4, m4=m20) #2
+    Cats.objects.create(name="Flame Cat", type=2, rarity=1, m1=m8, m2=m17, m3=m24, m4=m13) #3
+    Cats.objects.create(name="Aqua Cat", type=3, rarity=1, m1=m2, m2=m9, m3=m7, m4=m24) #4
 
-    Cats.objects.create(name="Injured Cat", type=1, rarity=2) #5
-    Cats.objects.create(name="Lanky Cat", type=2, rarity=2) #6
-    Cats.objects.create(name="Buff Cat", type=0, rarity=2) #7
+    Cats.objects.create(name="Injured Cat", type=1, rarity=2, m1=m11, m2=m13, m3=m22, m4=m6) #5
+    Cats.objects.create(name="Lanky Cat", type=2, rarity=2, m1=m6, m2=m7, m3=m7, m4=m24) #6
+    Cats.objects.create(name="Buff Cat", type=0, rarity=2, m1=m4, m2=m8, m3=m13, m4=m24) #7
 
-    Cats.objects.create(name="Business Cat", type=1, rarity=3) #8
-    Cats.objects.create(name="Boxer Cat", type=0, rarity=3) #9
-    Cats.objects.create(name="Epic Cat", type=3, rarity=3) #10
-    Cats.objects.create(name="Ninja Cat", type=4, rarity=3) #11
+    Cats.objects.create(name="Business Cat", type=1, rarity=3, m1=m16, m2=m15, m3=m14, m4=m22) #8
+    Cats.objects.create(name="Boxer Cat", type=0, rarity=3, m1=m13, m2=m12, m3=m14, m4=m23) #9
+    Cats.objects.create(name="Epic Cat", type=3, rarity=3, m1=m3, m2=m18, m3=m7, m4=m21) #10
+    Cats.objects.create(name="Ninja Cat", type=4, rarity=3, m1=m6, m2=m11, m3=m12, m4=m21) #11
 
-    Cats.objects.create(name="Void Cat", type=2, rarity=4) #12
-    Cats.objects.create(name="Mini Cat", type=4, rarity=4) #13
-    Cats.objects.create(name="Death Cat", type=2, rarity=4) #14
+    Cats.objects.create(name="Void Cat", type=2, rarity=4, m1=m5, m2=m15, m3=m10, m4=m20) #12
+    Cats.objects.create(name="Mini Cat", type=4, rarity=4, m1=m16, m2=m11, m3=m10, m4=m21) #13
+    Cats.objects.create(name="Death Cat", type=2, rarity=4, m1=m18, m2=m17, m3=m3, m4=m21) #14
 
-    Cats.objects.create(name="Neo Cat", type=3, rarity=5) #15
-    Cats.objects.create(name="Terminator Cat", type=4, rarity=5) #16
-    Cats.objects.create(name="Bat Cat", type=0, rarity=5) #17
+    Cats.objects.create(name="Neo Cat", type=3, rarity=5, m1=m23, m2=m3, m3=m13, m4=m1) #15
+    Cats.objects.create(name="Terminator Cat", type=4, rarity=5, m1=m20, m2=m19, m3=m18, m4=m13) #16
+    Cats.objects.create(name="Bat Cat", type=0, rarity=5, m1=m24, m2=m16, m3=m10, m4=m7) #17
 
-    Cats.objects.create(name="God Cat", type=2, rarity=6) #18
-    Cats.objects.create(name="FZ01 Cat", type=1, rarity=6) #19
-    Cats.objects.create(name="Genesis Cat", type=3, rarity=6) #20
-    Cats.objects.create(name="Messiah Cat", type=4, rarity=6) #21
+    Cats.objects.create(name="God Cat", type=2, rarity=6, m1=m23, m2=m18, m3=m4, m4=m5) #18
+    Cats.objects.create(name="FZ01 Cat", type=1, rarity=6, m1=m23, m2=m18, m3=m13, m4=m7) #19
+    Cats.objects.create(name="Genesis Cat", type=3, rarity=6, m1=m23, m2=m18, m3=m17, m4=m8) #20
+    Cats.objects.create(name="Messiah Cat", type=4, rarity=6, m1=m23, m2=m18, m3=m5, m4=m6) #21
 
-    Cats.objects.create(name="Box Cat", type=1, rarity=1) #22
-    Cats.objects.create(name="Grizzly Cat", type=4, rarity=2) #23
-    Cats.objects.create(name="Spider Cat", type=0, rarity=2) #24
-    Cats.objects.create(name="Top Cat", type=4, rarity=3) #25
-    Cats.objects.create(name="Bull Cat", type=0, rarity=3) #26
-    Cats.objects.create(name="Catoplane", type=3, rarity=4) #27
-    Cats.objects.create(name="LionFlower", type=2, rarity=4) #28
+    Cats.objects.create(name="Box Cat", type=1, rarity=1, m1=m4, m2=m7, m3=m13, m4=m21) #22
+    Cats.objects.create(name="Grizzly Cat", type=4, rarity=2, m1=m2, m2=m9, m3=m13, m4=m12) #23
+    Cats.objects.create(name="Spider Cat", type=0, rarity=2, m1=m8, m2=m13, m3=m5, m4=m23) #24
+    Cats.objects.create(name="Top Cat", type=4, rarity=3, m1=m12, m2=m5, m3=m4, m4=m22) #25
+    Cats.objects.create(name="Bull Cat", type=0, rarity=3, m1=m14, m2=m3, m3=m6, m4=m24) #26
+    Cats.objects.create(name="Catoplane", type=3, rarity=4, m1=m17, m2=m13, m3=m12, m4=m24) #27
+    Cats.objects.create(name="LionFlower", type=2, rarity=4, m1=m17, m2=m12, m3=m18, m4=m20) #28
     
-    Cats.objects.create(name="Double Headed Cat", type=1, rarity=4) #29
-    Cats.objects.create(name="Credit Card Cat", type=1, rarity=4) #30
-    Cats.objects.create(name="Bagged Cat", type=1, rarity=1) #31
-    Cats.objects.create(name="Toaster Cat", type=0, rarity=3) #32
+    Cats.objects.create(name="Double Headed Cat", type=1, rarity=4, m1=m13, m2=m14, m3=m16, m4=m20) #29
+    Cats.objects.create(name="Credit Card Cat", type=1, rarity=4, m1=m3, m2=m22, m3=m8, m4=m9) #30
+    Cats.objects.create(name="Bagged Cat", type=1, rarity=1, m1=m4, m2=m8, m3=m12, m4=m21) #31
+    Cats.objects.create(name="Toaster Cat", type=0, rarity=3, m1=m5, m2=m7, m3=m11, m4=m23) #32
 
 
 
