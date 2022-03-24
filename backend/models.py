@@ -158,7 +158,7 @@ class Catdex(models.Model):
     catdex_id = models.AutoField(primary_key=True)
     cat_id = models.ForeignKey(Cats,on_delete=models.CASCADE, null=False)
     # user_id relies on the above import of django.conf.settings
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=False)
     # this could be changed to a DecimalField which is preferable at a later stage
     level = models.FloatField(null=False, default=1)
     health = models.IntegerField(null=False)
