@@ -69,21 +69,39 @@ function FallingLeaves(){
     );
 }
 
+function getCatnipImg(type){
+    switch (type) {
+        case "Weak":
+            return WeakCatnip;
+        case "Strong":
+            return StrongCatnip;
+        case "Journeyman":
+            return JourneymanCatnip;
+    }
+}
+
 /**
  * Function which returns the catnips when rendered
  * @returns images of the catnips which need to be used
  */
-function Catnip({type}){
-    var img = MissingCat
+function Catnip({
+    type,
+    catNipUses = {weak: 30, strong: 10, journeyman: 5},
+    setSelectedCatnipCallback,
+    setCatNipUsesCallback,
+    setShowCatnipCallback
+}){
+    var img = getCatnipImg(type);
+    var catNipUsesNum = catNipUses.weak
     switch (type) {
         case "Weak":
-            img = WeakCatnip;
+            catNipUsesNum = catNipUses.weak
             break;
         case "Strong":
-            img = StrongCatnip;
+            catNipUsesNum = catNipUses.strong
             break;
         case "Journeyman":
-            img = JourneymanCatnip
+            catNipUsesNum = catNipUses.journeyman
             break;
         default:
             break;
@@ -95,15 +113,27 @@ function Catnip({type}){
             width: "100px",
             borderRadius: 500,
             }}
+            onClick={_ => {
+                setSelectedCatnipCallback(type);
+                setCatNipUsesCallback({
+                    weak: type == "weak" ? catNipUses.weak-1 : catNipUses.weak,
+                    strong: type == "strong" ? catNipUses.weak-1 : catNipUses.strong,
+                    journeyman: type == "journeyman" ? catNipUses.journeyman-1 : catNipUses.journeyman
+                });
+                setShowCatnipCallback(false);
+            }}
             >
-            <Typography 
-            variant="h6" component="h6"
+            <Button
+            variant="contained"
+            disabled
             style={{
+                position: "absolute",
+                bottom: "0px",
                 backgroundColor: "#000",
                 borderRadius: 50,
                 color: "#FFF"
             }}
-            >{type}</Typography>
+            >{type} x{catNipUsesNum}</Button>
             <img src={img} style={{padding: "13px"}} height="100%"/>
         </button>
     );
@@ -279,12 +309,13 @@ export default function CatchingCat({
      catId: wildCatId = 1,
      callback=null
  }){
-     console.log(wildCatId)
      const [showCatnip, setShowCatnip] = useState(false);
      const [hookAnimState, setHookAnimState] = useState(-1)
      const [failHookAnimState, setFailHookAnimState] = useState(-1)
      const [successModal, setSuccessModal] = useState(false)
      const [wildCatData, setWildCatData] = useState(null);
+     const [catNipUses, setCatNipUses] = useState({weak: 30, strong: 10, journeyman: 5});
+     const [selectedCatnip, setSelectedCatnip] = useState("Weak")
      /**
       * Animation of the hook which comes down from the top of the screen after satisfying certian conditions
       */
@@ -361,10 +392,12 @@ export default function CatchingCat({
     if (wildCatData == null){
         console.log("Getting data " + wildCatId)
         getWildCatData()
+        console.log(wildCatData)
         return (<LoadingScreen/>);
     }
 
     const tryCatch = () =>{
+        setShowCatnip(false);
         if (hookAnimState == 0 || failHookAnimState == 0 || hookAnimState == 1 || failHookAnimState == 1){
             return;
         }
@@ -379,6 +412,7 @@ export default function CatchingCat({
     /**
      * Returns a modal window once the cat has been successfully caught, a sliding window for the Catnips, radio buttons for catching. 
      */
+     console.log(`current catnip: ${showCatnip}`);
      return (
         <div style={{
              ...chooseGradient(), 
@@ -402,17 +436,19 @@ export default function CatchingCat({
                 <Cat wildCatData={wildCatData} hookAnimState={hookAnimState}/>
                 <SlideHorizontalWindow
                 open={showCatnip}
-                callback={() => setShowCatnip(false)}
+                callback={() => {
+                    setShowCatnip(false);
+                }}
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip type="Weak"/>
+                            <Catnip type="Weak" catNipUses={catNipUses}  setSelectedCatnipCallback = {setSelectedCatnip} setCatNipUsesCallback={setCatNipUses} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip type="Strong"/>
+                            <Catnip type="Strong" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setCatNipUsesCallback={setCatNipUses} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                         <Grid item xs={4} alignItems="center">
-                            <Catnip type="Journeyman"/>
+                            <Catnip type="Journeyman" catNipUses={catNipUses} setSelectedCatnipCallback = {setSelectedCatnip} setCatNipUsesCallback={setCatNipUses} setShowCatnipCallback={setShowCatnip}/>
                         </Grid>
                     </Grid> 
                 </SlideHorizontalWindow>
@@ -450,9 +486,12 @@ export default function CatchingCat({
                         background: "rgba(255, 255, 255, 0.5)" 
                     }}
                     fullWidth={true}
-                    onClick={() => setShowCatnip(true)}
+                    onClick={() => {
+                        setShowCatnip(true);
+                        //console.log(`Setting catnip on Click: ${showCatnip}`);
+                    }}
                     >
-                        <img src={MissingCat} style={{padding: "3px"}}width={40}/>
+                        <img src={getCatnipImg(selectedCatnip)} style={{padding: "3px"}}width={40}/>
                         
                     </IconButton>
                     
