@@ -5,7 +5,11 @@
 
 import React from "react";
 
-
+/**
+ * 
+ * Main function of the Background.js file
+ * @returns background with the following colours, properties as mentioned.
+ */
 export default function Background({ 
     gradient = false,
     primaryCol = '#000', 
@@ -16,6 +20,9 @@ export default function Background({
     outlineThickness = 0,
     children
 }) {
+    /**
+     * Variables of the attributes present
+     */
     var colStyle;
     var defStyle = {
         transform: `skew(${skew}deg)`,
@@ -24,6 +31,9 @@ export default function Background({
     var childStyle = {
         transform: `skew(${-skew}deg)`
     };
+    /**
+     * There are different backgrounds depending on the type of gradient present
+     */
     if (gradient){
         colStyle = {
             backgroundImage: `linear-gradient(45deg, ${primaryCol},  ${secondaryCol})`
