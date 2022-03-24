@@ -283,7 +283,8 @@ moves have
 class StartMatchmaking(GenericAPIView):
     # If a player is not in the matchmaking table, then it adds them to it
 
-    def get(self, request):
+    def post(self, request):
+        id = request.data.get('id')
         username = self.request.session.get('username')
         queryset = CustomUser.objects.all()
         found = False
@@ -291,7 +292,7 @@ class StartMatchmaking(GenericAPIView):
             if user.username == username:
                 found = True
         if found:
-            Matchmaking.objects.create(user_id = user)
+            Matchmaking.objects.create(user_id = user, id = id)
             return response.Response({'message':"Started Matchmaking for that user"}, status=status.HTTP_200_OK)
         return response.Response({'message':"User does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -352,10 +353,9 @@ class GetMatch(GenericAPIView): #THIS NEEDS DOING!!!!!!!!!!!!
     def get(self, request):
         username = self.request.session.get('username')
         queryset = Matchmaking.objects.all()
-        for match in queryset:
-            client_ip = request.META['REMOTE_ADDR']
+        for match in queryset:            
             if match.user_id.username != username:
-                return response.Response({'message':"FOUND MATCH", 'ip':client_ip}, status=status.HTTP_200_OK)
+                return response.Response({'message':"FOUND MATCH", 'socket_id':match.socket_id}, status=status.HTTP_200_OK)
         return response.Response({'message':"User does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
 
         

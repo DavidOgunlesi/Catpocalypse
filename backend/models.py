@@ -153,6 +153,7 @@ class Cats(models.Model):
 
 class Matchmaking(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, null=False)
+    socket_id = models.IntegerField(null=False, default=1)
 
 
 class Wildcat(models.Model):
