@@ -14,7 +14,6 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 import GoogleLogin from 'react-google-login';
-import CatdexEntry from "./CatdexEntry";
 import Catdex from "./subpages/Catdex";
 
 
