@@ -213,7 +213,7 @@ class LogoutAPIView(GenericAPIView):
             user = CustomUser.objects.filter(username=username)[0]
             user.is_available = False
             user.save()
-            # if current user does have ana active session, delete current session data and session cookie
+            # if current user does have an active session, delete current session data and session cookie
             self.request.session.flush()
             return response.Response({'message':"Successfully logged out"}, status=status.HTTP_200_OK)
 
