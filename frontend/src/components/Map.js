@@ -36,7 +36,13 @@ import LoadingScreen from "./static/LoadingScreen";
  */
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
+/**
+ * The key from the Google Maps API and also one of their libraries which includes the "&libraries=geometry" URL parameter.
+ */
 const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta&libraries=geometry";
+/**
+ * The default location which has been to the center of the University of Exeter
+ */
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
 var map, maps = null;
@@ -98,6 +104,8 @@ function Map(gps){
 
 	/**
 	 * Runs refresh every second with this function
+	 * It also checks and refresh whenever the map is not null, it will find t
+	 * he distance between player position and hunt the cat position
 	 */
 	useEffect(() => {
 		var timerID = setInterval(() =>  {
@@ -106,9 +114,9 @@ function Map(gps){
 			if(map != null){
 				var pos1 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
 				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
-				console.log(maps)
+				//console.log(maps)
 				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
-				console.log("Distance" + distance )
+				//console.log("Distance" + distance )
 			}
 		}, 1000);
 		var loadTimerID = setInterval(() =>  {
