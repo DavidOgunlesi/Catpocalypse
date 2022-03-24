@@ -63,6 +63,9 @@ export default function RegisterPage(){
         console.log(password); // Logs the password of the user
         const fullEmail = `${emailStart}${emailEnd}`;
         console.log(fullEmail); // Logs the full email address of the user including the domain "exeter.ac.uk"
+        /**
+         * Receives an API call from the backend
+         */
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -73,7 +76,9 @@ export default function RegisterPage(){
             }),
         };
         
-        //send post request to our api!
+        /**
+         * Sends Post request to our API in the backend
+         */
         fetch('/api/register', requestOptions)
         .then((response) => {
             if (!response.ok){
@@ -87,6 +92,10 @@ export default function RegisterPage(){
         .then((data) => console.log(data)); //do stuff with json response data
     }
 
+    /**
+     * 
+     * @returns A modal window showing that a verification email has been sent to the user's email address as specified in the registration page
+     */
     function renderSuccessModal(){
         if (showRegisteredModal) {
             return(
@@ -101,7 +110,8 @@ export default function RegisterPage(){
         return null;
     }
 
-    // Only allows registeration to take place if the user is playing in their mobile and not their desktop.
+    /**
+     * Only allows registeration to take place if the user is playing in their mobile and not their desktop.
     /**
      * Returns a pop - up window asking the user to check their email for the verification link.
      */
