@@ -41,6 +41,29 @@
             case 14:
                 return 9;
                 break;
+                //
+            case 15:
+                return 12;
+                break;
+            case 16:
+                return 12;
+                break;
+            case 17:
+                return 12;
+                break;
+            case 18:
+                return 10;
+                break;
+            case 19:
+                return 12;
+                break;
+            case 20:
+                return 8;
+                break;
+            case 21:
+                return 11;
+                break;
+            //
             case 22:
                 return 10;
                 break;
