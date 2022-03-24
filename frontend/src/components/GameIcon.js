@@ -1,5 +1,5 @@
 /**
- * Loads an icon with a given name from an icon resource folder
+ * GameIcon.js is a file which loads an icon with a given name from an icon resource folder
  * Imports React and Icon from the Material-UI from the React Package
  */
 import React from "react";

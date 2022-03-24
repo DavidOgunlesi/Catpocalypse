@@ -94,6 +94,7 @@ export default function App(){
 
     /**
      * checks if the user is logged in with their mobile devices
+     * and allows the user to continue the user is using their mobile devices
      */
     if (isMobile) {
         
@@ -138,7 +139,11 @@ export default function App(){
     }
     
 }
-
+/**
+ * Variable which cannot be reassigned
+ */
 const appDiv = document.getElementById("app");
-//render app component in the app div with "name" prop
+/**
+ * render app component in the app div with "name" prop
+ */
 render(<App name="Example name!"/>,appDiv)

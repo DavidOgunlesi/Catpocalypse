@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: RegisterPage.js</title>
+    <title>JSDoc: Source: components/RegisterPage.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: RegisterPage.js</h1>
+    <h1 class="page-title">Source: components/RegisterPage.js</h1>
 
     
 
@@ -91,6 +91,9 @@ export default function RegisterPage(){
         console.log(password); // Logs the password of the user
         const fullEmail = `${emailStart}${emailEnd}`;
         console.log(fullEmail); // Logs the full email address of the user including the domain "exeter.ac.uk"
+        /**
+         * Receives an API call from the backend
+         */
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
@@ -100,7 +103,10 @@ export default function RegisterPage(){
                 email: fullEmail
             }),
         };
-        //send post request to our api!
+        
+        /**
+         * Sends Post request to our API in the backend
+         */
         fetch('/api/register', requestOptions)
         .then((response) => {
             if (!response.ok){
@@ -108,11 +114,32 @@ export default function RegisterPage(){
                 return;
             }
             setShowRegisteredModal(true);
+            console.log("SENT!");
             return response.json();
         }) //Turn response to json
         .then((data) => console.log(data)); //do stuff with json response data
     }
-    // Only allows registeration to take place if the user is playing in their mobile and not their desktop.
+
+    /**
+     * 
+     * @returns A modal window showing that a verification email has been sent to the user's email address as specified in the registration page
+     */
+    function renderSuccessModal(){
+        if (showRegisteredModal) {
+            return(
+                &lt;ModalWindow
+                title="Check your Email!"
+                content="Check your email for a verification link."
+                open= {true}
+                //openState= {showRegisteredModal}
+                />
+            );
+        }
+        return null;
+    }
+
+    /**
+     * Only allows registeration to take place if the user is playing in their mobile and not their desktop.
     /**
      * Returns a pop - up window asking the user to check their email for the verification link.
      */
@@ -126,15 +153,11 @@ export default function RegisterPage(){
             skew={-32}
             backgroundCol="#FFF59D"
             >
-                &lt;ModalWindow
-                title="Check your Email!"
-                content="Check your email for a verification link."
-                open= {showRegisteredModal}
-                />
+                {renderSuccessModal()}
                 &lt;SlideUpWindow
                 open={showPrivacyPolicy}
                 title="Privacy Policy" 
-                content={&lt;PrivacyPolicy/>}
+                textContent={&lt;PrivacyPolicy/>}
                 callback={setShowPrivacyPolicy}
                 />
                 &lt;div className="gradient">
@@ -151,9 +174,8 @@ export default function RegisterPage(){
                                         onChange={e => setUsername(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Username"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -168,9 +190,8 @@ export default function RegisterPage(){
                                         className="inputRounded"
                                         placeholder="Email"
                                         onChange={e=> setEmailStart(e.target.value)}
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -200,9 +221,8 @@ export default function RegisterPage(){
                                         onChange={e => setPassword(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Password"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -231,9 +251,8 @@ export default function RegisterPage(){
                                         onChange={e => setPasswordAgain(e.target.value)}
                                         className="inputRounded"
                                         placeholder="Re-enter Password"
-                                        variant="standard"
-                                        textalign="center"
                                         variant="outlined"
+                                        textalign="center"
                                         size="small"
                                         fullWidth={true}
                                         style={{
@@ -314,13 +333,13 @@ export default function RegisterPage(){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#appDiv">appDiv</a></li><li><a href="global.html#Cat">Cat</a></li><li><a href="global.html#CatLabel">CatLabel</a></li><li><a href="global.html#Catnip">Catnip</a></li><li><a href="global.html#chooseGradient">chooseGradient</a></li><li><a href="global.html#CompassLetter">CompassLetter</a></li><li><a href="global.html#defaultLocation">defaultLocation</a></li><li><a href="global.html#East">East</a></li><li><a href="global.html#FallingLeaves">FallingLeaves</a></li><li><a href="global.html#getCatnipImg">getCatnipImg</a></li><li><a href="global.html#getIntRandomRange">getIntRandomRange</a></li><li><a href="global.html#getRandomRange">getRandomRange</a></li><li><a href="global.html#key">key</a></li><li><a href="global.html#lib">lib</a></li><li><a href="global.html#loadCatImageFromId">loadCatImageFromId</a></li><li><a href="global.html#Map">Map</a></li><li><a href="global.html#North">North</a></li><li><a href="global.html#NorthEast">NorthEast</a></li><li><a href="global.html#NorthWest">NorthWest</a></li><li><a href="global.html#ShrubBackground">ShrubBackground</a></li><li><a href="global.html#slowPanTo">slowPanTo</a></li><li><a href="global.html#South">South</a></li><li><a href="global.html#SouthEast">SouthEast</a></li><li><a href="global.html#SouthWest">SouthWest</a></li><li><a href="global.html#style">style</a></li><li><a href="global.html#theme">theme</a></li><li><a href="global.html#userDecisionTimeout">userDecisionTimeout</a></li><li><a href="global.html#West">West</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 03 2022 05:28:42 GMT+0000 (Greenwich Mean Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Mar 24 2022 10:58:00 GMT+0000 (Greenwich Mean Time)
 </footer>
 
 <script> prettyPrint(); </script>
