@@ -14,6 +14,7 @@ import {isMobile} from 'react-device-detect';
 import DesktopWarningPage from "./DesktopWarningPage";
 import VerifyPage from "./VerifyPage";
 import GoogleLogin from 'react-google-login';
+import Catdex from "./subpages/Catdex";
 
 
 /**
@@ -21,6 +22,7 @@ import GoogleLogin from 'react-google-login';
  */
 import MainSoundtrack from '/static/media/Martin Klem - Hast Du Einen Kugelschreiber.mp3'
 import CatchingCat from "./CatchingCat";
+
 
 /**
  * Sets a fixed theme for the App
@@ -121,6 +123,7 @@ export default function App(){
                         <Route path="/verify" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/verify/:token" element={redirectIfLoggedIn(<VerifyPage/>)}/>
                         <Route path="/dev/map" element={<Map/>}/>
+                        <Route path="/dev/catdex" element={<Catdex/>}/>
                         <Route path="/dev/cat" element={<CatchingCat/>}/>
                     </Routes>
                 </Router>

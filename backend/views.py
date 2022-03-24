@@ -107,6 +107,7 @@ class GetOwnedCats(GenericAPIView):
                     'cat_id':catIns.cat_id,
                     'level':catDexIns.level, 
                     'health':catDexIns.health,
+                    'sex':catDexIns.sex,
                     'name':catIns.name,
                     'type':catIns.type,
                     'rarity':catIns.rarity})  

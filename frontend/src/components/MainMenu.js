@@ -26,7 +26,6 @@ import ChoiceModalWindow from "./dynamic/ChoiceModalWindow";
  * @returns the Main Menu of Catpocalypse when the game gets initialised.
  */
 export default function MainMenu(){
-    const clientId = "745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com";
     const [musicEnabled,setMusicEnabled] = useState(false);
     /**
      * Fixed Variables which cannot be changed or modified
@@ -37,6 +36,11 @@ export default function MainMenu(){
      * @returns {boolean} Returns true when login is required.
      */
     const requireLogin = true;
+
+    /**
+     * @returns {clientId} The ClientID which is required for the Google Login for the user to use their Google account instead of registering with Catpocalypse.
+     */
+    const clientId='745185368334-aef3mdrspfkkegcbrunmbiho20doko8d.apps.googleusercontent.com';
 
     useEffect(()=>{
         setMusicEnabled(manageModalState(isMusicPlaying()));
@@ -144,7 +148,7 @@ export default function MainMenu(){
                 </Grid>
                 
                 <GoogleLogin
-                clientId="745185368334-cduhbhmaeckcunr242v5l3sefa8i31jg.apps.googleusercontent.com"
+                clientId={clientId}
                 render={renderProps => (
                     <Grid item xs={12}>
                         <Button 
