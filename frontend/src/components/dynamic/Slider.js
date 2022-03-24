@@ -3,11 +3,10 @@
  */
 import React, {useState} from 'react';
 import BtnSlider from './BtnSlider';
-import dataSlider from './dataSlider';
 import OverlayUI from './OverlayUI';
+import CatdexProfile from '../subpages/CatdexProfile';
 
 export default function Slider({ownedCats}) {
-    console.log(ownedCats);
     const [slideIndex, setSlideIndex] = useState(1);
 
     const nextSlide = () => {
@@ -40,7 +39,7 @@ export default function Slider({ownedCats}) {
                         key={obj.id}
                         className={slideIndex === index + 1 ? "slide active-anim" : "slide"}
                     >
-                       {/*react componet here: <img src={process.env.PUBLIC_URL + `/Imgs/img${index + 1}.jpg`} />*/}
+                        <CatdexProfile cat={obj}/>
                     </div>
                 )
             })}
