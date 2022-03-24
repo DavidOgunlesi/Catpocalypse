@@ -45,6 +45,9 @@ class CatchingCats(APIView):
                     if user == wildcat.player_1 or user == wildcat.player_2:
                         catdex = Catdex.objects.create(cat_id=wildcat.cat_id, user_id=user, health=wildcat.start_health, sex=wildcat.sex)
                         wildcat.delete()
+                        ActivePlayer.objects.create(user=wildcat.player_1)
+                        ActivePlayer.objects.create(user=wildcat.player_2)
+                        functions.begin_hunt_the_cat()
                         return Response({'message':'Wildcat successfully added'}, status=status.HTTP_201_CREATED)
                     else:
                         return Response({'message':'User is not allowed to catch this cat'}, status=status.HTTP_400_BAD_REQUEST)
