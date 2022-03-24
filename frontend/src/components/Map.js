@@ -36,7 +36,13 @@ import LoadingScreen from "./static/LoadingScreen";
  */
 const lib = ["places"];
 const id = ["64f4173bca5b9f91"]
-const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta";
+/**
+ * The key from the Google Maps API and also one of their libraries which includes the "&libraries=geometry" URL parameter.
+ */
+const key = "AIzaSyDv-LEbSc-bYO2UUkBXmiJ-l846ItAKhL4&map_id=64f4173bca5b9f91&v=beta&libraries=geometry";
+/**
+ * The default location which has been to the center of the University of Exeter
+ */
 const defaultLocation = { lat: 50.736603, lng: -3.533233};
 
 var map, maps = null;
@@ -57,6 +63,10 @@ function Map(gps){
 	const [currentCatch, setCurrentCatch] = useState(null);
 	const [mapLoaded, setMapLoaded] = useState(false);
 	const [shownWarning, setshownWarning] = useState(false);
+	const [currentHuntTheCat, setCurrentHuntTheCat] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
+	const [distanceToHuntTheCat, setDistanceToHuntTheCat] = useState(null);
+	const [huntCatVisible, setHuntCatVisible] = useState(false);
 	const inputRef = React.useRef(null)
 
 	var mouseX, lastHeading = 0;
@@ -98,11 +108,30 @@ function Map(gps){
 
 	/**
 	 * Runs refresh every second with this function
+	 * It also checks and refresh whenever the map is not null, it will find t
+	 * he distance between player position and hunt the cat position
 	 */
 	useEffect(() => {
+		if(userDetails == null){
+			checkIfUserLoggedIn();
+		}
 		var timerID = setInterval(() =>  {
 			refeshGPSData();
 			hideBadElements();
+			if(map != null){
+				var pos1 = new maps.LatLng(currentHuntTheCat.lat, currentHuntTheCat.lng);
+				var pos2 = new maps.LatLng(playerGPSData.lat,playerGPSData.lng);
+				//var pos2 = new maps.LatLng(defaultLocation.lat, defaultLocation.lng);
+				//console.log(maps)
+				var distance = maps.geometry.spherical.computeDistanceBetween(pos1, pos2);
+				console.log("Distance " + distance + " m")
+				setDistanceToHuntTheCat(distance);
+				if(distance < 50){
+					setHuntCatVisible(true);
+				}else{
+					setHuntCatVisible(false);
+				}
+			}
 		}, 1000);
 		var loadTimerID = setInterval(() =>  {
 			if (map != null){
@@ -124,6 +153,24 @@ function Map(gps){
 		maps = _maps;
 		map.setTilt(75);
 	};
+
+	/**
+     * Ensures if the user is logged in to the system or not.
+     * @returns the console will be informed if the user is logged in or not and will be recorded by checking the response received from the backend.
+     */
+	 function checkIfUserLoggedIn(){
+        console.log("Checking...");
+        fetch(`/api/isLoggedIn`)
+        .then((response) => {
+            if (response.ok){
+                console.log("Is logged in!");
+            }
+            return response.json();
+        }).then((data) => {
+            console.log(data);
+            setUserDetails(data);
+        });
+    }
 
 	/*
 	* Hides elements associated with radial menu, so all the buttons can be clicked
@@ -177,8 +224,8 @@ function Map(gps){
 			return;
 		}
 
-		slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
-		//slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
+		//slowPanTo(map, new maps.LatLng(defaultLocation.lat, defaultLocation.lng),30,10);
+		slowPanTo(map ,new maps.LatLng(playerGPSData.lat,playerGPSData.lng),30,10);
 	}
 
   	/**
@@ -192,6 +239,17 @@ function Map(gps){
 		.then(data => {
 			for(var i = 0; i < data.length; i++) {
 				var cat = data[i];
+				var thisIsHuntTheCat = cat.is_huntable && (cat.player_1 == userDetails.user_id || cat.player_2 == userDetails.user_id )
+				if (currentHuntTheCat == null && thisIsHuntTheCat){
+					setCurrentHuntTheCat({
+						lat: cat.latitude,
+						lng: cat.longitude
+					})
+					console.log({
+						lat: cat.latitude,
+						lng: cat.longitude
+					})
+				}
 				cats.push(
 					<MapMarker
 						lat={cat.latitude}
@@ -200,6 +258,7 @@ function Map(gps){
 						size={120}
 						id={cat.cat_id}
 						wildCatId={cat.wildcat_id}
+						invisible={thisIsHuntTheCat && !huntCatVisible}
 					/>
 				);
 			}
@@ -232,6 +291,25 @@ function Map(gps){
 		
 	}
 
+	const renderMeter = () => {
+		if(currentHuntTheCat == null){
+			return (null);
+		}else{
+			const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
+			var meterPercentage = clamp(100-((distanceToHuntTheCat-30)/200)*100, 0,100);
+			var text = "Cold"
+			if (meterPercentage>50){
+				text = "Hot"
+			}
+			return(
+				<div 
+				className="circular_meter" style={{"--p1": "50%","--p2": "50%","--p3": `${meterPercentage}%`}}>
+				{text}
+				</div>
+			);
+		}
+	}
+
 	/**
 	 * 
 	 * @returns Creates a button in the map page which redirects the user to further options 
@@ -241,6 +319,14 @@ function Map(gps){
 		return (
 			<div>
 			<OverlayUI>
+				<div
+				x="15px"
+				y="100px"
+				anchor="top right"
+				>
+					{renderMeter()}
+				</div>
+			);
 				<div  x="55%" y="50%" sortingLayer={1000}>
 					<img src={PlayerMarker} width={50} style={{
 						position:"absolute",
@@ -251,6 +337,8 @@ function Map(gps){
 						margin: "auto"
 					}}/>
 				</div>
+				
+
 				
 				<div 
 				x="-100px"
@@ -562,7 +650,9 @@ function Map(gps){
 	 * MAIN MAP HTML
 	 */
 	 const onCatClick = (key, childProps) => {
-		setCurrentCatch(childProps.wildCatId)
+		if(!childProps.invisible){
+			setCurrentCatch(childProps.wildCatId)
+		}
 	  }
 	return (
 		<div>
