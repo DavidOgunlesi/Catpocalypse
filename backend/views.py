@@ -1,4 +1,5 @@
 import re
+import socket
 import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate
@@ -348,7 +349,17 @@ class GetMatch(GenericAPIView): #THIS NEEDS DOING!!!!!!!!!!!!
 
     it also needs to return SOMETHING ELSE - A RANDOM CAT FROM THE PLAYERS INVENTORY
     '''
-    pass
+    def get(self, request):
+        username = self.request.session.get('username')
+        queryset = Matchmaking.objects.all()
+        for match in queryset:
+            client_ip = request.META['REMOTE_ADDR']
+            if match.user_id.username != username:
+                print(client_ip)
+                return response.Response({'message':"FOUND MATCH"}, status=status.HTTP_200_OK)
+        return response.Response({'message':"User does not exist in query"}, status=status.HTTP_400_BAD_REQUEST)
+
+        
 
 
 '''
